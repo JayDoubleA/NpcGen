@@ -249,9 +249,9 @@ namespace NpcGen.ControllerHelpers
         private List<ClassAbilityModel> AbilitiesGet(string abstring)
         {
             var absDb = _context.ClassAbilities.ToList();
-            var absArr = abstring.Split(new[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
+            var absArr = abstring.Split(new[] { '|' }, StringSplitOptions.RemoveEmptyEntries).ToList<string>();
 
-            return absArr.Select(abTest => absDb.First(x => x.Name.EqualsCaseInsensitive(abTest))).Where(ab => ab != null).ToList();
+            return absArr.Select(abTest => absDb.FirstOrDefault(x => x.Name.EqualsCaseInsensitive(abTest))).Where(ab => ab != null).ToList();
         }
     }
 }

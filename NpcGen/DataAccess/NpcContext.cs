@@ -13,6 +13,7 @@ namespace NpcGen.DataAccess
         public DbSet<AttackModel> Attacks { get; set; }
         public DbSet<MagicModel> Magics { get; set; }
         public DbSet<QuirkModel> Quirks { get; set; }
+        public DbSet<DemeanourModel> Demeanours { get; set; }
         public DbSet<ProficiencyModel> Proficiencies { get; set; }
         public DbSet<ClassAbilityModel> ClassAbilities { get; set; }
 

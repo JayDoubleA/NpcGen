@@ -102,7 +102,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Data\NpcGen.DataAccess.NpcContext.sdf" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
@@ -943,6 +942,8 @@
     <Compile Include="Constants\AttackDefinitions.cs" />
     <Compile Include="Constants\ClassAbilityDefinitions.cs" />
     <Compile Include="Constants\ClassDefinitions.cs" />
+    <Compile Include="Constants\DemeanourDefinitions.cs" />
+    <Compile Include="Constants\FeatureDefinitions.cs" />
     <Compile Include="Constants\Names.cs" />
     <Compile Include="Constants\ProficiencyDefinitions.cs" />
     <Compile Include="Constants\QuirkDefinitions.cs" />
@@ -967,6 +968,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\NpcModels\AppearanceModel.cs" />
+    <Compile Include="Models\NpcModels\DemeanourModel.cs" />
     <Compile Include="Models\NpcModels\MagicModel.cs" />
     <Compile Include="Models\NpcModels\NpcModel.cs" />
     <Compile Include="Models\NpcModels\ProficiencyModel.cs" />
@@ -990,7 +992,9 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+  </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>

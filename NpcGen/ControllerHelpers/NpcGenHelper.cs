@@ -29,8 +29,26 @@ namespace NpcGen.ControllerHelpers
             GetCustomProficiencies(npc);
             GetNameAndGender(npc);
             GetQuirks(npc);
+            GetDemeanour(npc);
+            GetAppearance(npc);
 
             return npc;
+        }
+
+        private void GetAppearance(NpcModel npc)
+        {
+            var ftrList = _context.FaceFeatures.ToList();
+            var ftrRnd = _rnd.Next(ftrList.Count());
+            var ftr = ftrList[ftrRnd];
+            npc.Appearance = new AppearanceModel { Face = new List<FaceModel> { ftr } };
+        }
+
+        private void GetDemeanour(NpcModel npc)
+        {
+            var demList = _context.Demeanours.ToList();
+            var demRnd = _rnd.Next(0, demList.Count());
+            var dem = demList[demRnd];
+            npc.Demeanour = new List<DemeanourModel> { dem };
         }
 
         private void GetNpcClass(NpcModel npc)

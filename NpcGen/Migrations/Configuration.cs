@@ -38,6 +38,18 @@ namespace NpcGen.Migrations
             {
                 context.Quirks.AddOrUpdate(r => r.QuirkId, qrk);
             }
+
+            var demeanourlist = DemeanourDefinitions.List();
+            foreach (var dem in demeanourlist)
+            {
+                context.Demeanours.AddOrUpdate(r => r.DemeanourId, dem);
+            }
+
+            var featureslist = FeatureDefinitions.List();
+            foreach (var ftr in featureslist)
+            {
+                context.FaceFeatures.AddOrUpdate(r => r.FaceId, ftr);
+            }
         }
     }
 }
