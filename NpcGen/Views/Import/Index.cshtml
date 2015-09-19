@@ -1,0 +1,27 @@
+﻿@using NpcGen.Extensions
+@model NpcGen.Models.ImportModel
+
+<div class="left">
+    @using (Html.BeginForm("Import", "Import"))
+    {
+        @Html.AntiForgeryToken()
+        <p class="csv-input">
+            @Html.LabelFor(model => model.Csv) <br />
+            @Html.TextAreaFor(model => model.Csv)
+        </p>
+        <p>
+            @Html.RadioButtonForEnum(model => model.ImportType)
+        </p>
+        <p>
+            <input type="submit" value="Import" />
+        </p>
+    }
+</div>
+<div class="right">
+    @Html.Raw(Model.Message)
+</div>
+<div class="clearfix"></div>
+<hr />
+<div class="left">
+    @Html.ActionLink("Load seed", "Seed")
+</div>
