@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace NpcGen.Models.NpcModels
 {
@@ -12,5 +13,6 @@ namespace NpcGen.Models.NpcModels
         public string Damage { get; set; }
         public int Range { get; set; }
         public string Special { get; set; }
+        public virtual ICollection<ClassModel> Classes { get; set; }
     }
 }
