@@ -21,6 +21,7 @@ namespace NpcGen.Constants
                 list.Add(new GeneralAppearanceModel { Feature = string.Format("{0} hair", colour) });
             }
             list.Add(new GeneralAppearanceModel { Feature = string.Format("a bald head") });
+            list.Add(new GeneralAppearanceModel { Feature = string.Format("a big nose") });
             return list;
         }
     }

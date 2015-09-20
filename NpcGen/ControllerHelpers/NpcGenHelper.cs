@@ -42,7 +42,7 @@ namespace NpcGen.ControllerHelpers
 
             var eyes = ftrList.Where(f => f.Feature.IndexOf("eyes", StringComparison.OrdinalIgnoreCase) != -1);
             var eyesRnd = _rnd.Next(eyes.Count());
-            var hair = ftrList.Where(f => f.Feature.IndexOf("hair", StringComparison.OrdinalIgnoreCase) != -1);
+            var hair = ftrList.Where(f => f.Feature.IndexOf("hair", StringComparison.OrdinalIgnoreCase) != -1 || f.Feature.IndexOf("bald", StringComparison.OrdinalIgnoreCase) != -1);
             var hairRnd = _rnd.Next(hair.Count());
             var other = ftrList.Except(eyes).Except(hair).ToList();
             var otherRnd = _rnd.Next(other.Count());
