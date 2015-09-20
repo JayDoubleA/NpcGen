@@ -32,6 +32,7 @@ textarea {
     width: 49%;
 }
 
-#portrait img{
-    height: 300px;
+img.resize{
+    max-height: 300px;
+    width:auto;
 }
