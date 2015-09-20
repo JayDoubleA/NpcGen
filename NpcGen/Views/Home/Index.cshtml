@@ -28,7 +28,7 @@
 
             var newImg = document.createElement('img');
 
-            newImg.src = result.tbUrl;
+            newImg.src = result.url;
             imgContainer.appendChild(newImg);
 
             contentDiv.appendChild(imgContainer);
@@ -44,7 +44,7 @@
         // complete.  The imageSearch object will have results in it.
         imageSearch.setSearchCompleteCallback(this, searchComplete, null);
 
-        imageSearch.execute(" \"@EnumExtensions.ToName(Model.Gender) with @Model.Appearance.GeneralAppearance.ElementAt(1).Feature\" @EnumExtensions.ToName(Model.Age) ");
+        imageSearch.execute("portrait \"@EnumExtensions.ToName(Model.Gender) with @Model.Appearance.GeneralAppearance.ElementAt(1).Feature\" @EnumExtensions.ToName(Model.Age)");
     }
 
     function getRandomInt(min, max) {
