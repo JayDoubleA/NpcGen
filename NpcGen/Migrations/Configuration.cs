@@ -2,6 +2,7 @@ using NpcGen.Constants;
 
 namespace NpcGen.Migrations
 {
+    using NpcGen.Models.NpcModels;
     using System.Data.Entity.Migrations;
 
     internal sealed class Configuration : DbMigrationsConfiguration<DataAccess.NpcContext>
@@ -15,6 +16,9 @@ namespace NpcGen.Migrations
 
         protected override void Seed(DataAccess.NpcContext context)
         {
+            var magicNone = new MagicModel { MagicName = "None" };
+            context.Magics.AddOrUpdate(r => r.MagicName, magicNone);
+
             var proflist = ProficiencyDefinitions.List();
             foreach (var prof in proflist)
             {

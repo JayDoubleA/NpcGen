@@ -962,6 +962,7 @@
     <Compile Include="Controllers\ImportController.cs" />
     <Compile Include="DataAccess\NpcContext.cs" />
     <Compile Include="DataAccess\NpcInitialiser.cs" />
+    <Compile Include="Extensions\CharExtensions.cs" />
     <Compile Include="Extensions\EnumExtensions.cs" />
     <Compile Include="Extensions\HtmlExtenstions.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />
