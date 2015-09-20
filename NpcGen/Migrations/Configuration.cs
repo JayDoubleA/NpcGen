@@ -45,10 +45,10 @@ namespace NpcGen.Migrations
                 context.Demeanours.AddOrUpdate(r => r.DemeanourId, dem);
             }
 
-            var featureslist = FeatureDefinitions.List();
+            var featureslist = GeneralAppearanceDefinitions.List();
             foreach (var ftr in featureslist)
             {
-                context.FaceFeatures.AddOrUpdate(r => r.FaceId, ftr);
+                context.GeneralAppearances.AddOrUpdate(r => r.GeneralAppearanceId, ftr);
             }
         }
     }

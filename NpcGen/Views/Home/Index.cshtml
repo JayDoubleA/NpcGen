@@ -9,7 +9,7 @@
 
 <p>@Model.Name is a @Model.Demeanour.FirstOrDefault().Description @(EnumExtensions.ToName(Model.Age)) @Model.Class.Name, distinguished from others because @Model.Pers() @Model.Quirks.FirstOrDefault().Description</p>
 
-@Model.Pers() has @Model.Appearance.Face.FirstOrDefault().FaceFeature;
+<p>@Model.Pers() has @Model.Appearance.GeneralAppearance.ElementAt(0).Feature and @Model.Appearance.GeneralAppearance.ElementAt(1).Feature</p>
 
 <p>@Model.Poss(true) strong saves are 
     @{ var index = 0; }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using NpcGen.Constants;
@@ -37,10 +38,15 @@ namespace NpcGen.ControllerHelpers
 
         private void GetAppearance(NpcModel npc)
         {
-            var ftrList = _context.FaceFeatures.ToList();
-            var ftrRnd = _rnd.Next(ftrList.Count());
-            var ftr = ftrList[ftrRnd];
-            npc.Appearance = new AppearanceModel { Face = new List<FaceModel> { ftr } };
+            var ftrList = _context.GeneralAppearances.ToList();
+
+            var eyes = ftrList.Where(f => f.Feature.IndexOf("eyes", StringComparison.OrdinalIgnoreCase) != -1);
+            var eyesRnd = _rnd.Next(eyes.Count());
+            var hair = ftrList.Where(f => f.Feature.IndexOf("hair", StringComparison.OrdinalIgnoreCase) != -1);
+            var hairRnd = _rnd.Next(hair.Count());
+            var other = ftrList.Except(eyes).Except(hair).ToList();
+            var otherRnd = _rnd.Next(other.Count());
+            npc.Appearance = new AppearanceModel { GeneralAppearance = new List<GeneralAppearanceModel> { eyes.ElementAt(eyesRnd), hair.ElementAt(hairRnd), other.ElementAt(otherRnd) } };
         }
 
         private void GetDemeanour(NpcModel npc)

@@ -137,7 +137,8 @@ namespace NpcGen.Constants
             var sb = new StringBuilder();
             var list = new List<string>
             {
-                "\"Murder Hobo\", \"10\", \"3\", \"2\", \"Pointed Stick@4@d6+2@Messes you up real bad!\", \"None\", \"13\", \"11\", \"13\", \"11\", \"11\", \"11\", \"23\", \"30\", \"14\", \"Strength Save|Constitution Save|Athletics|Stealth\", \"none\", \"Beefcake|Beefcake 2\", \"Pointed Stick, Leather Armour\""
+                "\"Murder Hobo\", \"10\", \"3\", \"2\", \"Pointed Stick@4@d6+2@Messes you up real bad!\", \"None\", \"13\", \"11\", \"13\", \"11\", \"11\", \"11\", \"23\", \"30\", \"14\", \"Strength Save|Constitution Save|Athletics|Stealth\", \"none\", \"Beefcake|Beefcake 2\", \"Pointed Stick, Leather Armour\"",
+                "\"Death Cultist\", \"9\", \"4\", \"6\", \"Prayer of Chaos@5@d6@The dark gods compel you!\", \"None\", \"13\", \"11\", \"13\", \"11\", \"11\", \"11\", \"23\", \"30\", \"14\", \"Strength Save|Constitution Save|Athletics|Stealth\", \"none\", \"Glare at Livestock\", \"Dark Libram, Leather Armour\""
             };
 
             for (var i = 0; i < list.Count; i++)
