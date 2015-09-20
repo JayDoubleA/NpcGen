@@ -7,6 +7,7 @@
     <title>@ViewBag.Title - My ASP.NET Application</title>
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
     <link href="~/Content/Site.css" rel="stylesheet" />
+    @RenderSection("headscripts", required: false)
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -22,9 +23,11 @@
         </div>
     </div>
     <div class="container body-content">
-        @RenderBody()
+        <div class="npc-container">
+            @RenderBody()
+        </div>
         <hr />
-        <footer>
+        <footer class="clearfix">
             <p>&copy; @DateTime.Now.Year - The 5E Commoner Project</p>
         </footer>
     </div>

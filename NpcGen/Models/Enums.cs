@@ -10,13 +10,16 @@ namespace NpcGen.Models.NpcModels
         Adult,
         [Description("Middle Aged")]
         MiddleAged,
+        [Description("Elderly")]
         Old,
         Ancient
     }
 
     public enum Gender
     {
+        [Description("Woman")]
         Female,
+        [Description("Man")]
         Male
     }
 

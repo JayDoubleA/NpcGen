@@ -7,7 +7,7 @@ namespace NpcGen.Constants
     {
 
         public static readonly List<string> EyeColours = new List<string>{"Blue", "Green", "Brown", "Hazel", "Bloodshot"};
-        public static readonly List<string> HairColours = new List<string>{"Blue", "Green", "Brown", "Red", "Grey", "Black", "Absolutely no"};
+        public static readonly List<string> HairColours = new List<string>{"Blue", "Brown", "Red", "Grey", "Black"};
 
         public static List<GeneralAppearanceModel> List()
         {        
@@ -20,6 +20,7 @@ namespace NpcGen.Constants
             {
                 list.Add(new GeneralAppearanceModel { Feature = string.Format("{0} hair", colour) });
             }
+            list.Add(new GeneralAppearanceModel { Feature = string.Format("a bald head") });
             return list;
         }
     }
