@@ -40,7 +40,7 @@ namespace NpcGen.Migrations
             var quirkslist = QuirkDefinitions.List();
             foreach (var qrk in quirkslist)
             {
-                context.Quirks.AddOrUpdate(r => r.QuirkId, qrk);
+                context.Quirks.AddOrUpdate(r => r.Description, qrk);
             }
 
             var demeanourlist = DemeanourDefinitions.List();
