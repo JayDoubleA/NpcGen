@@ -47,7 +47,7 @@
         // complete.  The imageSearch object will have results in it.
         imageSearch.setSearchCompleteCallback(this, searchComplete, null);
 
-        imageSearch.execute("portrait \"character\" nedieval \"@EnumExtensions.ToName(Model.Gender) with @Model.Appearance.GeneralAppearance.ElementAt(1).Feature\" @EnumExtensions.ToName(Model.Age)");
+        imageSearch.execute("npc portraits \"@EnumExtensions.ToName(Model.Gender) with @Model.Appearance.GeneralAppearance.ElementAt(1).Feature\" @EnumExtensions.ToName(Model.Age)");
     }
 
     function getRandomInt(min, max) {
@@ -61,7 +61,7 @@
 }
 <h2>A random commoner approaches...</h2>
 <div class="col-sm-6">
-    <p>@Model.Name is @Model.Demeanour.FirstOrDefault().Description.WithArticle() @(EnumExtensions.ToName(Model.Age).ToLower()) @Model.Class.Name, distinguished from others because @Model.Pers() @Model.Quirks.FirstOrDefault().Description.</p>
+    <p>@Model.Name is @Model.Demeanour.FirstOrDefault().Description.WithArticle() @(EnumExtensions.ToName(Model.Age).ToLower()) @Model.Class.Name, distinguished from others because @Model.Pers() @Model.Quirks.FirstOrDefault().Description.NotCap().Genderize(Model.Gender).</p>
 
     <p>@Model.Pers(true) has @Model.Appearance.GeneralAppearance.ElementAt(0).Feature.ToLower() and @Model.Appearance.GeneralAppearance.ElementAt(1).Feature.ToLower().</p>
 

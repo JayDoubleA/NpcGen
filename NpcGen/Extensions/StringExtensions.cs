@@ -1,4 +1,5 @@
-﻿namespace NpcGen.Extensions
+﻿using NpcGen.Models.NpcModels;
+namespace NpcGen.Extensions
 {
     public static class StringExtensions
     {
@@ -70,7 +71,22 @@
             }
 
             return "a";
+        }
 
+        public static string NotCap(this string str)
+        {
+            var chr = str.Substring(0, 1);
+
+            return string.Format("{0}{1}", chr.ToLower(), str.Substring(1));
+        }
+
+        public static string Genderize(this string str, Gender gender)
+        {
+            if(gender == Gender.Female){
+                return str.Replace("his or her", "her").Replace("he or she", "she");
+            }
+
+            return str.Replace("his or her", "his").Replace("he or she", "he");
         }
     }
 }
