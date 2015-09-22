@@ -27,16 +27,14 @@ namespace NpcGen.Models.NpcModels
 
         public int HitPoints { get; set; }
         public int Movement { get; set; }
-        public int ArmourClass { get; set; }
+        public int BaseArmourClass { get; set; }
 
         public  virtual ICollection<ProficiencyModel> Proficiencies { get; set; }
         public  virtual ICollection<ProficiencyModel> Expertises { get; set; }
 
         public virtual ICollection<ClassAbilityModel> ClassAbilities { get; set; }
 
-        public string Possessions { get; set; }
-
-        public int PassivePerception { get; set; }
+        public string Possessions { get; set; }       
 
         public int Xp { get; set; }
     }

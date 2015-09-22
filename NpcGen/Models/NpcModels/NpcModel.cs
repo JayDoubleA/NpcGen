@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using NpcGen.Models.NpcModels.NpcModels;
+using System.ComponentModel;
 
 namespace NpcGen.Models.NpcModels
 {
@@ -41,5 +42,7 @@ namespace NpcGen.Models.NpcModels
 
             return Gender.Equals(Gender.Female) ? "her" : "his";
         }
+
+        public NpcGenParamsModel Para { get; set; }
     }
 }

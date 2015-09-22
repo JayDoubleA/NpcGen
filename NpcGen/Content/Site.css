@@ -36,3 +36,19 @@ img.resize{
     max-height: 300px;
     width:auto;
 }
+
+ul.checkbox-list{
+    margin: 8px;
+}
+
+ul.checkbox-list li{
+    margin-top: -6px;
+    font-weight: normal;
+}
+
+
+li.stat span.stat{
+    float:left;
+    width: 15%;
+    font-style: italic !important;
+}

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NpcGen.Constants;
 using NpcGen.DataAccess;
+using NpcGen.Extensions;
 using NpcGen.Models.NpcModels;
 using NpcGen.Models.NpcModels.NpcModels;
 
@@ -36,6 +37,24 @@ namespace NpcGen.ControllerHelpers
             return npc;
         }
 
+        public NpcModel NpcGet(string clsName, NpcModel para)
+        {
+            var npc = new NpcModel();
+            npc.Para = para.Para ?? new NpcGenParamsModel();
+
+            GetNpcClass(npc, clsName);
+            SplitClassProficiencies(npc);
+            GetAge(npc);
+            GetCustomProficiencies(npc);
+            GetNameAndGender(npc);
+            GetQuirks(npc);
+            GetDemeanour(npc);
+            GetAppearance(npc);
+            NpcParamsProcess(npc);
+
+            return npc;
+        }
+
         private void GetAppearance(NpcModel npc)
         {
             var ftrList = _context.GeneralAppearances.ToList();
@@ -64,6 +83,11 @@ namespace NpcGen.ControllerHelpers
             npc.Class = cls;
         }
 
+        private void GetNpcClass(NpcModel npc, string clsName)
+        {
+            npc.Class = _context.Classes.ToList().FirstOrDefault(x => x.Name.Equals(clsName));
+        }
+
         private void SplitClassProficiencies(NpcModel npc)
         {
             npc.ClassSaves = npc.Class.Proficiencies.Where(x => x.Type == ProficiencyTypes.Save).ToList();
@@ -77,6 +101,45 @@ namespace NpcGen.ControllerHelpers
             var profRnd = _rnd.Next(0, profPoss.Count());
             var profCustom = profPoss.ToList()[profRnd];
             npc.CustomProficiencies = new List<ProficiencyModel> { profCustom };
+        }
+
+        private void AddCustomProficiency(NpcModel npc)
+        {
+            var profPoss = _context.Proficiencies.ToList().Where(p => !npc.Class.Proficiencies.Contains(p) && !npc.CustomProficiencies.Contains(p) && p.Type != ProficiencyTypes.Save);
+            var profRnd = _rnd.Next(0, profPoss.Count());
+            var profCustom = profPoss.ToList()[profRnd];
+            npc.CustomProficiencies.Add(profCustom);
+        }
+
+        private void AddSpecificProficiency(NpcModel npc, Proficiencies prof)
+        {
+            if (!npc.Class.Proficiencies.Any(p => p.ProficiencyId.Equals(prof)) && !npc.CustomProficiencies.Any(r => r.ProficiencyId.Equals(prof)))
+            {
+                // var profMod = _context.Proficiencies.Where(p => p.ProficiencyId.Equals(prof)).ToList().FirstOrDefault(); ;
+
+                ProficiencyModel profMod = null;
+
+                foreach (var pr in _context.Proficiencies)
+                {
+                    if (pr.ProficiencyId.ToString().Equals(prof.ToString()))
+                    {
+                        profMod = pr;
+                        break;
+                    }
+                }
+
+                if (profMod != null)
+                {
+                    if (profMod.Type.Equals(ProficiencyTypes.Save))
+                    {
+                        npc.Class.Proficiencies.Add(profMod);
+                    }
+                    else
+                    {
+                        npc.CustomProficiencies.Add(profMod);
+                    }
+                }
+            }
         }
 
         private void GetQuirks(NpcModel npc)
@@ -133,6 +196,50 @@ namespace NpcGen.ControllerHelpers
             }
 
             npc.Name = namesPoss.Skip(_rnd.Next(0, namesPoss.Count())).Take(1).FirstOrDefault();
+        }
+
+        public void NpcParamsProcess(NpcModel npc)
+        {
+            if (npc.Para.MoreStr)
+            {
+                npc.Class.Strength += 4;
+                AddSpecificProficiency(npc, Proficiencies.StrengthSave);
+            }
+            if (npc.Para.MoreDex)
+            {
+                npc.Class.Dexterity += 4;
+                AddSpecificProficiency(npc, Proficiencies.DexteritySave);
+            }
+            if (npc.Para.MoreCon)
+            {
+                npc.Class.Constitution += 4;
+                AddSpecificProficiency(npc, Proficiencies.ConstitutionSave);
+                npc.Class.HitPoints = npc.Class.HitPointsMaxGet();
+            }
+            if (npc.Para.MoreInt)
+            {
+                npc.Class.Intelligence += 4;
+                AddSpecificProficiency(npc, Proficiencies.IntelligenceSave);
+                AddCustomProficiency(npc);
+            }
+            if (npc.Para.MoreWis)
+            {
+                npc.Class.Wisdom += 4;
+                AddSpecificProficiency(npc, Proficiencies.WisdomSave);
+            }
+            if (npc.Para.MoreCha)
+            {
+                npc.Class.Charisma += 4;
+                AddSpecificProficiency(npc, Proficiencies.CharismaSave);
+            }
+        }
+
+        public void AttackRecalculate(NpcModel npc)
+        {
+            foreach (var at in npc.Class.Attacks)
+            {
+                at.ToHit = LevelConstants.ProficiencyBonus(npc.Class.Level) + npc.Class.AbilityModifierGet(at.Ability);                
+            }
         }
     }
 }

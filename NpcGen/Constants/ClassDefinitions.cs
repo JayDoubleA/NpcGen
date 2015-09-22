@@ -18,7 +18,7 @@ namespace NpcGen.Constants
             AbilityList = abs;
             var list = new List<ClassModel>();
 
-            list.AddRange(Commoners());
+          //  list.AddRange(Commoners());
             list.AddRange(RealClasses());
 
             return list;
@@ -138,8 +138,8 @@ namespace NpcGen.Constants
             var sb = new StringBuilder();
             var list = new List<string>
             {
-                "\"Murder Hobo\", \"10\", \"3\", \"2\", \"Pointed Stick@4@d6+2@Messes you up real bad!\", \"None\", \"13\", \"11\", \"13\", \"11\", \"11\", \"11\", \"23\", \"30\", \"14\", \"Strength Save|Constitution Save|Athletics|Stealth\", \"none\", \"Beefcake|Beefcake 2\", \"Pointed Stick, Leather Armour\"",
-                "\"Death Cultist\", \"9\", \"4\", \"6\", \"Prayer of Chaos@5@d6@The dark gods compel you!\", \"None\", \"13\", \"11\", \"13\", \"11\", \"11\", \"11\", \"23\", \"30\", \"14\", \"Strength Save|Constitution Save|Athletics|Stealth\", \"none\", \"Glare at Livestock\", \"Dark Libram, Leather Armour\""
+                "\"Murder Hobo\", \"10\", \"3\", \"2\", \"Pointed Stick@4@d6+2@Messes you up real bad!\", \"None\", \"13\", \"11\", \"13\", \"11\", \"11\", \"11\", \"23\", \"30\", \"4\", \"Strength Save|Constitution Save|Athletics|Stealth\", \"none\", \"Beefcake|Beefcake 2\", \"Pointed Stick, Leather Armour\"",
+                "\"Death Cultist\", \"9\", \"4\", \"6\", \"Prayer of Chaos@5@d6@The dark gods compel you!\", \"None\", \"13\", \"11\", \"13\", \"11\", \"11\", \"11\", \"23\", \"30\", \"4\", \"Strength Save|Constitution Save|Athletics|Stealth\", \"none\", \"Glare at Livestock\", \"Dark Libram, Leather Armour\""
             };
 
             for (var i = 0; i < list.Count; i++)
@@ -175,16 +175,47 @@ namespace NpcGen.Constants
                     ClassAbilities = new List<ClassAbilityModel>
                     {
                     },
-                    ArmourClass = 12,
+                    BaseArmourClass = 2,
                     Movement = 30
                 };
             var banditScimitar = new AttackModel("Scimitar", bandit, Abilities.Dexterity, "d6");
             var banditCrossbow = new AttackModel("Light Crossbow", bandit, Abilities.Dexterity, "d8", 80);
-            bandit.Attacks = new List<AttackModel>{banditScimitar, banditCrossbow};
-            bandit.PassivePerception = bandit.PassivePerceptionGet();
+            bandit.Attacks = new List<AttackModel>{banditScimitar, banditCrossbow};            
             bandit.HitPoints = bandit.HitPointsAverageGet();
+            bandit.ProficencyBonus = LevelConstants.ProficiencyBonus(bandit.Level);
 
             list.Add(bandit);
+
+            var banditLeader = new ClassModel
+            {
+                Name = "Bandit Leader",
+                HitDieType = 8,
+                Level = 4,
+                Strength = 13,
+                Dexterity = 12,
+                Constitution = 14,
+                Intelligence = 10,
+                Wisdom = 10,
+                Charisma = 12,
+                BaseArmourClass = 2,
+                Proficiencies = new List<ProficiencyModel>
+                {
+                    ProficiencyList.ProfGet(Proficiencies.Perception),
+                    ProficiencyList.ProfGet(Proficiencies.ConstitutionSave),
+                    ProficiencyList.ProfGet(Proficiencies.Survival)
+                },
+                ClassAbilities = new List<ClassAbilityModel>
+                {
+                },
+                Movement = 30                
+            };
+            var banditLeaderLongsword = new AttackModel("Longsword", banditLeader, Abilities.Strength, "d8");
+            var banditLeaderCrossbow = new AttackModel("Light Crossbow", banditLeader, Abilities.Dexterity, "d8", 80);
+            banditLeader.Attacks = new List<AttackModel> { banditLeaderLongsword, banditLeaderCrossbow };            
+            banditLeader.HitPoints = banditLeader.HitPointsAverageGet();
+            banditLeader.ProficencyBonus = LevelConstants.ProficiencyBonus(banditLeader.Level);
+
+            list.Add(banditLeader);
 
             return list;
         }

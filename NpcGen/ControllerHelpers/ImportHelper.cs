@@ -144,7 +144,7 @@ namespace NpcGen.ControllerHelpers
                         cls.Charisma = int.Parse(row[11]);
                         cls.HitPoints = int.Parse(row[12]);
                         cls.Movement = int.Parse(row[13]);
-                        cls.ArmourClass = int.Parse(row[14]);
+                        cls.BaseArmourClass = int.Parse(row[14]);
                         cls.Proficiencies = ProfsGet(row[15]);
                         cls.Expertises = ProfsGet(row[16]);
                         cls.ClassAbilities = AbilitiesGet(row[17]);

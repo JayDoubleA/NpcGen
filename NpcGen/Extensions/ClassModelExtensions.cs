@@ -51,12 +51,17 @@ namespace NpcGen.Extensions
             return StringHelpers.ModStringGet(cls.ProficientSkillScoreGet(prof));
         }
 
-        public static int PassivePerceptionGet(this ClassModel cls)
+        public static int PassivePerception(this ClassModel cls)
         {
             var isProf = cls.Proficiencies.Any(x => x.Name.Equals(Proficiencies.Perception.ToString()));
             var abilityMod = cls.AbilityModifierGet(Abilities.Wisdom) ;
 
             return isProf ? 10 + abilityMod + cls.ProficencyBonus : 10 + abilityMod;
+        }
+
+        public static int ArmourClass(this ClassModel cls)
+        {
+            return 10 + cls.BaseArmourClass + AbilityModifierGet(cls, Abilities.Dexterity);
         }
 
         public static int HitPointsAverageGet(this ClassModel cls)
@@ -66,6 +71,11 @@ namespace NpcGen.Extensions
             var conBonus = cls.Level * cls.AbilityModifierGet(Abilities.Constitution);
 
             return diceAverageFudge + conBonus;
+        }
+
+        public static int HitPointsMaxGet(this ClassModel cls)
+        {
+            return (cls.HitDieType + cls.AbilityModifierGet(Abilities.Constitution)) * cls.Level;
         }
     }
 }

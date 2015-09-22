@@ -34,7 +34,7 @@ namespace NpcGen.Models.NpcModels
             var abilityMod = cls.AbilityModifierGet(Ability);
             ToHit = abilityMod + LevelConstants.ProficiencyBonus(cls.Level);
 
-            Damage = string.Format("{0}{1}", damageDice, abilityMod.AbilityModStringGet());            
+            Damage = damageDice;            
         }
     }    
 }

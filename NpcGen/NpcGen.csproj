@@ -107,6 +107,7 @@
     </Reference>
     <Reference Include="System.Web.Mvc">
       <HintPath>..\packages\Microsoft.AspNet.Mvc.5.1.2\lib\net45\System.Web.Mvc.dll</HintPath>
+      <Private>True</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -957,6 +958,7 @@
     <Compile Include="Constants\Names.cs" />
     <Compile Include="Constants\ProficiencyDefinitions.cs" />
     <Compile Include="Constants\QuirkDefinitions.cs" />
+    <Compile Include="Constants\StringConstants.cs" />
     <Compile Include="ControllerHelpers\ImportHelper.cs" />
     <Compile Include="ControllerHelpers\NpcGenHelper.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -983,6 +985,7 @@
     <Compile Include="Models\NpcModels\AppearanceModel.cs" />
     <Compile Include="Models\NpcModels\DemeanourModel.cs" />
     <Compile Include="Models\NpcModels\MagicModel.cs" />
+    <Compile Include="Models\NpcModels\NpcGenParamsModel.cs" />
     <Compile Include="Models\NpcModels\NpcModel.cs" />
     <Compile Include="Models\NpcModels\ProficiencyModel.cs" />
     <Compile Include="Models\NpcModels\QuirkModel.cs" />
