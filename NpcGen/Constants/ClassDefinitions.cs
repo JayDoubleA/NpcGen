@@ -19,6 +19,7 @@ namespace NpcGen.Constants
             var list = new List<ClassModel>();
 
             list.AddRange(Commoners());
+            list.AddRange(RealClasses());
 
             return list;
         }
@@ -151,6 +152,41 @@ namespace NpcGen.Constants
             }
 
             return sb.ToString();
+        }
+
+        public static List<ClassModel> RealClasses()
+        {
+            var list = new List<ClassModel>();
+
+            var bandit = new ClassModel
+                {
+                    Name = "Bandit",
+                    HitDieType = 8,
+                    Level = 2,                    
+                    Strength = 11,
+                    Dexterity = 12,
+                    Constitution = 12,
+                    Intelligence = 10,
+                    Wisdom = 10,
+                    Charisma = 10,                                       
+                    Proficiencies = new List<ProficiencyModel>
+                    {                        
+                    },
+                    ClassAbilities = new List<ClassAbilityModel>
+                    {
+                    },
+                    ArmourClass = 12,
+                    Movement = 30
+                };
+            var banditScimitar = new AttackModel("Scimitar", bandit, Abilities.Dexterity, "d6");
+            var banditCrossbow = new AttackModel("Light Crossbow", bandit, Abilities.Dexterity, "d8", 80);
+            bandit.Attacks = new List<AttackModel>{banditScimitar, banditCrossbow};
+            bandit.PassivePerception = bandit.PassivePerceptionGet();
+            bandit.HitPoints = bandit.HitPointsAverageGet();
+
+            list.Add(bandit);
+
+            return list;
         }
     }
 }

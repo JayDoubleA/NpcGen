@@ -953,6 +953,7 @@
     <Compile Include="Constants\ClassDefinitions.cs" />
     <Compile Include="Constants\DemeanourDefinitions.cs" />
     <Compile Include="Constants\FeatureDefinitions.cs" />
+    <Compile Include="Constants\LevelConstants.cs" />
     <Compile Include="Constants\Names.cs" />
     <Compile Include="Constants\ProficiencyDefinitions.cs" />
     <Compile Include="Constants\QuirkDefinitions.cs" />
@@ -963,10 +964,12 @@
     <Compile Include="DataAccess\NpcContext.cs" />
     <Compile Include="DataAccess\NpcInitialiser.cs" />
     <Compile Include="Extensions\CharExtensions.cs" />
+    <Compile Include="Extensions\ClassModelExtensions.cs" />
     <Compile Include="Extensions\EnumExtensions.cs" />
     <Compile Include="Extensions\HtmlExtenstions.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Helpers\StringHelpers.cs" />
     <Compile Include="Interfaces\IAttribute.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ImportModel.cs" />

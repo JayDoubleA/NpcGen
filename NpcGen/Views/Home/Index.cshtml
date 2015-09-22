@@ -9,55 +9,55 @@
     <script src="https://www.google.com/jsapi"></script>
     <script type="text/javascript">
 
-    google.load('search', '1');
+        google.load('search', '1');
 
-    var imageSearch;
+        var imageSearch;
 
 
-    function searchComplete() {
+        function searchComplete() {
 
-          if (imageSearch.results && imageSearch.results.length > 0) {
+            if (imageSearch.results && imageSearch.results.length > 0) {
 
-            var contentDiv = document.getElementById('portrait');
-            contentDiv.innerHTML = '';
+                var contentDiv = document.getElementById('portrait');
+                contentDiv.innerHTML = '';
 
-            var results = imageSearch.results;
+                var results = imageSearch.results;
 
-            var result = results[getRandomInt(0, imageSearch.results.length)];
-            var imgContainer = document.createElement('div');
+                var result = results[getRandomInt(0, imageSearch.results.length)];
+                var imgContainer = document.createElement('div');
 
-            var newImg = document.createElement('img');
+                var newImg = document.createElement('img');
 
-            newImg.src = result.url;
-            imgContainer.appendChild(newImg);
-            newImg.className = "resize";
+                newImg.src = result.url;
+                imgContainer.appendChild(newImg);
+                newImg.className = "resize";
 
-            contentDiv.appendChild(imgContainer);
+                contentDiv.appendChild(imgContainer);
 
-           
+
+            }
         }
-    }
 
-    function OnLoad() {
+        function OnLoad() {
 
-        // Create an Image Search instance.
-        imageSearch = new google.search.ImageSearch();
+            // Create an Image Search instance.
+            imageSearch = new google.search.ImageSearch();
 
-        // Set searchComplete as the callback function when a search is
-        // complete.  The imageSearch object will have results in it.
-        imageSearch.setSearchCompleteCallback(this, searchComplete, null);
+            // Set searchComplete as the callback function when a search is
+            // complete.  The imageSearch object will have results in it.
+            imageSearch.setSearchCompleteCallback(this, searchComplete, null);
 
-        imageSearch.execute("npc portraits \"@EnumExtensions.ToName(Model.Gender) with @Model.Appearance.GeneralAppearance.ElementAt(1).Feature\" @EnumExtensions.ToName(Model.Age)");
-    }
+            imageSearch.execute("npc portraits \"@EnumExtensions.ToName(Model.Gender) with @Model.Appearance.GeneralAppearance.ElementAt(1).Feature\" @EnumExtensions.ToName(Model.Age)");
+        }
 
-    function getRandomInt(min, max) {
-        return Math.floor(Math.random() * (max - min)) + min;
-    }
+        function getRandomInt(min, max) {
+            return Math.floor(Math.random() * (max - min)) + min;
+        }
 
-    google.setOnLoadCallback(OnLoad);
+        google.setOnLoadCallback(OnLoad);
 
 
-</script>
+    </script>
 }
 <h2>A random commoner approaches...</h2>
 <div class="col-sm-6">
@@ -65,36 +65,45 @@
 
     <p>@Model.Pers(true) has @Model.Appearance.GeneralAppearance.ElementAt(0).Feature.ToLower() and @Model.Appearance.GeneralAppearance.ElementAt(1).Feature.ToLower().</p>
 
-    <p>
-        @Model.Poss(true) strong saves are
-        @{ var index = 0; }
-        @foreach (var sv in Model.ClassSaves)
-        {
-            if (index > 0)
+    @if (Model.ClassSaves.Count > 0)
+    {
+        <p>
+            @Model.Poss(true) strong saves are
+            @{ var index = 0; }
+            @foreach (var sv in Model.ClassSaves)
             {
-                <text>, </text>
-            }
-            <b>@sv.Name.Replace(" Save", string.Empty)</b>
-            index++;
-        }.
-    </p>
+                if (index > 0)
+                {
+                    <text>, </text>
+                }
+                <b>@sv.Name.Replace(" Save", string.Empty)</b> <text>:</text> @Model.Class.ProficientSkillScoreStringGet(sv)
+                index++;
+            }.
+        </p>
+    }
     <p>
         @Model.Name is skilled in
-        @foreach (var prof in Model.ClassSkills)
+        @if (Model.ClassSkills.Count > 0)
         {
-            <b>@prof.Name</b> <text>(</text>@prof.Stat<text>)</text><text>,</text>
-
-} and curiously enough, also in <b>@Model.CustomProficiencies.FirstOrDefault().Name</b> (@Model.CustomProficiencies.FirstOrDefault().Stat).
-        </p>
-        <p>
-            @Model.Name has the following attacks:
-            <ul>
-                @foreach (var at in Model.Class.Attacks)
-                {
-                    <li>@at.Name (+@at.ToHit.ToString() - @at.Damage)</li>
-                }
-            </ul>
-        </p>
+            foreach (var prof in Model.ClassSkills)
+            {
+                <b>@prof.Name</b> <text>(</text>@prof.Stat <text>:</text> @Model.Class.ProficientSkillScoreStringGet(prof)<text>)</text><text>,</text>
+            }
+            <text> and curiously enough, also in </text>
+        }
+        <b>@Model.CustomProficiencies.FirstOrDefault().Name</b> (@Model.CustomProficiencies.FirstOrDefault().Stat : @Model.Class.ProficientSkillScoreStringGet(Model.CustomProficiencies.FirstOrDefault())<text>)</text>
+    </p>
+    <p>
+        @Model.Name has the following attacks:
+        <ul>
+            @foreach (var at in Model.Class.Attacks)
+            {
+                <li>@at.Name (+@at.ToHit.ToString() - @at.Damage)</li>
+            }
+        </ul>
+    </p>
+    @if (Model.Class.ClassAbilities.Count > 0)
+    {
         <p>
             As a typical @Model.Class.Name, @Model.Name has the following abilities:
             <ul>
@@ -104,6 +113,7 @@
                 }
             </ul>
         </p>
-    </div>
+    }
+</div>
 <div id="portrait" class="col-sm-6">Loading...</div>
 

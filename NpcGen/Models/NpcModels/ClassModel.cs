@@ -35,5 +35,9 @@ namespace NpcGen.Models.NpcModels
         public virtual ICollection<ClassAbilityModel> ClassAbilities { get; set; }
 
         public string Possessions { get; set; }
+
+        public int PassivePerception { get; set; }
+
+        public int Xp { get; set; }
     }
 }
