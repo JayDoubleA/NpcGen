@@ -5,46 +5,10 @@
     ViewBag.Title = "A random stranger approaches...";
 }
 @section HeadScripts{
-
-    <div class="col-sm-6">
-        @using (Html.BeginForm())
-        {
-            @Html.DropDownList("clsName", new SelectList(ViewBag.Classes), NpcGen.Constants.StringConstants.ClassesDdlDefault)
-
-            <ul class="list-unstyled checkbox-list">
-                <li>
-                    @Html.CheckBoxFor(model => model.Para.MoreStr)
-                    @Html.LabelFor(model => model.Para.MoreStr)
-                </li>
-                <li>
-                    @Html.CheckBoxFor(model => model.Para.MoreDex)
-                    @Html.LabelFor(model => model.Para.MoreDex)
-                </li>
-                <li>
-                    @Html.CheckBoxFor(model => model.Para.MoreCon)
-                    @Html.LabelFor(model => model.Para.MoreCon)
-                </li>
-                <li>
-                    @Html.CheckBoxFor(model => model.Para.MoreInt)
-                    @Html.LabelFor(model => model.Para.MoreInt)
-                </li>
-                <li>
-                    @Html.CheckBoxFor(model => model.Para.MoreWis)
-                    @Html.LabelFor(model => model.Para.MoreWis)
-                </li>
-                <li>
-                    @Html.CheckBoxFor(model => model.Para.MoreCha)
-                    @Html.LabelFor(model => model.Para.MoreCha)
-                </li>
-            </ul>
-
-            <input type="submit" value="Go" />
-        }
-
-        @if (ViewBag.HasNpc)
-        {
-            <script src="https://www.google.com/jsapi"></script>
-            <script type="text/javascript">
+    @if (ViewBag.HasNpc)
+    {
+        <script src="https://www.google.com/jsapi"></script>
+        <script type="text/javascript">
 
             google.load('search', '1');
 
@@ -92,86 +56,151 @@
             }
 
             google.setOnLoadCallback(OnLoad);
-            </script>
+        </script>
+    }
+}
+@section scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('[data-toggle=offcanvas]').click(function () {
+                $('.row-offcanvas').toggleClass('active');
+                $('.npc-container').toggleClass('col-sm-push-3');
+                
+            });
 
-            <h2>A random stranger approaches...</h2>
+            
+        });
+    </script>
+}
+<div class="row row-offcanvas row-offcanvas-left">
+    <!-- sidebar -->
+    <div class="col-xs-12 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
+        @using (Html.BeginForm())
+        {
+            @Html.DropDownList("clsName", new SelectList(ViewBag.Classes), NpcGen.Constants.StringConstants.ClassesDdlDefault, new { Class = "form-control" })
 
-            <p>@Model.Name is @Model.Demeanour.FirstOrDefault().Description.WithArticle() @(EnumExtensions.ToName(Model.Age).ToLower()) @Model.Class.Name, distinguished from others because @Model.Pers() @Model.Quirks.FirstOrDefault().Description.NotCap().Genderize(Model.Gender).</p>
+            <ul class="list-unstyled checkbox-list nav nav-stacked">
+                <li class="checkbox">
+                    @Html.CheckBoxFor(model => model.Para.MoreStr)
+                    @Html.LabelFor(model => model.Para.MoreStr)
+                </li>
+                <li class="checkbox">
+                    @Html.CheckBoxFor(model => model.Para.MoreDex)
+                    @Html.LabelFor(model => model.Para.MoreDex)
+                </li>
+                <li class="checkbox">
+                    @Html.CheckBoxFor(model => model.Para.MoreCon)
+                    @Html.LabelFor(model => model.Para.MoreCon)
+                </li>
+                <li class="checkbox">
+                    @Html.CheckBoxFor(model => model.Para.MoreInt)
+                    @Html.LabelFor(model => model.Para.MoreInt)
+                </li>
+                <li class="checkbox">
+                    @Html.CheckBoxFor(model => model.Para.MoreWis)
+                    @Html.LabelFor(model => model.Para.MoreWis)
+                </li>
+                <li class="checkbox">
+                    @Html.CheckBoxFor(model => model.Para.MoreCha)
+                    @Html.LabelFor(model => model.Para.MoreCha)
+                </li>
+            </ul>
+            <div class="options">
+                <input class="form-control" type="submit" value="Generate an npc" />
+                <input class="form-control hidden-xs" type="button" data-toggle="offcanvas" data-target=".sidebar-nav" value="Advanced Options" />
+            </div>
+        }
+    </div>
 
-            <p>@Model.Pers(true) has @Model.Appearance.GeneralAppearance.ElementAt(0).Feature.ToLower() and @Model.Appearance.GeneralAppearance.ElementAt(1).Feature.ToLower().</p>
 
-    <ul class="statblock list-unstyled">
-        <li class="stat"><span class="stat">Strength</span> @Model.Class.Strength</li>
-        <li class="stat"><span class="stat">Dexterity</span> @Model.Class.Dexterity</li>
-        <li class="stat"><span class="stat">Constitution</span> @Model.Class.Constitution</li>
-        <li class="stat"><span class="stat">Intelligence</span> @Model.Class.Intelligence</li>
-        <li class="stat"><span class="stat">Wisdom</span> @Model.Class.Wisdom</li>
-        <li class="stat"><span class="stat">Charisma</span> @Model.Class.Charisma</li>
-</ul>
 
-            @*<p class="statblock">
-        
-    </p>*@
-            @*<br class="clearfix" />*@
 
-            if (Model.ClassSaves.Count > 0)
-            {
-                <p>
-                    @Model.Poss(true) strong saves are
-                    @{ var index = 0; }
-                    @foreach (var sv in Model.ClassSaves)
-                    {
-                        if (index > 0)
-                        {
-                            <text>, </text>
-                        }
-                        <b>@sv.Name.Replace(" Save", string.Empty)</b> <text>:</text> @Model.Class.ProficientSkillScoreStringGet(sv)
-                        index++;
-                    }.
-                </p>
-            }
-            <p>
-                @Model.Name is skilled in
-                @if (Model.ClassSkills.Count > 0)
-                {
-                    foreach (var prof in Model.ClassSkills)
-                    {
-                        <b>@prof.Name</b> <text>(</text>@prof.Stat <text>:</text> @Model.Class.ProficientSkillScoreStringGet(prof)<text>)</text><text>,</text>
-                    }
-                    <text> and curiously enough, also in </text>
-                }
-                <b>@Model.CustomProficiencies.FirstOrDefault().Name</b> (@Model.CustomProficiencies.FirstOrDefault().Stat : @Model.Class.ProficientSkillScoreStringGet(Model.CustomProficiencies.FirstOrDefault())<text>)</text>
-            </p>
-            <p>
-                @Model.Name has the following attacks:
-                <ul>
-                    @foreach (var at in Model.Class.Attacks)
-                    {
-                        <li>@at.Name (+@at.ToHit.ToString() - @string.Format("{0} {1}", at.Damage, Model.Class.AbilityModifierGet(at.Ability).AbilityModStringGet()))</li>
-                    }
+    <div class="npc-container col-xs-12 col-sm-9 col-sm-push-3">
+        @if (ViewBag.HasNpc)
+        {
+            <div class="col-sm-6">
+
+                <h2>A random stranger approaches...</h2>
+
+                <p>@Model.Name is @Model.Demeanour.FirstOrDefault().Description.WithArticle() @(EnumExtensions.ToName(Model.Age).ToLower()) @Model.Class.Name, distinguished from others because @Model.Pers() @Model.Quirks.FirstOrDefault().Description.NotCap().Genderize(Model.Gender).</p>
+
+                <p>@Model.Pers(true) has @Model.Appearance.GeneralAppearance.ElementAt(0).Feature.ToLower() and @Model.Appearance.GeneralAppearance.ElementAt(1).Feature.ToLower().</p>
+
+                <ul class="statblock list-unstyled">
+                    <li class="stat"><span class="stat">Strength</span><span class="statValue"> @Model.Class.Strength </span></li>
+                    <li class="stat"><span class="stat">Dexterity</span> <span class="statValue">@Model.Class.Dexterity</span></li>
+                    <li class="stat"><span class="stat">Constitution</span> <span class="statValue">@Model.Class.Constitution</span></li>
+                    <li class="stat"><span class="stat">Intelligence</span><span class="statValue"> @Model.Class.Intelligence</span></li>
+                    <li class="stat"><span class="stat">Wisdom</span> <span class="statValue">@Model.Class.Wisdom</span></li>
+                    <li class="stat"><span class="stat">Charisma</span><span class="statValue"> @Model.Class.Charisma</span></li>
                 </ul>
-            </p>
-            if (Model.Class.ClassAbilities.Count > 0)
-            {
-                <p>
-                    As a typical @Model.Class.Name, @Model.Name has the following abilities:
-                    <ul>
-                        @foreach (var ab in Model.Class.ClassAbilities)
+
+                @*<p class="statblock">
+
+                    </p>*@
+                @*<br class="clearfix" />*@
+
+                @if (Model.ClassSaves.Count > 0)
+                {
+                    <p>
+                        @Model.Poss(true) strong saves are
+                        @{ var index = 0; }
+                        @foreach (var sv in Model.ClassSaves)
                         {
-                            <li><b>@ab.Name</b> <br />@ab.Description</li>
+                            if (index > 0)
+                            {
+                                <text>, </text>
+                            }
+                            <b>@sv.Name.Replace(" Save", string.Empty)</b> <text>:</text> @Model.Class.ProficientSkillScoreStringGet(sv)
+                            index++;
+                        }.
+                    </p>
+                }
+                <p>
+                    @Model.Name is skilled in
+                    @if (Model.ClassSkills.Count > 0)
+                    {
+                        foreach (var prof in Model.ClassSkills)
+                        {
+                            <b>@prof.Name</b>
+                            <text>(</text>
+                            @prof.Stat
+                            <text>:</text>
+                            @Model.Class.ProficientSkillScoreStringGet(prof);
+                        <text>),</text>
+                        }
+                        <text> and curiously enough, also in </text>
+                    }
+                    <b>@Model.CustomProficiencies.FirstOrDefault().Name</b> (@Model.CustomProficiencies.FirstOrDefault().Stat : @Model.Class.ProficientSkillScoreStringGet(Model.CustomProficiencies.FirstOrDefault())<text>)</text>
+                </p>
+                <p>
+                    @Model.Name has the following attacks:
+                    <ul>
+                        @foreach (var at in Model.Class.Attacks)
+                        {
+                            <li>@at.Name (+@at.ToHit.ToString() - @string.Format("{0} {1}", at.Damage, Model.Class.AbilityModifierGet(at.Ability).AbilityModStringGet()))</li>
                         }
                     </ul>
                 </p>
-            }
-            <p>
-                @Model.Poss(true) Armour Class = @Model.Class.ArmourClass() <br />
-                @Model.Poss(true) Passive Perception = @Model.Class.PassivePerception()
-            </p>
+                @if (Model.Class.ClassAbilities.Count > 0)
+                {
+                    <p>
+                        As a typical @Model.Class.Name, @Model.Name has the following abilities:
+                        <ul>
+                            @foreach (var ab in Model.Class.ClassAbilities)
+                            {
+                                <li><b>@ab.Name</b> <br />@ab.Description</li>
+                            }
+                        </ul>
+                    </p>
+                }
+                <p>
+                    @Model.Poss(true) Armour Class = @Model.Class.ArmourClass() <br />
+                    @Model.Poss(true) Passive Perception = @Model.Class.PassivePerception()
+                </p>
+            </div>
+
+            <div id="portrait" class="col-sm-6">Loading...</div>
         }
     </div>
-    @if (ViewBag.HasNpc)
-    {
-        <div id="portrait" class="col-sm-6">Loading...</div>
-    }
-}
-
+</div>
