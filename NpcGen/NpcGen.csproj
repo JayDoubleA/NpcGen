@@ -909,6 +909,7 @@
     <Content Include="Scripts\angular.min.js.map" />
     <Content Include="App.config" />
     <Content Include="Views\Import\Index.cshtml" />
+    <Content Include="Views\Home\ViewPage1.cshtml" />
     <None Include="_bin_deployableAssemblies\x86\sqlcese40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceqp40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceme40.dll" />

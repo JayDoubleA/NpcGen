@@ -30,7 +30,7 @@ namespace NpcGen.Controllers
         public ActionResult Index(NpcModel model, string clsName)
         {
             var helper = new NpcGenHelper(_context);
-            model = clsName.NotNullOrEmpty() ? helper.NpcGet(clsName, model) : helper.RandomNpcGet();
+            model = clsName.NotNullOrEmpty() ? helper.NpcGet(clsName, model) : helper.RandomNpcGet(model);
 
             ViewBag.Classes = _context.Classes.Select(x => x.Name);
             ViewBag.HasNpc = true;

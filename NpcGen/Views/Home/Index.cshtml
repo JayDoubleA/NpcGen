@@ -73,9 +73,11 @@
         });
     </script>
 }
-<div class="row row-offcanvas row-offcanvas-left">
+@*<div class="row row-offcanvas row-offcanvas-left">*@
+<div>
     <!-- sidebar -->
-    <div class="col-xs-12 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
+    @*<div class="col-xs-12 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">*@
+    <div>
         @using (Html.BeginForm())
         {
             <p class="row">
@@ -149,7 +151,7 @@
                     </p>*@
                 @*<br class="clearfix" />*@
 
-                if (Model.ClassSaves.Count > 0)
+                @if (Model.ClassSaves.Count > 0)
                 {
                 <p>
                     @Model.Poss(true) strong saves are
@@ -192,7 +194,7 @@
                         }
                     </ul>
                 </p>
-                if (Model.Class.ClassAbilities.Count > 0)
+                @if (Model.Class.ClassAbilities.Count > 0)
                 {
                 <p>
                     As a typical @Model.Class.Name, @Model.Name has the following abilities:

@@ -23,9 +23,10 @@ namespace NpcGen.ControllerHelpers
             _rnd = new Random();
         }
 
-        public NpcModel RandomNpcGet()
+        public NpcModel RandomNpcGet(NpcModel para)
         {
             var npc = new NpcModel();
+            npc.Para = para.Para ?? new NpcGenParamsModel();
 
             GetNpcClass(npc);
             SplitClassProficiencies(npc);
