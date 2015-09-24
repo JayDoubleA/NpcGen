@@ -3,7 +3,6 @@
 
     var imageSearch;
 
-
     function searchComplete() {
 
         if (imageSearch.results && imageSearch.results.length > 0) {
@@ -13,18 +12,21 @@
 
             var results = imageSearch.results;
 
-            var result = results[getRandomInt(0, imageSearch.results.length)];
-            var imgContainer = document.createElement('div');
+            for (var i = 0; i < results.length; i++) {
+                var imgContainer = document.createElement('div');
+                imgContainer.className = "col-sm-6";
 
-            var newImg = document.createElement('img');
+                var newImg = document.createElement('img');
 
-            newImg.src = result.url;
-            imgContainer.appendChild(newImg);
-            newImg.className = "resize";
-
-            contentDiv.appendChild(imgContainer);
-
-
+                newImg.src = results[i].url;
+                imgContainer.appendChild(newImg);
+                newImg.className = "resize";
+                contentDiv.appendChild(imgContainer);
+                newImg.onclick = function () {
+                    contentDiv.innerHTML = '';
+                    contentDiv.appendChild(imgContainer);
+                };
+            }
         }
     }
 
