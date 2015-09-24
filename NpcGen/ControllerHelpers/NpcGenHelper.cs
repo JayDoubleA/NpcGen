@@ -80,9 +80,17 @@ namespace NpcGen.ControllerHelpers
                 var feature2 = EnumExtensions.ToName(EnumExtensions.Of<FacialFeature>());
                 if (!feature1.Substring(0, 1).Equals(feature2.Substring(0, 1)))
                 {
-                    app.FacialFeatures = string.Format("{0} and {1}", feature1, feature2);
+                    app.FacialFeatures = string.Format("{0}, {1}", feature1, feature2);
                 }
             }
+
+            app.AppearanceSearchString = string.Format(
+                "{0}  \"{1} eyes\" {2} {3} hair",
+                app.FacialFeatures.Replace("{pos", npc.Poss()),
+                app.EyeColour,
+                app.HairColor,
+                app.HairStyle
+                );
 
             npc.Appearance = app;
         }

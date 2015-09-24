@@ -33,13 +33,13 @@ namespace NpcGen.Helpers
             var paragraph = new TagBuilder("p")
             {
                 InnerHtml = string.Format(
-                    "{0} face is defined by {1} {2}, with {3} eyes. {0} hair is {4} and {5}.",
+                    "{0} face is defined by {1} {2} and {3} eyes. {0} hair is {4} and {5}.",
                     model.Poss(true),
                     model.Poss(),
-                    model.Appearance.FacialFeatures.Replace("{pos", model.Poss()),
-                    model.Appearance.EyeColour,
-                    model.Appearance.HairColor,
-                    model.Appearance.HairStyle
+                    model.Appearance.FacialFeatures.Replace("{pos", model.Poss()).ToLower(),
+                    model.Appearance.EyeColour.ToLower(),
+                    model.Appearance.HairColor.ToLower(),
+                    model.Appearance.HairStyle.ToLower()
                     )
             };
 

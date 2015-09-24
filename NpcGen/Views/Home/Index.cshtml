@@ -12,7 +12,7 @@
         <script src="https://www.google.com/jsapi"></script>
         <script type="text/javascript" src="~/Scripts/PortraitCreator.js"></script>
         <script type="text/javascript">
-            initPortrait("npc portraits @EnumExtensions.ToName(Model.Gender) with @Model.Appearance.GeneralAppearance.ElementAt(1).Feature @EnumExtensions.ToName(Model.Age)");
+            initPortrait("npc portraits @EnumExtensions.ToName(Model.Gender) with @Model.Appearance.AppearanceSearchString @EnumExtensions.ToName(Model.Age)");
         </script>
     }
 }

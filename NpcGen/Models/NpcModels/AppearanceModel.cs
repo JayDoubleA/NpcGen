@@ -10,5 +10,7 @@ namespace NpcGen.Models.NpcModels
         public string HairStyle { get; set; }
         public string EyeColour { get; set; }
         public string FacialFeatures { get; set; }
+
+        public string AppearanceSearchString { get; set; }
     }
 }
