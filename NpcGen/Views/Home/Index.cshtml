@@ -22,29 +22,26 @@
             $('[data-toggle=offcanvas]').click(function () {
                 $('.row-offcanvas').toggleClass('active');
                 $('.npc-container').toggleClass('col-sm-push-3');
-
             });
-
-
         });
     </script>
 }
-@*<div class="row row-offcanvas row-offcanvas-left">*@
-<div>
+<div class="row row-offcanvas row-offcanvas-left">
+
     <!-- sidebar -->
-    @*<div class="col-xs-12 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">*@
-    <div>
+    <div class="col-xs-12 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
+
         @using (Html.BeginForm())
         {
-            <p class="row">
+            <p>
                 <label for="clsName">Pick a starting template</label><br />
                 @Html.DropDownList("clsName", new SelectList(ViewBag.Classes), NpcGen.Constants.StringConstants.ClassesDdlDefault)
             </p>
-            <p class="row">
+            <p>
                 @Html.LabelFor(model => model.Para.ExperienceLevel)<br />
                 @Html.DropDownListFor(model => model.Para.ExperienceLevel, Model.Para.ExperienceLevel.ToSelectList())
             </p>
-            <p class="row">
+            <p>
                 <strong>Select a stat buff</strong>
                 <ul class="list-unstyled checkbox-list">
                     <li class="checkbox" title="Gives a 4 point boost to Strength, gives a random Strength based proficiency and proficiency in Strength Save">
@@ -74,7 +71,10 @@
                 </ul>
             </p>
 
-            <input type="submit" value="Go" />
+            <div class="options">
+                <input class="form-control" type="submit" value="Generate an npc" />
+                <input class="form-control hidden-xs" type="button" data-toggle="offcanvas" data-target=".sidebar-nav" value="Advanced Options" />
+            </div>
         }
     </div>
 

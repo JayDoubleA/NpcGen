@@ -8,10 +8,10 @@ namespace NpcGen
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
-                            "~/Scripts/jquery-{version}.js"));
+                            "~/Scripts/Vendor/jquery-{version}.js"));
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
-                     "~/Scripts/bootstrap.js",
-                     "~/Scripts/respond.js"));
+                     "~/Scripts/Vendor/bootstrap.js",
+                     "~/Scripts/Vendor/respond.js"));
         }
     }
 }

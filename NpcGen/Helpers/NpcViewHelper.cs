@@ -68,14 +68,14 @@ namespace NpcGen.Helpers
                     TagBuilder bold = new TagBuilder("b");
                     bold.InnerHtml = prof.Name;
                     paragraph.InnerHtml += bold.ToString();
-                    paragraph.InnerHtml += string.Format(" ({0} : {1})", prof.Stat, model.Class.ProficientSkillScoreStringGet(prof));
+                    paragraph.InnerHtml += string.Format(" ({0} : {1})", prof.Ability, model.Class.ProficientSkillScoreStringGet(prof));
                     paragraph.InnerHtml += ",";
                 }
                 TagBuilder otherBold = new TagBuilder("b");
                 otherBold.InnerHtml = model.CustomProficiencies.FirstOrDefault().Name;
                 paragraph.InnerHtml += string.Format("and curiously enough, also in {0} ({1} : {2})",
                     otherBold,
-                    model.CustomProficiencies.FirstOrDefault().Stat,
+                    model.CustomProficiencies.FirstOrDefault().Ability,
                     model.Class.ProficientSkillScoreStringGet(model.CustomProficiencies.FirstOrDefault())
                     );
             }
@@ -85,7 +85,7 @@ namespace NpcGen.Helpers
                 otherBold.InnerHtml = model.CustomProficiencies.FirstOrDefault().Name;
                 paragraph.InnerHtml += string.Format("{0} ({1} : {2})",
                     otherBold,
-                    model.CustomProficiencies.FirstOrDefault().Stat,
+                    model.CustomProficiencies.FirstOrDefault().Ability,
                     model.Class.ProficientSkillScoreStringGet(model.CustomProficiencies.FirstOrDefault())
                     );
             }
