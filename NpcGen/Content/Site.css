@@ -1,5 +1,5 @@
 ﻿body {
-    padding-top: 50px;
+    padding-top: 70px;
     padding-bottom: 20px;
 }
 
@@ -7,6 +7,13 @@
 .body-content {
     padding-left: 15px;
     padding-right: 15px;
+}
+
+/* make footser stay at the bottom of the page */
+
+footer {
+    position: absolute;
+    bottom: 0;
 }
 
 /* Set width on the form input elements since they're 100% wide by default */
@@ -32,26 +39,74 @@ textarea {
     width: 49%;
 }
 
-img.resize{
+img.resize {
     max-height: 300px;
-    width:auto;
+    width: auto;
 }
 
-ul.checkbox-list{
+ul.checkbox-list {
     margin: 8px;
 }
 
-ul.checkbox-list li{
-    margin-top: -6px;
-    font-weight: normal;
-}
+    ul.checkbox-list li {
+        margin-top: -6px;
+        font-weight: normal;
+    }
 
-li.stat span.stat{
-    float:left;
+
+li.stat span.stat {
+    float: left;
     width: 15%;
     font-style: italic !important;
 }
 
+
 div.padme{
     padding: 8px;
 }
+
+li.stat span.statValue {
+    padding: 50px;
+}
+@media(min-width: 768px) {
+    .row-offcanvas {
+        position: relative;
+        -webkit-transition: all 0.25s ease-out;
+        -moz-transition: all 0.25s ease-out;
+        -o-transition: all 0.25s ease-out;
+        transition: all 0.25s ease-out;
+    }
+
+    .row-offcanvas-right .sidebar-offcanvas {
+        right: -25%;
+    }
+
+    .row-offcanvas-left .sidebar-offcanvas {
+        left: -25%;
+    }
+
+    .row-offcanvas-right.active {
+        right: 25%;
+    }
+
+    .row-offcanvas-left.active {
+        left: 25%;
+    }
+
+    .sidebar-offcanvas {
+        position: absolute;
+        top: 0;
+        width: 25%;
+    }
+
+    .options {
+        position: relative;
+        margin-left: 112%;
+        width: 100%;
+    }
+
+    .active .options {
+        margin-left: 5%;
+    }
+}
+>>>>>>> origin/master
