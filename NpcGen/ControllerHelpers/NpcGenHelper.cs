@@ -7,6 +7,8 @@ using NpcGen.DataAccess;
 using NpcGen.Extensions;
 using NpcGen.Models.NpcModels;
 using NpcGen.Models.NpcModels.NpcModels;
+using System.Reflection;
+using NpcGen.Enums;
 
 namespace NpcGen.ControllerHelpers
 {
@@ -33,6 +35,7 @@ namespace NpcGen.ControllerHelpers
             GetQuirks(npc);
             GetDemeanour(npc);
             GetAppearance(npc);
+            NpcParamsProcess(npc);
 
             return npc;
         }
@@ -111,6 +114,14 @@ namespace NpcGen.ControllerHelpers
             npc.CustomProficiencies.Add(profCustom);
         }
 
+        private void AddCustomProficiency(NpcModel npc, Abilities abil)
+        {
+            var profPoss = _context.Proficiencies.ToList().Where(p => !npc.Class.Proficiencies.Contains(p) && !npc.CustomProficiencies.Contains(p) && p.Type != ProficiencyTypes.Save && p.Ability.Equals(abil));
+            var profRnd = _rnd.Next(0, profPoss.Count());
+            var profCustom = profPoss.ToList()[profRnd];
+            npc.CustomProficiencies.Add(profCustom);
+        }
+
         private void AddSpecificProficiency(NpcModel npc, Proficiencies prof)
         {
             if (!npc.Class.Proficiencies.Any(p => p.ProficiencyId.Equals(prof)) && !npc.CustomProficiencies.Any(r => r.ProficiencyId.Equals(prof)))
@@ -131,8 +142,8 @@ namespace NpcGen.ControllerHelpers
                 if (profMod != null)
                 {
                     if (profMod.Type.Equals(ProficiencyTypes.Save))
-                    {
-                        npc.Class.Proficiencies.Add(profMod);
+                    {                        
+                        npc.ClassSaves.Add(profMod);
                     }
                     else
                     {
@@ -198,17 +209,51 @@ namespace NpcGen.ControllerHelpers
             npc.Name = namesPoss.Skip(_rnd.Next(0, namesPoss.Count())).Take(1).FirstOrDefault();
         }
 
+       
+
         public void NpcParamsProcess(NpcModel npc)
+        {
+            ExperienceLevelProcess(npc);
+            StatBuffsProcess(npc);
+            AbilityCeilingEnforce(npc);
+            ParamProcessWrapUp(npc);
+        }
+
+        private void ExperienceLevelProcess(NpcModel npc)
+        {
+            switch (npc.Para.ExperienceLevel)
+            {
+                case ExperienceLevel.Novice:
+                    LevelTweak(npc, -4);
+                    break;
+                case ExperienceLevel.Apprentice:
+                    LevelTweak(npc, -2);
+                    break;
+                case ExperienceLevel.Journeyman: 
+                    break;
+                case ExperienceLevel.Expert:
+                    LevelTweak(npc, 2);
+                    break;
+                case ExperienceLevel.Master:
+                    LevelTweak(npc, 4);
+                    RandomAbilityTweak(npc, 2);
+                    break;
+            }
+        }
+
+        private void StatBuffsProcess(NpcModel npc)
         {
             if (npc.Para.MoreStr)
             {
                 npc.Class.Strength += 4;
                 AddSpecificProficiency(npc, Proficiencies.StrengthSave);
+                AddCustomProficiency(npc, Abilities.Strength);
             }
             if (npc.Para.MoreDex)
             {
                 npc.Class.Dexterity += 4;
                 AddSpecificProficiency(npc, Proficiencies.DexteritySave);
+                AddCustomProficiency(npc, Abilities.Dexterity);
             }
             if (npc.Para.MoreCon)
             {
@@ -220,17 +265,70 @@ namespace NpcGen.ControllerHelpers
             {
                 npc.Class.Intelligence += 4;
                 AddSpecificProficiency(npc, Proficiencies.IntelligenceSave);
-                AddCustomProficiency(npc);
+                AddCustomProficiency(npc, Abilities.Intelligence);
             }
             if (npc.Para.MoreWis)
             {
                 npc.Class.Wisdom += 4;
                 AddSpecificProficiency(npc, Proficiencies.WisdomSave);
+                AddCustomProficiency(npc, Abilities.Wisdom);
             }
             if (npc.Para.MoreCha)
             {
                 npc.Class.Charisma += 4;
                 AddSpecificProficiency(npc, Proficiencies.CharismaSave);
+                AddCustomProficiency(npc, Abilities.Charisma);
+            }
+        }
+
+        private void LevelTweak(NpcModel npc, int tweak)
+        {
+            var tweakedLevel = npc.Class.Level + tweak;
+
+            if (tweakedLevel < 1)
+            {
+                npc.Class.Level = 1;
+                RandomAbilityTweak(npc, -2);
+            }
+            else
+            {
+                npc.Class.Level = tweakedLevel;
+            }
+        }
+
+        private void RandomAbilityTweak(NpcModel npc, int change)
+        {
+            var abil = EnumHelper.RandomEnumValue<Abilities>().ToString();
+            var type = npc.Class.GetType();
+            var properties = type.GetProperties();
+
+            var prop = properties.FirstOrDefault(p => p.Name.Equals(abil));
+            if (prop != null)
+            {
+                var val = (int)prop.GetValue(npc.Class, null);
+                prop.SetValue(npc.Class, val + change);
+            }
+        }
+
+        private void AbilityCeilingEnforce(NpcModel npc)
+        {
+            npc.Class.Strength = npc.Class.Strength > 20 ? 20 : npc.Class.Strength;
+            npc.Class.Dexterity = npc.Class.Dexterity > 20 ? 20 : npc.Class.Dexterity;
+            npc.Class.Constitution = npc.Class.Constitution > 20 ? 20 : npc.Class.Constitution;
+            npc.Class.Intelligence = npc.Class.Intelligence > 20 ? 20 : npc.Class.Intelligence;
+            npc.Class.Wisdom = npc.Class.Wisdom > 20 ? 20 : npc.Class.Wisdom;
+            npc.Class.Charisma = npc.Class.Charisma > 20 ? 20 : npc.Class.Charisma;
+        }
+
+        private void ParamProcessWrapUp(NpcModel npc)
+        {
+            if (npc.Para.MoreCon)
+            {
+                npc.Class.HitPoints = npc.Class.HitPointsMaxGet();
+            }
+            else
+            {
+                npc.Class.HitPoints = npc.Class.HitPointsAverageGet();
             }
         }
 

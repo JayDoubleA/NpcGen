@@ -46,9 +46,12 @@ ul.checkbox-list li{
     font-weight: normal;
 }
 
-
 li.stat span.stat{
     float:left;
     width: 15%;
     font-style: italic !important;
+}
+
+div.padme{
+    padding: 8px;
 }

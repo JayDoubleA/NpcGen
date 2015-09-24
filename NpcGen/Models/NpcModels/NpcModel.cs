@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using NpcGen.Models.NpcModels.NpcModels;
 using System.ComponentModel;
+using NpcGen.Enums;
 
 namespace NpcGen.Models.NpcModels
 {

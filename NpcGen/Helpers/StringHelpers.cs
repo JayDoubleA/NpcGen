@@ -19,7 +19,7 @@ namespace NpcGen.Helpers
                 return mod.ToString();
             }
 
-            return string.Empty;
+            return "+0";
         }
     }
 }

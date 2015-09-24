@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using NpcGen.Models.NpcModels;
+using NpcGen.Enums;
 
 namespace NpcGen.Constants
 {
@@ -72,7 +73,7 @@ namespace NpcGen.Constants
 
         public static ProficiencyModel ProficiencyGet(Proficiencies id, string name, Abilities stat, ProficiencyTypes type)
         {
-            return new ProficiencyModel { ProficiencyId = id, Name = name, Stat = stat, Type = type };
+            return new ProficiencyModel { ProficiencyId = id, Name = name, Ability = stat, Type = type };
         }
     }
 }

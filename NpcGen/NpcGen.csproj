@@ -959,6 +959,7 @@
     <Compile Include="Constants\ProficiencyDefinitions.cs" />
     <Compile Include="Constants\QuirkDefinitions.cs" />
     <Compile Include="Constants\StringConstants.cs" />
+    <Compile Include="ControllerHelpers\EnumHelper.cs" />
     <Compile Include="ControllerHelpers\ImportHelper.cs" />
     <Compile Include="ControllerHelpers\NpcGenHelper.cs" />
     <Compile Include="Controllers\HomeController.cs" />

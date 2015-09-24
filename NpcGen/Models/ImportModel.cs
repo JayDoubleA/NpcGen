@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using NpcGen.Models.NpcModels;
+using NpcGen.Enums;
 
 namespace NpcGen.Models
 {

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NpcGen.Enums;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -27,5 +28,8 @@ namespace NpcGen.Models.NpcModels
 
         [DisplayName("Inner fire")]
         public bool MoreCha { get; set; }
+
+        [DisplayName("Experience Level")]
+        public ExperienceLevel ExperienceLevel { get; set; }
     }
 }

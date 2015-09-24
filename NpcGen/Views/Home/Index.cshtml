@@ -1,4 +1,5 @@
 ﻿@using NpcGen.Extensions;
+@using NpcGen.Enums;
 @model  NpcGen.Models.NpcModels.NpcModel
 
 @{
@@ -7,39 +8,50 @@
 @section HeadScripts{
 
     <div class="col-sm-6">
-        @using (Html.BeginForm())
-        {
-            @Html.DropDownList("clsName", new SelectList(ViewBag.Classes), NpcGen.Constants.StringConstants.ClassesDdlDefault)
+        <div class="padme" id="amidala">
+            @using (Html.BeginForm())
+            {
+                <p class="row">
+                    <label for="clsName">Pick a starting template</label><br />
+                    @Html.DropDownList("clsName", new SelectList(ViewBag.Classes), NpcGen.Constants.StringConstants.ClassesDdlDefault)
+                </p>
+                <p class="row">
+                    @Html.LabelFor(model => model.Para.ExperienceLevel)<br />
+                    @Html.DropDownListFor(model => model.Para.ExperienceLevel, Model.Para.ExperienceLevel.ToSelectList())
+                </p>
+                <p class="row">
+                    <strong>Select a stat buff</strong>
+                    <ul class="list-unstyled checkbox-list">
+                        <li title="Gives a 4point boost to Strength, gives a random Strength based proficiency and proficiency in Strength Save">
+                            @Html.CheckBoxFor(model => model.Para.MoreStr)
+                            @Html.LabelFor(model => model.Para.MoreStr)
+                        </li>
+                        <li title="Gives a 4point boost to Dexterity, gives a random Dexterity based proficiency and proficiency in Dexterity Save">
+                            @Html.CheckBoxFor(model => model.Para.MoreDex)
+                            @Html.LabelFor(model => model.Para.MoreDex)
+                        </li>
+                        <li title="Gives a 4point boost to Constitution, proficiency in Constitution Save and sets Hit Points to maximum">
+                            @Html.CheckBoxFor(model => model.Para.MoreCon)
+                            @Html.LabelFor(model => model.Para.MoreCon)
+                        </li>
+                        <li title="Gives a 4point boost to Intelligence, gives a random Intelligence based proficiency and proficiency in Intelligence Save">
+                            @Html.CheckBoxFor(model => model.Para.MoreInt)
+                            @Html.LabelFor(model => model.Para.MoreInt)
+                        </li>
+                        <li title="Gives a 4point boost to Wisdom, gives a random Wisdom based proficiency and proficiency in Wisdom Save">
+                            @Html.CheckBoxFor(model => model.Para.MoreWis)
+                            @Html.LabelFor(model => model.Para.MoreWis)
+                        </li>
+                        <li title="Gives a 4point boost to Charisma, gives a random Charisma based proficiency and proficiency in Charisma Save">
+                            @Html.CheckBoxFor(model => model.Para.MoreCha)
+                            @Html.LabelFor(model => model.Para.MoreCha)
+                        </li>
+                    </ul>
+                </p>
 
-            <ul class="list-unstyled checkbox-list">
-                <li>
-                    @Html.CheckBoxFor(model => model.Para.MoreStr)
-                    @Html.LabelFor(model => model.Para.MoreStr)
-                </li>
-                <li>
-                    @Html.CheckBoxFor(model => model.Para.MoreDex)
-                    @Html.LabelFor(model => model.Para.MoreDex)
-                </li>
-                <li>
-                    @Html.CheckBoxFor(model => model.Para.MoreCon)
-                    @Html.LabelFor(model => model.Para.MoreCon)
-                </li>
-                <li>
-                    @Html.CheckBoxFor(model => model.Para.MoreInt)
-                    @Html.LabelFor(model => model.Para.MoreInt)
-                </li>
-                <li>
-                    @Html.CheckBoxFor(model => model.Para.MoreWis)
-                    @Html.LabelFor(model => model.Para.MoreWis)
-                </li>
-                <li>
-                    @Html.CheckBoxFor(model => model.Para.MoreCha)
-                    @Html.LabelFor(model => model.Para.MoreCha)
-                </li>
-            </ul>
-
-            <input type="submit" value="Go" />
-        }
+                    <input type="submit" value="Go" />
+            }
+</div>
 
         @if (ViewBag.HasNpc)
         {
@@ -101,12 +113,12 @@
             <p>@Model.Pers(true) has @Model.Appearance.GeneralAppearance.ElementAt(0).Feature.ToLower() and @Model.Appearance.GeneralAppearance.ElementAt(1).Feature.ToLower().</p>
 
     <ul class="statblock list-unstyled">
-        <li class="stat"><span class="stat">Strength</span> @Model.Class.Strength</li>
-        <li class="stat"><span class="stat">Dexterity</span> @Model.Class.Dexterity</li>
-        <li class="stat"><span class="stat">Constitution</span> @Model.Class.Constitution</li>
-        <li class="stat"><span class="stat">Intelligence</span> @Model.Class.Intelligence</li>
-        <li class="stat"><span class="stat">Wisdom</span> @Model.Class.Wisdom</li>
-        <li class="stat"><span class="stat">Charisma</span> @Model.Class.Charisma</li>
+        <li class="stat"><span class="stat">Strength</span> @Model.Class.Strength (@Model.Class.AbilityModStringGet(Abilities.Strength))</li>
+        <li class="stat"><span class="stat">Dexterity</span> @Model.Class.Dexterity (@Model.Class.AbilityModStringGet(Abilities.Dexterity))</li>
+        <li class="stat"><span class="stat">Constitution</span> @Model.Class.Constitution (@Model.Class.AbilityModStringGet(Abilities.Constitution))</li>
+        <li class="stat"><span class="stat">Intelligence</span> @Model.Class.Intelligence (@Model.Class.AbilityModStringGet(Abilities.Intelligence))</li>
+        <li class="stat"><span class="stat">Wisdom</span> @Model.Class.Wisdom (@Model.Class.AbilityModStringGet(Abilities.Wisdom))</li>
+        <li class="stat"><span class="stat">Charisma</span> @Model.Class.Charisma (@Model.Class.AbilityModStringGet(Abilities.Charisma))</li>
 </ul>
 
             @*<p class="statblock">
@@ -136,18 +148,25 @@
                 {
                     foreach (var prof in Model.ClassSkills)
                     {
-                        <b>@prof.Name</b> <text>(</text>@prof.Stat <text>:</text> @Model.Class.ProficientSkillScoreStringGet(prof)<text>)</text><text>,</text>
+                        <b>@prof.Name</b> <text>(</text>@prof.Ability <text>:</text> @Model.Class.ProficientSkillScoreStringGet(prof)<text>)</text><text>,</text>
                     }
                     <text> and curiously enough, also in </text>
                 }
-                <b>@Model.CustomProficiencies.FirstOrDefault().Name</b> (@Model.CustomProficiencies.FirstOrDefault().Stat : @Model.Class.ProficientSkillScoreStringGet(Model.CustomProficiencies.FirstOrDefault())<text>)</text>
+                @*<b>@Model.CustomProficiencies.FirstOrDefault().Name</b> (@Model.CustomProficiencies.FirstOrDefault().Ability : @Model.Class.ProficientSkillScoreStringGet(Model.CustomProficiencies.FirstOrDefault())<text>)</text>*@
+                @if (Model.CustomProficiencies.Count > 0)
+                {
+                    foreach (var prof in Model.CustomProficiencies)
+                    {
+                        <b>@prof.Name</b> <text>(</text>@prof.Ability <text>:</text> @Model.Class.ProficientSkillScoreStringGet(prof)<text>)</text><text>,</text>
+                    }                    
+                }
             </p>
             <p>
                 @Model.Name has the following attacks:
                 <ul>
                     @foreach (var at in Model.Class.Attacks)
                     {
-                        <li>@at.Name (+@at.ToHit.ToString() - @string.Format("{0} {1}", at.Damage, Model.Class.AbilityModifierGet(at.Ability).AbilityModStringGet()))</li>
+                        <li>@at.Name (+@at.ToHit.ToString() - @string.Format("{0} {1}", at.Damage, Model.Class.AbilityModStringGet(at.Ability)))</li>
                     }
                 </ul>
             </p>
@@ -164,8 +183,10 @@
                 </p>
             }
             <p>
-                @Model.Poss(true) Armour Class = @Model.Class.ArmourClass() <br />
-                @Model.Poss(true) Passive Perception = @Model.Class.PassivePerception()
+                @Model.Poss(true) Armour Class = @Model.Class.ArmourClassGet() <br />
+                @Model.Poss(true) Hit Dice = @Model.Class.Level<br />
+                @Model.Poss(true) Hit Points = @Model.Class.HitPoints<br />
+                @Model.Poss(true) Passive Perception = @Model.Class.PassivePerceptionGet()
             </p>
         }
     </div>

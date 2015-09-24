@@ -1,4 +1,5 @@
 ﻿using NpcGen.Constants;
+using NpcGen.Enums;
 using NpcGen.Helpers;
 using NpcGen.Models.NpcModels;
 using System;
@@ -18,19 +19,22 @@ namespace NpcGen.Extensions
 
             int abilityBase = 10;
 
-            foreach (var prop in properties)
+            var prop = properties.FirstOrDefault(p => p.Name.Equals(abilityName));
+            if (prop != null)
             {
-                if (prop.Name.Equals(abilityName))
+                int test;
+                if (int.TryParse(prop.GetValue(cls, null).ToString(), out test))
                 {
-                    int test;
-                    if(int.TryParse(prop.GetValue(cls, null).ToString(), out test)){
-                        abilityBase = test;
-                        break;
-                    }                    
+                    abilityBase = test;
                 }
             }
 
             return LevelConstants.AbilityModifier(abilityBase);
+        }
+
+        public static string AbilityModStringGet(this ClassModel cls, Abilities ability)
+        {
+            return cls.AbilityModifierGet(ability).AbilityModStringGet();
         }
 
         public static string AbilityModStringGet(this int mod)
@@ -40,7 +44,7 @@ namespace NpcGen.Extensions
 
         public static int ProficientSkillScoreGet(this ClassModel cls, ProficiencyModel prof)
         {
-            var abilityMod = cls.AbilityModifierGet(prof.Stat);
+            var abilityMod = cls.AbilityModifierGet(prof.Ability);
             var proficiencyMod = LevelConstants.ProficiencyBonus(cls.Level);
 
             return abilityMod + proficiencyMod;
@@ -51,7 +55,7 @@ namespace NpcGen.Extensions
             return StringHelpers.ModStringGet(cls.ProficientSkillScoreGet(prof));
         }
 
-        public static int PassivePerception(this ClassModel cls)
+        public static int PassivePerceptionGet(this ClassModel cls)
         {
             var isProf = cls.Proficiencies.Any(x => x.Name.Equals(Proficiencies.Perception.ToString()));
             var abilityMod = cls.AbilityModifierGet(Abilities.Wisdom) ;
@@ -59,7 +63,7 @@ namespace NpcGen.Extensions
             return isProf ? 10 + abilityMod + cls.ProficencyBonus : 10 + abilityMod;
         }
 
-        public static int ArmourClass(this ClassModel cls)
+        public static int ArmourClassGet(this ClassModel cls)
         {
             return 10 + cls.BaseArmourClass + AbilityModifierGet(cls, Abilities.Dexterity);
         }

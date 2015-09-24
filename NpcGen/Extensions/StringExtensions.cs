@@ -1,4 +1,5 @@
-﻿using NpcGen.Models.NpcModels;
+﻿using NpcGen.Enums;
+using NpcGen.Models.NpcModels;
 namespace NpcGen.Extensions
 {
     public static class StringExtensions

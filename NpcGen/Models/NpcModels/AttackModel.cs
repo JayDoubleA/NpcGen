@@ -1,4 +1,5 @@
 ﻿using NpcGen.Constants;
+using NpcGen.Enums;
 using NpcGen.Extensions;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;

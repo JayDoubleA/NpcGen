@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Linq;
 using System.ComponentModel;
 using NpcGen.Interfaces;
+using System.Web.Mvc;
 
 namespace NpcGen.Extensions
 {
@@ -18,6 +20,14 @@ namespace NpcGen.Extensions
                     return ((DescriptionAttribute)attrs[0]).Description;
             }
             return en.ToString();
+        }        
+
+        public static SelectList ToSelectList<TEnum>(this TEnum enumObj)
+            where TEnum : struct, IComparable, IFormattable, IConvertible
+        {
+            var values = from TEnum e in Enum.GetValues(typeof(TEnum))
+                         select new { Id = e, Name = e.ToString() };
+            return new SelectList(values, "Id", "Name", enumObj);
         }
 
         public static R GetAttributeValue<T, R>(IConvertible @enum)

@@ -4,6 +4,7 @@ using NpcGen.ControllerHelpers;
 using NpcGen.DataAccess;
 using NpcGen.Models.NpcModels;
 using NpcGen.Extensions;
+using NpcGen.Enums;
 
 namespace NpcGen.Controllers
 {
@@ -17,7 +18,7 @@ namespace NpcGen.Controllers
             var helper = new NpcGenHelper(_context);
             //var model = helper.RandomNpcGet();
 
-            var model = new NpcModel { Para = new NpcGenParamsModel() };
+            var model = new NpcModel { Para = new NpcGenParamsModel { ExperienceLevel = ExperienceLevel.Journeyman } };
 
             ViewBag.Classes = _context.Classes.Select(x => x.Name);
             ViewBag.HasNpc = false;

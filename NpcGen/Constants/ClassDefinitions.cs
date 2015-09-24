@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using NpcGen.Models.NpcModels;
 using NpcGen.Extensions;
+using NpcGen.Enums;
 
 namespace NpcGen.Constants
 {

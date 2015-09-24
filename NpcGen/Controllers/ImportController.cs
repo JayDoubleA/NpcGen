@@ -7,6 +7,7 @@ using NpcGen.Constants;
 using NpcGen.ControllerHelpers;
 using NpcGen.Models;
 using NpcGen.Extensions;
+using NpcGen.Enums;
 
 namespace NpcGen.Controllers
 {
@@ -26,10 +27,10 @@ namespace NpcGen.Controllers
 
             switch (model.ImportType)
             {
-                case Models.NpcModels.ImportType.Abilities:
+                case ImportType.Abilities:
                     helper.ClassAbilityImport();
                     break;
-                case Models.NpcModels.ImportType.Classes:
+                case ImportType.Classes:
                     helper.ClassesImport();
                     break;
             }

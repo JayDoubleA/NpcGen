@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using NpcGen.Attributes;
 
-namespace NpcGen.Models.NpcModels
+namespace NpcGen.Enums
 {
     public enum Age
     {
@@ -73,5 +73,14 @@ namespace NpcGen.Models.NpcModels
         Classes,
         Abilities,
         Magics
+    }
+
+    public enum ExperienceLevel
+    {
+        Novice,
+        Apprentice,
+        Journeyman,
+        Expert,
+        Master
     }
 }

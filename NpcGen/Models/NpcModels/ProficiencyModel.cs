@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using NpcGen.Enums;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace NpcGen.Models.NpcModels
@@ -9,7 +10,7 @@ namespace NpcGen.Models.NpcModels
         [Key]
         public Proficiencies ProficiencyId { get; set; }
         public ProficiencyTypes Type { get; set; }
-        public Abilities Stat { get; set; }
+        public Abilities Ability { get; set; }
 
         public  virtual ICollection<ClassModel> Classes { get; set; }
     }

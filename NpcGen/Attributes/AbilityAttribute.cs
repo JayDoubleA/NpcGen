@@ -1,6 +1,7 @@
 ﻿using System;
 using NpcGen.Interfaces;
 using NpcGen.Models.NpcModels;
+using NpcGen.Enums;
 
 namespace NpcGen.Attributes
 {
