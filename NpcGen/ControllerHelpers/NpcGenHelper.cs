@@ -61,15 +61,30 @@ namespace NpcGen.ControllerHelpers
 
         private void GetAppearance(NpcModel npc)
         {
-            var ftrList = _context.GeneralAppearances.ToList();
+            var app = new AppearanceModel
+            {
+                EyeColour = EnumExtensions.ToName(EnumExtensions.Of<EyeColour>()),
+                HairColor = EnumExtensions.ToName(EnumExtensions.Of<HairColour>()),
+                HairStyle = EnumExtensions.ToName(EnumExtensions.Of<HairStyle>())
+            };
 
-            var eyes = ftrList.Where(f => f.Feature.IndexOf("eyes", StringComparison.OrdinalIgnoreCase) != -1);
-            var eyesRnd = _rnd.Next(eyes.Count());
-            var hair = ftrList.Where(f => f.Feature.IndexOf("hair", StringComparison.OrdinalIgnoreCase) != -1 || f.Feature.IndexOf("bald", StringComparison.OrdinalIgnoreCase) != -1);
-            var hairRnd = _rnd.Next(hair.Count());
-            var other = ftrList.Except(eyes).Except(hair).ToList();
-            var otherRnd = _rnd.Next(other.Count());
-            npc.Appearance = new AppearanceModel { GeneralAppearance = new List<GeneralAppearanceModel> { eyes.ElementAt(eyesRnd), hair.ElementAt(hairRnd), other.ElementAt(otherRnd) } };
+
+            //pick one or two facial features
+            var rnd = new Random(Environment.TickCount);
+            var count = rnd.Next(1, 3);
+            var feature1 = EnumExtensions.ToName(EnumExtensions.Of<FacialFeature>());
+            app.FacialFeatures =  feature1;
+            if (count > 1)
+            {
+                // if the second feature is a conflict, we just drop it
+                var feature2 = EnumExtensions.ToName(EnumExtensions.Of<FacialFeature>());
+                if (!feature1.Substring(0, 1).Equals(feature2.Substring(0, 1)))
+                {
+                    app.FacialFeatures = string.Format("{0} and {1}", feature1, feature2);
+                }
+            }
+
+            npc.Appearance = app;
         }
 
         private void GetDemeanour(NpcModel npc)

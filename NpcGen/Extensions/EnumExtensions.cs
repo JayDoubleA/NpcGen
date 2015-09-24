@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.ComponentModel;
+using System.Globalization;
 using NpcGen.Interfaces;
 using System.Web.Mvc;
 
@@ -8,9 +9,21 @@ namespace NpcGen.Extensions
 {
     public static class EnumExtensions
     {
+        public static T Of<T>()
+        {
+
+            if (!typeof (T).IsEnum)
+            {
+                throw new InvalidOperationException("Must use Enum type");
+            }
+            var random = new Random(Environment.TickCount);
+            var enumValues = Enum.GetValues(typeof(T));
+            return (T)enumValues.GetValue(random.Next(enumValues.Length));
+        }
+
         public static string ToName(Enum en)
         {
-            Type type = en.GetType();
+            var type = en.GetType();
 
             var memInfo = type.GetMember(en.ToString());
             if (memInfo.Length > 0)
@@ -26,17 +39,17 @@ namespace NpcGen.Extensions
             where TEnum : struct, IComparable, IFormattable, IConvertible
         {
             var values = from TEnum e in Enum.GetValues(typeof(TEnum))
-                         select new { Id = e, Name = e.ToString() };
+                         select new { Id = e, Name = e.ToString(CultureInfo.InvariantCulture) };
             return new SelectList(values, "Id", "Name", enumObj);
         }
 
-        public static R GetAttributeValue<T, R>(IConvertible @enum)
+        public static TR GetAttributeValue<T, TR>(IConvertible @enum)
         {
-            var attributeValue = default(R);
+            var attributeValue = default(TR);
 
             if (@enum != null)
             {
-                var fi = @enum.GetType().GetField(@enum.ToString());
+                var fi = @enum.GetType().GetField(@enum.ToString(CultureInfo.InvariantCulture));
 
                 if (fi != null)
                 {
@@ -44,7 +57,7 @@ namespace NpcGen.Extensions
 
                     if (attributes != null && attributes.Length > 0)
                     {
-                        var attribute = attributes[0] as IAttribute<R>;
+                        var attribute = attributes[0] as IAttribute<TR>;
 
                         if (attribute != null)
                         {

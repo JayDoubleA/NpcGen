@@ -968,6 +968,12 @@
     <Compile Include="Controllers\ImportController.cs" />
     <Compile Include="DataAccess\NpcContext.cs" />
     <Compile Include="DataAccess\NpcInitialiser.cs" />
+    <Compile Include="Enums\AbilityEnums.cs" />
+    <Compile Include="Enums\AgeGenderEnums.cs" />
+    <Compile Include="Enums\AppearanceEnums.cs" />
+    <Compile Include="Enums\ClassLevelEnums.cs" />
+    <Compile Include="Enums\ImportEnums.cs" />
+    <Compile Include="Enums\ProficiencyEnums.cs" />
     <Compile Include="Extensions\CharExtensions.cs" />
     <Compile Include="Extensions\ClassModelExtensions.cs" />
     <Compile Include="Extensions\EnumExtensions.cs" />
@@ -979,14 +985,13 @@
     <Compile Include="Interfaces\IAttribute.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ImportModel.cs" />
+    <Compile Include="Models\NpcModels\AppearanceModel.cs" />
     <Compile Include="Models\NpcModels\AttackModel.cs" />
     <Compile Include="Models\NpcModels\ClassAbilityModel.cs" />
     <Compile Include="Models\NpcModels\ClassModel.cs" />
-    <Compile Include="Models\Enums.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\NpcModels\AppearanceModel.cs" />
     <Compile Include="Models\NpcModels\DemeanourModel.cs" />
     <Compile Include="Models\NpcModels\MagicModel.cs" />
     <Compile Include="Models\NpcModels\NpcGenParamsModel.cs" />
