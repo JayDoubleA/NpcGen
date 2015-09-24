@@ -61,13 +61,14 @@ li.stat span.stat {
 }
 
 
-div.padme{
+div.padme {
     padding: 8px;
 }
 
 li.stat span.statValue {
     padding: 50px;
 }
+
 @media(min-width: 768px) {
     .row-offcanvas {
         position: relative;

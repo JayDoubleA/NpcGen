@@ -18,13 +18,15 @@
 
                 var newImg = document.createElement('img');
 
-                newImg.src = results[i].url;
+                newImg.src = results[i].tbUrl;
+                newImg.dataset.image = results[i].url;
                 imgContainer.appendChild(newImg);
                 newImg.className = "resize";
                 contentDiv.appendChild(imgContainer);
-                newImg.onclick = function () {
+                newImg.onclick = function (e) {
                     contentDiv.innerHTML = '';
                     contentDiv.appendChild(imgContainer);
+                    $('.resize').attr("src", e.target.dataset.image);
                 };
             }
         }
