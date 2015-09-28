@@ -54,6 +54,12 @@ namespace NpcGen.Migrations
             {
                 context.AppearanceFeatures.AddOrUpdate(r => r.Name, colour);
             }
+
+            var hairStyleList = AppearanceDefinitions.Hairstyles();
+            foreach (var style in hairStyleList)
+            {
+                context.AppearanceFeatures.AddOrUpdate(r => r.Name, style);
+            }
         }
     }
 }

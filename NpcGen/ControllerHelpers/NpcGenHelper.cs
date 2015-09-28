@@ -63,13 +63,15 @@ namespace NpcGen.ControllerHelpers
 
         private void GetAppearance(NpcModel npc)
         {
+            var hairCol = AppearanceFeatureGet(npc, AppearanceType.HairColour);
+            var hairStyle = AppearanceFeatureGet(npc, AppearanceType.HairStyle);
+            var hair = hairStyle.Description.Replace("{col}", hairCol.Description).Replace("{pos}", npc.Poss());
+
             var app = new AppearanceModel
             {
                 EyeColour = EnumExtensions.ToName(EnumExtensions.Of<EyeColour>()),
-                HairColor = HairColourGet(npc).Description, // EnumExtensions.ToName(EnumExtensions.Of<HairColour>()),
-                HairStyle = EnumExtensions.ToName(EnumExtensions.Of<HairStyle>())
+                Hair = hair
             };
-
 
             //pick one or two facial features
             var rnd = new Random(Environment.TickCount);
@@ -88,20 +90,19 @@ namespace NpcGen.ControllerHelpers
 
             app.AppearanceSearchString = string.Format(
                 "{0}  \"{1} eyes\" {2} {3} hair",
-                app.FacialFeatures.Replace("{pos", npc.Poss()),
+                app.FacialFeatures.Replace("{pos}", npc.Poss()),
                 app.EyeColour,
-                app.HairColor,
-                app.HairStyle
+                hairCol,
+                hairStyle
                 );
 
             npc.Appearance = app;
         }
-
-        private AppearanceFeatureModel HairColourGet(NpcModel npc)
+        private AppearanceFeatureModel AppearanceFeatureGet(NpcModel npc, AppearanceType type)
         {
             var avail = _rndHelper.Availability();
             var hairColourPoss =
-                _context.AppearanceFeatures.Where(x => x.Availability == avail && x.Races.Contains(npc.Race.ToString())).ToList();
+                _context.AppearanceFeatures.Where(x => x.AppearanceType == type && x.Availability == avail && x.Races.Contains(npc.Race.ToString())).ToList();
             var rnd = _rnd.Next(0, hairColourPoss.Count());
 
             return hairColourPoss[rnd];

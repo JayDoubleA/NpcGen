@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using NpcGen.Enums;
 using NpcGen.Extensions;
@@ -15,10 +14,11 @@ namespace NpcGen.Models.NpcModels
         public string Description { get; set; }
         public string Races { get; set; }
         public Availability Availability { get; set; }
+        public string Genders { get; set; }
 
         public AppearanceFeatureModel() { }
 
-        public AppearanceFeatureModel(string name, AppearanceType type, string description = "", Availability availability = Availability.Common, List<Race> races = null)
+        public AppearanceFeatureModel(string name, AppearanceType type, string description = "", Availability availability = Availability.Common, List<Race> races = null, List<Gender> genders = null)
         {
             Name = name;
             AppearanceType = type;
@@ -27,6 +27,9 @@ namespace NpcGen.Models.NpcModels
             
             var raceEnums = races ?? AllRaces;
             Races = string.Join("|", raceEnums);
+
+            var genderEnums = genders ?? new List<Gender> {Gender.Female, Gender.Male};
+            Genders = string.Join("|", genderEnums);
         }
 
         private static List<Race> AllRaces

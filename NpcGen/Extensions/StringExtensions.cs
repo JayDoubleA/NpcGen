@@ -1,4 +1,6 @@
-﻿using NpcGen.Enums;
+﻿using System;
+using System.Text;
+using NpcGen.Enums;
 using NpcGen.Models.NpcModels;
 namespace NpcGen.Extensions
 {
@@ -88,6 +90,28 @@ namespace NpcGen.Extensions
             }
 
             return str.Replace("his or her", "his").Replace("he or she", "he");
+        }
+
+        /// <summary>
+        /// You'll need to reassert the capitalisation of proper nouns
+        /// </summary>
+        public static string ToSentenceCase(this string str)
+        {
+            if (str.Length < 1)
+            {
+                return str;
+            }
+
+            var sentences = str.Split(new[] {'.'}, StringSplitOptions.RemoveEmptyEntries);
+            var sb = new StringBuilder();
+
+            foreach (var sen in sentences)
+            {
+                var tst = sen.ToLower();
+                sb.Append(string.Format("{0}{1}.", tst[0].ToString().ToUpper(), tst.Substring(1)));
+            }
+
+            return sb.ToString();
         }
     }
 }
