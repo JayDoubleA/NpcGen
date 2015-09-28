@@ -2,6 +2,19 @@
 
 namespace NpcGen.Enums
 {
+    public enum AppearanceType
+    {
+        HairColour,
+        HairStyle,
+        Eyes,
+        Node,
+        Ears,
+        FaceGood,
+        FaceBad,
+        BodyGood,
+        BodyBad
+    }
+
     public enum HairColour
     {
         Blonde,

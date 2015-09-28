@@ -16,6 +16,7 @@ namespace NpcGen.DataAccess
         public DbSet<DemeanourModel> Demeanours { get; set; }
         public DbSet<ProficiencyModel> Proficiencies { get; set; }
         public DbSet<ClassAbilityModel> ClassAbilities { get; set; }
+        public DbSet<AppearanceFeatureModel> AppearanceFeatures { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

@@ -951,6 +951,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Attributes\AbilityAttribute.cs" />
+    <Compile Include="Constants\AppearanceDefinitions.cs" />
     <Compile Include="Constants\AttackDefinitions.cs" />
     <Compile Include="Constants\ClassAbilityDefinitions.cs" />
     <Compile Include="Constants\ClassDefinitions.cs" />
@@ -972,8 +973,10 @@
     <Compile Include="Enums\AgeGenderEnums.cs" />
     <Compile Include="Enums\AppearanceEnums.cs" />
     <Compile Include="Enums\ClassLevelEnums.cs" />
+    <Compile Include="Enums\GeneralEnums.cs" />
     <Compile Include="Enums\ImportEnums.cs" />
     <Compile Include="Enums\ProficiencyEnums.cs" />
+    <Compile Include="Enums\RaceGeoEnums.cs" />
     <Compile Include="Extensions\CharExtensions.cs" />
     <Compile Include="Extensions\ClassModelExtensions.cs" />
     <Compile Include="Extensions\EnumExtensions.cs" />
@@ -981,10 +984,12 @@
     <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Helpers\NpcViewHelper.cs" />
+    <Compile Include="Helpers\RandomHelper.cs" />
     <Compile Include="Helpers\StringHelpers.cs" />
     <Compile Include="Interfaces\IAttribute.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ImportModel.cs" />
+    <Compile Include="Models\NpcModels\AppearanceFeatureModel.cs" />
     <Compile Include="Models\NpcModels\AppearanceModel.cs" />
     <Compile Include="Models\NpcModels\AttackModel.cs" />
     <Compile Include="Models\NpcModels\ClassAbilityModel.cs" />

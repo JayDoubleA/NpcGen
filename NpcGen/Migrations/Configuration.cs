@@ -49,11 +49,11 @@ namespace NpcGen.Migrations
                 context.Demeanours.AddOrUpdate(r => r.DemeanourId, dem);
             }
 
-            //var featureslist = GeneralAppearanceDefinitions.List();
-            //foreach (var ftr in featureslist)
-            //{
-            //    context.GeneralAppearances.AddOrUpdate(r => r.GeneralAppearanceId, ftr);
-            //}
+            var hairColourList = AppearanceDefinitions.HairColours();
+            foreach (var colour in hairColourList)
+            {
+                context.AppearanceFeatures.AddOrUpdate(r => r.Name, colour);
+            }
         }
     }
 }

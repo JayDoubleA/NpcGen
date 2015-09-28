@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using NpcGen.Enums;
+﻿using NpcGen.Enums;
 
 namespace NpcGen.Models.NpcModels
 {

@@ -1,14 +1,14 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web.Mvc;
 using NpcGen.Constants;
 using NpcGen.DataAccess;
+using NpcGen.Enums;
 using NpcGen.Extensions;
+using NpcGen.Helpers;
 using NpcGen.Models.NpcModels;
 using NpcGen.Models.NpcModels.NpcModels;
-using System.Reflection;
-using NpcGen.Enums;
 
 namespace NpcGen.ControllerHelpers
 {
@@ -16,11 +16,13 @@ namespace NpcGen.ControllerHelpers
     {
         private readonly NpcContext _context;
         private readonly Random _rnd;
+        private readonly RandomHelper _rndHelper;
 
         public NpcGenHelper(NpcContext context)
         {
             _context = context;
             _rnd = new Random();
+            _rndHelper = new RandomHelper();
         }
 
         public NpcModel RandomNpcGet(NpcModel para)
@@ -64,7 +66,7 @@ namespace NpcGen.ControllerHelpers
             var app = new AppearanceModel
             {
                 EyeColour = EnumExtensions.ToName(EnumExtensions.Of<EyeColour>()),
-                HairColor = EnumExtensions.ToName(EnumExtensions.Of<HairColour>()),
+                HairColor = HairColourGet(npc).Description, // EnumExtensions.ToName(EnumExtensions.Of<HairColour>()),
                 HairStyle = EnumExtensions.ToName(EnumExtensions.Of<HairStyle>())
             };
 
@@ -93,6 +95,16 @@ namespace NpcGen.ControllerHelpers
                 );
 
             npc.Appearance = app;
+        }
+
+        private AppearanceFeatureModel HairColourGet(NpcModel npc)
+        {
+            var avail = _rndHelper.Availability();
+            var hairColourPoss =
+                _context.AppearanceFeatures.Where(x => x.Availability == avail && x.Races.Contains(npc.Race.ToString())).ToList();
+            var rnd = _rnd.Next(0, hairColourPoss.Count());
+
+            return hairColourPoss[rnd];
         }
 
         private void GetDemeanour(NpcModel npc)
