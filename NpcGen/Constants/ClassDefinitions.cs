@@ -2,21 +2,27 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using NpcGen.DataAccess;
 using NpcGen.Models.NpcModels;
 using NpcGen.Extensions;
 using NpcGen.Enums;
 
 namespace NpcGen.Constants
 {
-    public static class ClassDefinitions
+    public class ClassDefinitions
     {
-        static List<ProficiencyModel> ProficiencyList { get; set; }
-        static List<ClassAbilityModel> AbilityList { get; set; }
+        private readonly NpcContext _context = new NpcContext();
 
-        public static List<ClassModel> List(List<ProficiencyModel> profs,  List<ClassAbilityModel> abs)
+        List<ProficiencyModel> ProficiencyList { get; set; }
+        List<ClassAbilityModel> AbilityList { get; set; }
+        List<AttackModel> AttacksList { get; set; }
+
+        public List<ClassModel> List(List<ProficiencyModel> profs,  List<ClassAbilityModel> abs, List<AttackModel> attacks )
         {
             ProficiencyList = profs;
             AbilityList = abs;
+            AttacksList = attacks;
+
             var list = new List<ClassModel>();
 
           //  list.AddRange(Commoners());
@@ -25,7 +31,7 @@ namespace NpcGen.Constants
             return list;
         }
 
-        public static List<ClassModel> Commoners()
+        public List<ClassModel> Commoners()
         {
             var list = new List<ClassModel>
             {
@@ -47,7 +53,7 @@ namespace NpcGen.Constants
                         ProficiencyList.ProfGet(Proficiencies.ConstitutionSave),
                         ProficiencyList.ProfGet(Proficiencies.AnimalHandling)
                     },
-                    Attacks = AttackDefinitions.List().Where(x=>x.Name.EqualsCaseInsensitive("punch")).ToList(),
+                    Attacks = AttacksList.Where(x=>x.Name.EqualsCaseInsensitive("punch")).ToList(),
                     ClassAbilities = new List<ClassAbilityModel>
                     {
                         AbilityList.AbilityGet("glare at livestock")
@@ -71,7 +77,7 @@ namespace NpcGen.Constants
                         ProficiencyList.ProfGet(Proficiencies.CharismaSave),
                         ProficiencyList.ProfGet(Proficiencies.Performance)
                     },
-                    Attacks = AttackDefinitions.List().Where(x=>x.Name.EqualsCaseInsensitive("punch") || x.Name.EqualsCaseInsensitive("scream")).ToList(),
+                    Attacks = AttacksList.Where(x=>x.Name.EqualsCaseInsensitive("punch") || x.Name.EqualsCaseInsensitive("scream")).ToList(),
                     ClassAbilities = new List<ClassAbilityModel>
                     {
                         AbilityList.AbilityGet("Collect Mud"),
@@ -96,7 +102,7 @@ namespace NpcGen.Constants
                         ProficiencyList.ProfGet(Proficiencies.StrengthSave),
                         ProficiencyList.ProfGet(Proficiencies.Intimidation)
                     },
-                    Attacks = AttackDefinitions.List().Where(x=>x.Name.EqualsCaseInsensitive("punch") || x.Name.EqualsCaseInsensitive("kick")).ToList(),
+                    Attacks =AttacksList.Where(x=>x.Name.EqualsCaseInsensitive("punch") || x.Name.EqualsCaseInsensitive("kick")).ToList(),
                     ClassAbilities = new List<ClassAbilityModel>
                     {
                         AbilityList.AbilityGet("glare at livestock"),
@@ -122,7 +128,7 @@ namespace NpcGen.Constants
                         ProficiencyList.ProfGet(Proficiencies.Perception)
                     }
                     ,
-                    Attacks = AttackDefinitions.List().Where(x=>x.Name.EqualsCaseInsensitive("kick") || x.Name.EqualsCaseInsensitive("scream")).ToList(),
+                    Attacks = AttacksList.Where(x=>x.Name.EqualsCaseInsensitive("kick") || x.Name.EqualsCaseInsensitive("scream")).ToList(),
                     ClassAbilities = new List<ClassAbilityModel>
                     {
                         AbilityList.AbilityGet("scratch nose"),
@@ -134,7 +140,7 @@ namespace NpcGen.Constants
             return list;
         }
 
-        public static string CsvClasses()
+        public string CsvClasses()
         {
             var sb = new StringBuilder();
             var list = new List<string>
@@ -155,33 +161,38 @@ namespace NpcGen.Constants
             return sb.ToString();
         }
 
-        public static List<ClassModel> RealClasses()
+        public List<ClassModel> RealClasses()
         {
             var list = new List<ClassModel>();
 
             var bandit = new ClassModel
+            {
+                Name = "Bandit",
+                HitDieType = 8,
+                Level = 2,
+                Strength = 11,
+                Dexterity = 12,
+                Constitution = 12,
+                Intelligence = 10,
+                Wisdom = 10,
+                Charisma = 10,
+                Proficiencies = new List<ProficiencyModel>
                 {
-                    Name = "Bandit",
-                    HitDieType = 8,
-                    Level = 2,                    
-                    Strength = 11,
-                    Dexterity = 12,
-                    Constitution = 12,
-                    Intelligence = 10,
-                    Wisdom = 10,
-                    Charisma = 10,                                       
-                    Proficiencies = new List<ProficiencyModel>
-                    {                        
-                    },
-                    ClassAbilities = new List<ClassAbilityModel>
-                    {
-                    },
-                    BaseArmourClass = 2,
-                    Movement = 30
-                };
-            var banditScimitar = new AttackModel("Scimitar", bandit, Abilities.Dexterity, "d6");
-            var banditCrossbow = new AttackModel("Light Crossbow", bandit, Abilities.Dexterity, "d8", 80);
-            bandit.Attacks = new List<AttackModel>{banditScimitar, banditCrossbow};            
+                },
+                ClassAbilities = new List<ClassAbilityModel>
+                {
+                },
+                Attacks = new List<AttackModel>
+                {
+                    AttacksList.AttackGet("scimitar"),
+                    AttacksList.AttackGet("light crossbow")
+                },
+                BaseArmourClass = 2,
+                Movement = 30
+            };
+            //var banditScimitar = AttacksList.FirstOrDefault(x => x.Name.ToLower().Equals("scimitar"));
+            //var banditCrossbow = AttacksList.FirstOrDefault(x => x.Name.ToLower().Equals("light crossbow"));
+            //bandit.Attacks = new List<AttackModel>{banditScimitar, banditCrossbow};            
             bandit.HitPoints = bandit.HitPointsAverageGet();
             bandit.ProficencyBonus = LevelConstants.ProficiencyBonus(bandit.Level);
 
@@ -208,11 +219,15 @@ namespace NpcGen.Constants
                 ClassAbilities = new List<ClassAbilityModel>
                 {
                 },
+                Attacks = new List<AttackModel>
+                {
+                  AttacksList.AttackGet("longsword"),
+                  AttacksList.AttackGet("light crossbow")
+                },
                 Movement = 30                
             };
-            var banditLeaderLongsword = new AttackModel("Longsword", banditLeader, Abilities.Strength, "d8");
-            var banditLeaderCrossbow = new AttackModel("Light Crossbow", banditLeader, Abilities.Dexterity, "d8", 80);
-            banditLeader.Attacks = new List<AttackModel> { banditLeaderLongsword, banditLeaderCrossbow };            
+            //var banditLeaderLongsword = AttacksList.FirstOrDefault(x => x.Name.ToLower().Equals("longsword"));
+            //banditLeader.Attacks = new List<AttackModel> { banditLeaderLongsword, banditCrossbow };            
             banditLeader.HitPoints = banditLeader.HitPointsAverageGet();
             banditLeader.ProficencyBonus = LevelConstants.ProficiencyBonus(banditLeader.Level);
 

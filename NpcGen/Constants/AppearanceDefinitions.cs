@@ -55,7 +55,7 @@ namespace NpcGen.Constants
             list.Add(new AppearanceFeatureModel("Long", AppearanceType.HairStyle, "{pos} hair is long and {col}."));
             list.Add(new AppearanceFeatureModel("ShoulderLength", AppearanceType.HairStyle, "{pos} {col} hair is trimmed to shoulder length."));
             list.Add(new AppearanceFeatureModel("ShortMale", AppearanceType.HairStyle, "{pos} {col} hair is cut practically short.", Availability.Common, null, new List<Gender>{Gender.Male}));
-            list.Add(new AppearanceFeatureModel("ShortMale", AppearanceType.HairStyle, "{pos} {col} hair is cut practically short.", Availability.Uncommon, null, new List<Gender> { Gender.Female }));
+            list.Add(new AppearanceFeatureModel("ShortFemale", AppearanceType.HairStyle, "{pos} {col} hair is cut practically short.", Availability.Uncommon, null, new List<Gender> { Gender.Female }));
             list.Add(new AppearanceFeatureModel("ShortTail", AppearanceType.HairStyle, "{pos} {col} hair is tied back into a short ponytail."));
             list.Add(new AppearanceFeatureModel("LongTailMale", AppearanceType.HairStyle, "{pos} {col} hair is tied back into a long ponytail.", Availability.Uncommon));
             list.Add(new AppearanceFeatureModel("LongTailFemale", AppearanceType.HairStyle, "{pos} {col} hair is tied back into a long ponytail."));

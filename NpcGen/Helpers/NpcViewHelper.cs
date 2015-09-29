@@ -111,13 +111,22 @@ namespace NpcGen.Helpers
             var list = new TagBuilder("ul");
             foreach (var at in model.Class.Attacks)
             {
+                var toHit = at.ToHit >= 0 ? string.Format("+{0}", at.ToHit) : at.ToHit.ToString();
+
+                var special = string.Empty;
+                if (at.Special.NotNullOrEmpty())
+                {
+                    special = string.Format("&nbsp;<i>{0}</i>", at.Special);
+                }
+
                 var listItem = new TagBuilder("li")
                 {
-                    InnerHtml = string.Format("{0} ({1} - {2} {3})",
+                    InnerHtml = string.Format("{0} : <b>{1}</b> for <b>{2}{3}</b> {4}",
                         at.Name,
-                        at.ToHit,
+                        toHit,
                         at.Damage,
-                        model.Class.AbilityModifierGet(at.Ability).AbilityModStringGet())
+                        model.Class.AbilityModifierGet(at.Ability).AbilityModStringGet(),
+                        special)
                 };
                 list.InnerHtml += listItem;
             }

@@ -19,5 +19,11 @@ namespace NpcGen.Extensions
             var ab = list.FirstOrDefault(x => x.Name.EqualsCaseInsensitive(name));
             return ab ?? new ClassAbilityModel();
         }
+
+        public static AttackModel AttackGet(this List<AttackModel> list, string name)
+        {
+            var at = list.FirstOrDefault(x => x.Name.ToLower().Equals(name.ToLower()));
+            return at ?? new AttackModel();
+        }
     }
 }

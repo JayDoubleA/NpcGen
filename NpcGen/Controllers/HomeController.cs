@@ -15,6 +15,13 @@ namespace NpcGen.Controllers
         [HttpGet]
         public ActionResult Index()
         {
+            var qs = Request.QueryString;
+            if (qs["seed"] != null)
+            {
+                var config = new Migrations.Configuration();
+                config.SeedDebug(_context);
+            }
+
             var helper = new NpcGenHelper(_context);
             //var model = helper.RandomNpcGet();
 

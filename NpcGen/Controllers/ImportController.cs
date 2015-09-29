@@ -42,15 +42,15 @@ namespace NpcGen.Controllers
 
         public ActionResult Seed(ImportModel model)
         {
-            var abs = ClassAbilityDefinitions.CsvAbilities();
-            var absHelper = new ImportHelper(abs);
-            absHelper.ClassAbilityImport();
+            //var abs = ClassAbilityDefinitions.CsvAbilities();
+            //var absHelper = new ImportHelper(abs);
+            //absHelper.ClassAbilityImport();
 
-            var cls = ClassDefinitions.CsvClasses();
-            var clsHelper = new ImportHelper(cls);
-            clsHelper.ClassesImport();
+            //var cls = ClassDefinitions.CsvClasses();
+            //var clsHelper = new ImportHelper(cls);
+            //clsHelper.ClassesImport();
 
-            model.Message = absHelper.Report + clsHelper.Report;
+            //model.Message = absHelper.Report + clsHelper.Report;
 
             return View("~/Views/Import/Index.cshtml", model);
         }

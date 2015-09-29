@@ -9,5 +9,6 @@ namespace NpcGen.Models.NpcModels
         public string Name { get; set; }
         public string Description { get; set; }
         public virtual ICollection<ClassModel> Classes { get; set; }
+        public int Level { get; set; }
     }
 }

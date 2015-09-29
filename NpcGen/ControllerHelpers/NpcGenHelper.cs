@@ -39,6 +39,7 @@ namespace NpcGen.ControllerHelpers
             GetDemeanour(npc);
             GetAppearance(npc);
             NpcParamsProcess(npc);
+            AttackRecalculate(npc);
 
             return npc;
         }
@@ -57,6 +58,7 @@ namespace NpcGen.ControllerHelpers
             GetDemeanour(npc);
             GetAppearance(npc);
             NpcParamsProcess(npc);
+            AttackRecalculate(npc);
 
             return npc;
         }
@@ -101,11 +103,11 @@ namespace NpcGen.ControllerHelpers
         private AppearanceFeatureModel AppearanceFeatureGet(NpcModel npc, AppearanceType type)
         {
             var avail = _rndHelper.Availability();
-            var hairColourPoss =
-                _context.AppearanceFeatures.Where(x => x.AppearanceType == type && x.Availability == avail && x.Races.Contains(npc.Race.ToString())).ToList();
-            var rnd = _rnd.Next(0, hairColourPoss.Count());
+            var featuresPoss =
+                _context.AppearanceFeatures.Where(x => x.AppearanceType == type && x.Genders.Contains(npc.Gender.ToString())  && x.Availability == avail && x.Races.Contains(npc.Race.ToString())).ToList();
+            var rnd = _rnd.Next(0, featuresPoss.Count());
 
-            return hairColourPoss[rnd];
+            return featuresPoss[rnd];
         }
 
         private void GetDemeanour(NpcModel npc)
@@ -245,8 +247,6 @@ namespace NpcGen.ControllerHelpers
 
             npc.Name = namesPoss.Skip(_rnd.Next(0, namesPoss.Count())).Take(1).FirstOrDefault();
         }
-
-       
 
         public void NpcParamsProcess(NpcModel npc)
         {

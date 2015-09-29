@@ -1,9 +1,6 @@
-﻿using NpcGen.Constants;
-using NpcGen.Enums;
-using NpcGen.Extensions;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Reflection;
+using NpcGen.Enums;
 
 namespace NpcGen.Models.NpcModels
 {
@@ -15,8 +12,8 @@ namespace NpcGen.Models.NpcModels
         public string Name { get; set; }
         public int ToHit { get; set; }
         public string Damage { get; set; }
-        public int Range { get; set; }
         public Abilities Ability { get; set; }
+        public DamageType DamageType { get; set; }
         public string Special { get; set; }
         public virtual ICollection<ClassModel> Classes { get; set; }
 
@@ -25,16 +22,17 @@ namespace NpcGen.Models.NpcModels
 
         }
 
-        public AttackModel(string name, ClassModel cls, Abilities ability, string damageDice, int range = 5, string special = "")
+        public AttackModel(string name)
         {
             Name = name;
-            Range = range;
+        }
+
+        public AttackModel(string name, Abilities ability, string damageDice, DamageType damageType, string special = "", int range = 5, int rangeLong = 5)
+        {
+            Name = name;
             Special = special;
             Ability = ability;
-
-            var abilityMod = cls.AbilityModifierGet(Ability);
-            ToHit = abilityMod + LevelConstants.ProficiencyBonus(cls.Level);
-
+            DamageType = damageType;
             Damage = damageDice;            
         }
     }    

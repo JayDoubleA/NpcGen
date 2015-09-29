@@ -1,11 +1,12 @@
 using NpcGen.Constants;
+using NpcGen.DataAccess;
 
 namespace NpcGen.Migrations
 {
-    using NpcGen.Models.NpcModels;
+    using Models.NpcModels;
     using System.Data.Entity.Migrations;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<DataAccess.NpcContext>
+    public class Configuration : DbMigrationsConfiguration<NpcContext>
     {
         public Configuration()
         {
@@ -14,10 +15,21 @@ namespace NpcGen.Migrations
             ContextKey = "NpcGen.DataAccess.NpcContext";
         }
 
-        protected override void Seed(DataAccess.NpcContext context)
+        public void SeedDebug(NpcContext context)
+        {
+            Seed(context);
+        }
+
+        protected override void Seed(NpcContext context)
         {
             var magicNone = new MagicModel { MagicName = "None" };
             context.Magics.AddOrUpdate(r => r.MagicName, magicNone);
+
+            var attacklist = AttackDefinitions.List();
+            foreach (var attack in attacklist)
+            {
+                context.Attacks.AddOrUpdate(r => r.Name, attack);
+            }
 
             var proflist = ProficiencyDefinitions.List();
             foreach (var prof in proflist)
@@ -31,7 +43,8 @@ namespace NpcGen.Migrations
                 context.ClassAbilities.AddOrUpdate(r => r.Name, ab);
             }
 
-            var classlist = ClassDefinitions.List(proflist, abs);
+            var clsDef = new ClassDefinitions();
+            var classlist = clsDef.List(proflist, abs, attacklist);
             foreach (var cls in classlist)
             {
                 context.Classes.AddOrUpdate(r => r.Name, cls);

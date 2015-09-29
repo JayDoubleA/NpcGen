@@ -104,113 +104,113 @@ namespace NpcGen.ControllerHelpers
         {
             var list = new List<ClassModel>();
 
-            Init();
+            //Init();
 
-            while (!_csvReader.EndOfData)
-            {
-                try
-                {
-                    var row = _csvReader.ReadFields();
+            //while (!_csvReader.EndOfData)
+            //{
+            //    try
+            //    {
+            //        var row = _csvReader.ReadFields();
 
-                    if (row != null && row.Length > 18)
-                    {
-                        var testName = row[5];
-                        var magic = _context.Magics.FirstOrDefault(m => m.MagicName == testName) ??
-                                    new MagicModel { MagicName = "None" };
+            //        if (row != null && row.Length > 18)
+            //        {
+            //            var testName = row[5];
+            //            var magic = _context.Magics.FirstOrDefault(m => m.MagicName == testName) ??
+            //                        new MagicModel { MagicName = "None" };
 
-                        var attacks = AttackStringParse(row[4]);
-                        if (attacks.Count > 0)
-                        {
-                            foreach (var attack in attacks)
-                            {
-                                _context.Attacks.AddOrUpdate(a => a.Name, attack);
-                            }
+            //            var attacks = AttackStringParse(row[4]);
+            //            if (attacks.Count > 0)
+            //            {
+            //                foreach (var attack in attacks)
+            //                {
+            //                    _context.Attacks.AddOrUpdate(a => a.Name, attack);
+            //                }
 
-                            _context.SaveChanges();
-                        }
+            //                _context.SaveChanges();
+            //            }
 
-                        var cls = new ClassModel();
-                        cls.Name = row[0];
-                        cls.HitDieType = int.Parse(row[1]);
-                        cls.Level = int.Parse(row[2]);
-                        cls.ProficencyBonus = int.Parse(row[3]);
-                        cls.Attacks = AttacksRecover(attacks);
-                        cls.Magic = magic;
-                        cls.Strength = int.Parse(row[6]);
-                        cls.Dexterity = int.Parse(row[7]);
-                        cls.Constitution = int.Parse(row[8]);
-                        cls.Intelligence = int.Parse(row[9]);
-                        cls.Wisdom = int.Parse(row[10]);
-                        cls.Charisma = int.Parse(row[11]);
-                        cls.HitPoints = int.Parse(row[12]);
-                        cls.Movement = int.Parse(row[13]);
-                        cls.BaseArmourClass = int.Parse(row[14]);
-                        cls.Proficiencies = ProfsGet(row[15]);
-                        cls.Expertises = ProfsGet(row[16]);
-                        cls.ClassAbilities = AbilitiesGet(row[17]);
-                        cls.Possessions = row[18];
-                        list.Add(cls);
-                        Report += string.Format("Imported {0}<br />", row[0]);
-                    }
-                    else
-                    {
-                        Report += "Bad row skipped...<br />";
-                    }
-                }
-                catch
-                    (Exception ex)
-                {
-                    Report += string.Format("Error importing: {0}<br />", ex.Message);
-                }
-            }
+            //            var cls = new ClassModel();
+            //            cls.Name = row[0];
+            //            cls.HitDieType = int.Parse(row[1]);
+            //            cls.Level = int.Parse(row[2]);
+            //            cls.ProficencyBonus = int.Parse(row[3]);
+            //            cls.Attacks = AttacksRecover(attacks);
+            //            cls.Magic = magic;
+            //            cls.Strength = int.Parse(row[6]);
+            //            cls.Dexterity = int.Parse(row[7]);
+            //            cls.Constitution = int.Parse(row[8]);
+            //            cls.Intelligence = int.Parse(row[9]);
+            //            cls.Wisdom = int.Parse(row[10]);
+            //            cls.Charisma = int.Parse(row[11]);
+            //            cls.HitPoints = int.Parse(row[12]);
+            //            cls.Movement = int.Parse(row[13]);
+            //            cls.BaseArmourClass = int.Parse(row[14]);
+            //            cls.Proficiencies = ProfsGet(row[15]);
+            //            cls.Expertises = ProfsGet(row[16]);
+            //            cls.ClassAbilities = AbilitiesGet(row[17]);
+            //            cls.Possessions = row[18];
+            //            list.Add(cls);
+            //            Report += string.Format("Imported {0}<br />", row[0]);
+            //        }
+            //        else
+            //        {
+            //            Report += "Bad row skipped...<br />";
+            //        }
+            //    }
+            //    catch
+            //        (Exception ex)
+            //    {
+            //        Report += string.Format("Error importing: {0}<br />", ex.Message);
+            //    }
+            //}
             return list;
         }
 
         private List<AttackModel> AttackStringParse(string attackString)
         {
             var list = new List<AttackModel>();
-            try
-            {
+            //try
+            //{
 
-                var attackArr = attackString.Split(new[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
+            //    var attackArr = attackString.Split(new[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
 
-                foreach (var at in attackArr)
-                {
-                    var atArr = at.Split(new[] { '@' }, StringSplitOptions.RemoveEmptyEntries);
-                    var attack = new AttackModel
-                    {
-                        Name = atArr[0],
-                        ToHit = int.Parse(atArr[1]),
-                        Damage = atArr[2]
-                    };
+            //    foreach (var at in attackArr)
+            //    {
+            //        var atArr = at.Split(new[] { '@' }, StringSplitOptions.RemoveEmptyEntries);
+            //        var attack = new AttackModel
+            //        {
+            //            Name = atArr[0],
+            //            ToHit = int.Parse(atArr[1]),
+            //            Damage = atArr[2]
+            //        };
 
-                    if (atArr.Length > 3)
-                    {
-                        // figure out if the next value is range or special...
-                        int range;
-                        if (int.TryParse(atArr[3], out range))
-                        {
-                            attack.Range = range;
-                        }
-                        else
-                        {
-                            attack.Special = atArr[3];
-                        }
-                    }
+            //        if (atArr.Length > 3)
+            //        {
+            //            // figure out if the next value is range or special...
+            //            int range;
+            //            if (int.TryParse(atArr[3], out range))
+            //            {
+            //                attack.Range = range;
+            //            }
+            //            else
+            //            {
+            //                attack.Special = atArr[3];
+            //            }
+            //        }
 
-                    if (atArr.Length > 4)
-                    {
-                        // if this exists, it will always be the special
-                        attack.Special = atArr[4];
-                    }
+            //        if (atArr.Length > 4)
+            //        {
+            //            // if this exists, it will always be the special
+            //            attack.Special = atArr[4];
+            //        }
 
-                    list.Add(attack);
-                }
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            //        list.Add(attack);
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    throw ex;
+            //}
 
             return list;
         }
