@@ -1,0 +1,56 @@
+﻿@using NpcGen.Extensions;
+@using NpcGen.Helpers;
+@using NpcGen.Enums;
+
+@model  NpcGen.Models.NpcModels.NpcModel
+@{
+    ViewBag.Title = "Advanced settings";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Advanced settings</h2>
+@using (Html.BeginForm("Npc","Npc"))
+{
+    <p>
+        <label for="clsName">Pick a starting template</label><br />
+        @Html.DropDownList("clsName", new SelectList(ViewBag.Classes), NpcGen.Constants.StringConstants.ClassesDdlDefault)
+    </p>
+    <p>
+        @Html.LabelFor(model => model.Para.ExperienceLevel)<br />
+        @Html.DropDownListFor(model => model.Para.ExperienceLevel, Model.Para.ExperienceLevel.ToSelectList())
+    </p>
+    <p>
+        <strong>Select a stat buff</strong>
+        <ul class="list-unstyled checkbox-list">
+            <li class="checkbox" title="Gives a 4 point boost to Strength, gives a random Strength based proficiency and proficiency in Strength Save">
+                @Html.CheckBoxFor(model => model.Para.MoreStr)
+                @Html.LabelFor(model => model.Para.MoreStr)
+            </li>
+            <li class="checkbox" title="Gives a 4 point boost to Dexterity, gives a random Dexterity based proficiency and proficiency in Dexterity Save">
+                @Html.CheckBoxFor(model => model.Para.MoreDex)
+                @Html.LabelFor(model => model.Para.MoreDex)
+            </li>
+            <li class="checkbox" title="Gives a 4 point boost to Constitution, proficiency in Constitution Save and sets Hit Points to maximum">
+                @Html.CheckBoxFor(model => model.Para.MoreCon)
+                @Html.LabelFor(model => model.Para.MoreCon)
+            </li>
+            <li class="checkbox" title="Gives a 4 point boost to Intelligence, gives a random Intelligence based proficiency and proficiency in Intelligence Save">
+                @Html.CheckBoxFor(model => model.Para.MoreInt)
+                @Html.LabelFor(model => model.Para.MoreInt)
+            </li>
+            <li class="checkbox" title="Gives a 4 point boost to Wisdom, gives a random Wisdom based proficiency and proficiency in Wisdom Save">
+                @Html.CheckBoxFor(model => model.Para.MoreWis)
+                @Html.LabelFor(model => model.Para.MoreWis)
+            </li>
+            <li class="checkbox" title="Gives a 4 point boost to Charisma, gives a random Charisma based proficiency and proficiency in Charisma Save">
+                @Html.CheckBoxFor(model => model.Para.MoreCha)
+                @Html.LabelFor(model => model.Para.MoreCha)
+            </li>
+        </ul>
+    </p>
+
+    <div>
+        <input class="form-control" type="submit" value="Submit" />
+    </div>
+}
+
