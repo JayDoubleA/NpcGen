@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Net.Mime;
 using System.Web.Mvc;
 using NpcGen.Extensions;
 using NpcGen.Models.NpcModels;
@@ -58,7 +59,7 @@ namespace NpcGen.Helpers
                 }
 
                 var bold = new TagBuilder("b") {InnerHtml = sv.Name.Replace(" Save", string.Empty)};
-                paragraph.InnerHtml += string.Format("{0} : {1}.", bold, model.Class.ProficientSkillScoreStringGet(sv));
+                paragraph.InnerHtml += string.Format("{0} : {1}", bold, model.Class.ProficientSkillScoreStringGet(sv));
             }
             return MvcHtmlString.Create(paragraph.ToString());
         }
@@ -73,35 +74,31 @@ namespace NpcGen.Helpers
                 {
                     var bold = new TagBuilder("b") {InnerHtml = prof.Name};
                     paragraph.InnerHtml += bold.ToString();
-                    paragraph.InnerHtml += string.Format(" ({0} : {1})", prof.Ability,
-                        model.Class.ProficientSkillScoreStringGet(prof));
+                    paragraph.InnerHtml += string.Format(" ({0} : {1})", prof.Ability, model.Class.ProficientSkillScoreStringGet(prof));
                     paragraph.InnerHtml += ",";
                 }
-                var firstOrDefault = model.CustomProficiencies.FirstOrDefault();
-                if (firstOrDefault != null)
-                {
-                    var otherBold = new TagBuilder("b") {InnerHtml = firstOrDefault.Name};
-                    paragraph.InnerHtml += string.Format("and curiously enough, also in {0} ({1} : {2})",
-                        otherBold,
-                        firstOrDefault.Ability,
-                        model.Class.ProficientSkillScoreStringGet(firstOrDefault)
-                        );
-                }
             }
-            else
+
+            if (model.CustomProficiencies != null && model.CustomProficiencies.Any())
             {
-                var firstOrDefault = model.CustomProficiencies.FirstOrDefault();
-                if (firstOrDefault != null)
+                paragraph.InnerHtml += model.ClassSkills.Any() ? "and curiously enough, also in " : string.Empty;
+
+                foreach (var prof in model.CustomProficiencies)
                 {
-                    var otherBold = new TagBuilder("b") {InnerHtml = firstOrDefault.Name};
-                    paragraph.InnerHtml += string.Format("{0} ({1} : {2})",
-                        otherBold,
-                        firstOrDefault.Ability,
-                        model.Class.ProficientSkillScoreStringGet(firstOrDefault)
-                        );
+                    var otherBold = new TagBuilder("b") { InnerHtml = prof.Name };
+                    paragraph.InnerHtml += otherBold.ToString();
+                    paragraph.InnerHtml += string.Format(" ({0} : {1})", prof.Ability, model.Class.ProficientSkillScoreStringGet(prof));
+                    paragraph.InnerHtml += ", ";
                 }
             }
-            return MvcHtmlString.Create(paragraph.ToString());
+
+            var txt = paragraph.ToString();
+            if (txt.EndsWith(", </p>"))
+            {
+                txt = txt.Replace(", </p>", ".</p>");
+            }
+
+            return MvcHtmlString.Create(txt);
         }
 
         public static MvcHtmlString RenderAttacks(NpcModel model)
