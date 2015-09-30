@@ -15,7 +15,7 @@ namespace NpcGen.Controllers
         public ActionResult Npc(NpcModel model, string clsName, string raceName)
         {
             var helper = new NpcGenHelper(_context, model);
-            model = clsName.NotNullOrEmpty() ? helper.NpcGet(clsName, raceName, model) : helper.RandomNpcGet(model);
+            model = clsName.NotNullOrEmpty()&&raceName.NotNullOrEmpty() ? helper.NpcGet(clsName, raceName, model) : helper.RandomNpcGet(model);
 
             ViewBagger();
             ViewBag.HasNpc = true;

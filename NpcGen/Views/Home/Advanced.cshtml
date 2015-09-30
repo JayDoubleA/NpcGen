@@ -13,7 +13,7 @@
 {
     <p>
         <label for="clsName">Pick a starting template</label><br />
-        @Html.DropDownList("clsName", new SelectList(ViewBag.Classes), NpcGen.Constants.StringConstants.ClassesDdlDefault)
+        @Html.DropDownList("clsName", new SelectList(ViewBag.Classes), NpcGen.Constants.StringConstants.DdlDefault)
     </p>
     <p>
         @Html.LabelFor(model => model.Para.ExperienceLevel)<br />

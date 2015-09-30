@@ -970,7 +970,7 @@
     <Compile Include="ControllerHelpers\EnumHelper.cs" />
     <Compile Include="ControllerHelpers\ImportHelper.cs" />
     <Compile Include="ControllerHelpers\NpcGenHelper.cs" />
-    <Compile Include="Controllers\NpcController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\NpcController.cs" />
     <Compile Include="Controllers\ImportController.cs" />
     <Compile Include="DataAccess\NpcContext.cs" />

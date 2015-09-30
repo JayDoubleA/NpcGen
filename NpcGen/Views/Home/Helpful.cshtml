@@ -15,7 +15,7 @@
         <p>
             <label for="clsName">I would like a </label>
             @Html.DropDownListFor(model => model.Para.ExperienceLevel, Model.Para.ExperienceLevel.ToSelectList(),"")
-            @Html.DropDownList("clsName", new SelectList(ViewBag.Classes), NpcGen.Constants.StringConstants.ClassesDdlDefault,"")
+            @Html.DropDownList("clsName", new SelectList(ViewBag.Classes), NpcGen.Constants.StringConstants.DdlDefault,"")
 
             <strong>Who is</strong>
             <select class="statChoice1">

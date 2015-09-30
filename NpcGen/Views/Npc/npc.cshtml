@@ -48,12 +48,12 @@
 
                 @NpcViewHelper.RenderClassSkills(Model)
                 @NpcViewHelper.RenderAttacks(Model)
-                @NpcViewHelper.RenderClassAbilities(Model)
+                @NpcViewHelper.RenderAbilities(Model)
                 <p>
                     @Model.Poss(true) Armour Class = @Model.Class.ArmourClassGet() <br />
                     @Model.Poss(true) Hit Dice = @Model.Class.Level<br />
                     @Model.Poss(true) Hit Points = @Model.Class.HitPoints<br />
-                    @Model.Poss(true) Passive Perception = @Model.Class.PassivePerceptionGet()
+                    @Model.Poss(true) Passive Perception = @Model.PassivePerceptionGet()
                 </p>
             </div>
 
