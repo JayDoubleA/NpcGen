@@ -1,10 +1,9 @@
-﻿using System.Web.Mvc;
-using System.Linq;
-using NpcGen.ControllerHelpers;
+﻿using System.Linq;
+using System.Web.Mvc;
 using NpcGen.DataAccess;
-using NpcGen.Models.NpcModels;
-using NpcGen.Extensions;
 using NpcGen.Enums;
+using NpcGen.Migrations;
+using NpcGen.Models.NpcModels;
 
 namespace NpcGen.Controllers
 {
@@ -15,6 +14,7 @@ namespace NpcGen.Controllers
         // GET: Home
         public ActionResult Index()
         {
+            ViewBagger();
             return View();
         }
 
@@ -23,16 +23,13 @@ namespace NpcGen.Controllers
             var qs = Request.QueryString;
             if (qs["seed"] != null)
             {
-                var config = new Migrations.Configuration();
+                var config = new Configuration();
                 config.SeedDebug(_context);
             }
 
-            var helper = new NpcGenHelper(_context);
-            //var model = helper.RandomNpcGet();
-
             var model = new NpcModel { Para = new NpcGenParamsModel { ExperienceLevel = ExperienceLevel.Journeyman } };
 
-            ViewBag.Classes = _context.Classes.Select(x => x.Name);
+            ViewBagger();
             ViewBag.HasNpc = false;
 
             return View(model);
@@ -43,23 +40,22 @@ namespace NpcGen.Controllers
             var qs = Request.QueryString;
             if (qs["seed"] != null)
             {
-                var config = new Migrations.Configuration();
+                var config = new Configuration();
                 config.SeedDebug(_context);
             }
-
-            var helper = new NpcGenHelper(_context);
-
+            
             var model = new NpcModel { Para = new NpcGenParamsModel { ExperienceLevel = ExperienceLevel.Journeyman } };
 
-            ViewBag.Classes = _context.Classes.Select(x => x.Name);
+            ViewBagger();
             ViewBag.HasNpc = false;
 
             return View(model);
         }
 
-        public ActionResult Assisted()
+        public void ViewBagger()
         {
-            return View();
+            ViewBag.Classes = _context.Classes.Select(x => x.Name);
+            ViewBag.Races = _context.Races.Select(x => x.Name);
         }
     }
 }

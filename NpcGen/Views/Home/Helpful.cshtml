@@ -13,9 +13,10 @@
             FormMethod.Post, new { @class = "help-form" }))
     {
         <p>
-            <label for="clsName">I would like a </label>
-            @Html.DropDownListFor(model => model.Para.ExperienceLevel, Model.Para.ExperienceLevel.ToSelectList(),"")
-            @Html.DropDownList("clsName", new SelectList(ViewBag.Classes), NpcGen.Constants.StringConstants.DdlDefault,"")
+            <label>I would like a </label>
+            @Html.DropDownListFor(model => model.Para.ExperienceLevel, Model.Para.ExperienceLevel.ToSelectList(),"")&nbsp;
+            @Html.DropDownList("clsName", new SelectList(ViewBag.Classes), NpcGen.Constants.StringConstants.DdlDefault, "")&nbsp;
+            @Html.DropDownList("raceName", new SelectList(ViewBag.Classes), NpcGen.Constants.StringConstants.DdlDefault, "")&nbsp;
 
             <strong>Who is</strong>
             <select class="statChoice1">

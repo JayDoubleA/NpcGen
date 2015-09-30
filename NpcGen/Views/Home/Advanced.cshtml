@@ -12,8 +12,13 @@
 @using (Html.BeginForm("Npc","Npc"))
 {
     <p>
-        <label for="clsName">Pick a starting template</label><br />
+        <label for="clsName">Pick a starting template</label><br/>
         @Html.DropDownList("clsName", new SelectList(ViewBag.Classes), NpcGen.Constants.StringConstants.DdlDefault)
+    </p>
+
+    <p>
+        <label for="raceName">Pick a race</label><br />
+        @Html.DropDownList("raceName", new SelectList(ViewBag.Races))
     </p>
     <p>
         @Html.LabelFor(model => model.Para.ExperienceLevel)<br />
