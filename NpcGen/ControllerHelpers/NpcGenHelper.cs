@@ -39,6 +39,7 @@ namespace NpcGen.ControllerHelpers
             Npc.Para = para.Para ?? new NpcGenParamsModel();
 
             GetNpcClass();
+            GetNpcRace("Human");
             SplitClassProficiencies();
             GetAge();
             GetCustomProficiencies();
@@ -56,6 +57,7 @@ namespace NpcGen.ControllerHelpers
         {
             Npc = new NpcModel();
             Npc.Para = para.Para ?? new NpcGenParamsModel();
+            raceName = raceName ?? "Human";
 
             GetNpcClass(clsName);
             GetNpcRace(raceName);
@@ -100,7 +102,7 @@ namespace NpcGen.ControllerHelpers
             }
 
             app.AppearanceSearchString = string.Format(
-                "{0}  \"{1} eyes\" {2} {3} hair",
+                "{0}  \"{1} eyes\" {2} hair",
                 app.FacialFeatures.Replace("{pos}", Npc.Poss()),
                 app.EyeColour,
                 hairCol.Description

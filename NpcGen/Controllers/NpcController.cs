@@ -12,10 +12,10 @@ namespace NpcGen.Controllers
     {
         private readonly NpcContext _context = new NpcContext();
 
-        public ActionResult Npc(NpcModel model, string clsName)
+        public ActionResult Npc(NpcModel model, string clsName, string raceName)
         {
             var helper = new NpcGenHelper(_context);
-            model = clsName.NotNullOrEmpty() ? helper.NpcGet(clsName, model) : helper.RandomNpcGet(model);
+            model = clsName.NotNullOrEmpty() ? helper.NpcGet(clsName, raceName, model) : helper.RandomNpcGet(model);
 
             ViewBag.Classes = _context.Classes.Select(x => x.Name);
             ViewBag.HasNpc = true;

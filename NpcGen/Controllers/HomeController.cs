@@ -12,13 +12,9 @@ namespace NpcGen.Controllers
     {
         private readonly NpcContext _context = new NpcContext();
 
-        // GET: Home
+     
+        [HttpGet]
         public ActionResult Index()
-        {
-            return View();
-        }
-
-        public ActionResult Advanced()
         {
             var qs = Request.QueryString;
             if (qs["seed"] != null)
@@ -38,8 +34,28 @@ namespace NpcGen.Controllers
             return View(model);
         }
 
-        [HttpPost]
+     
+      public ActionResult Advanced()
+        {
+            var qs = Request.QueryString;
+            if (qs["seed"] != null)
+            {
+                var config = new Migrations.Configuration();
+                config.SeedDebug(_context);
+            }
 
+            var helper = new NpcGenHelper(_context);
+            //var model = helper.RandomNpcGet();
+
+            var model = new NpcModel { Para = new NpcGenParamsModel { ExperienceLevel = ExperienceLevel.Journeyman } };
+
+            ViewBagger();
+            ViewBag.HasNpc = false;
+
+            return View(model);
+        } 
+
+        [HttpPost]
         public ActionResult Index(NpcModel model, string clsName, string raceName)
         {
             var helper = new NpcGenHelper(_context, model);
@@ -85,9 +101,10 @@ namespace NpcGen.Controllers
             base.Dispose(disposing);
         }
 
-        public ActionResult Assisted()
-        {
-            return View();
-        }
+        // commented out as no view present
+        //public ActionResult Assisted()
+        //{
+        //    return View();
+        //}
     }
 }
