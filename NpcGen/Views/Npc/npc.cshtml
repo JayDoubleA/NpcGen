@@ -1,0 +1,62 @@
+﻿@using NpcGen.Extensions;
+@using NpcGen.Helpers;
+@using NpcGen.Enums;
+@model  NpcGen.Models.NpcModels.NpcModel
+
+@{
+    ViewBag.Title = "A random stranger approaches...";
+}
+@section HeadScripts{
+    @if (ViewBag.HasNpc)
+    {
+        <script src="https://www.google.com/jsapi"></script>
+        <script type="text/javascript" src="~/Scripts/PortraitCreator.js"></script>
+        <script type="text/javascript">
+            var searchstring = " npc portraits @EnumExtensions.ToName(Model.Age) @Model.Gender with @Model.Appearance.AppearanceSearchString ".replace(/&quot;/g, '"');
+            initPortrait(searchstring);
+        </script>
+    }
+}
+
+    <div class="npc-container row">
+        @if (ViewBag.HasNpc)
+        {
+            <div class="col-sm-8">
+
+                <h2>A random stranger approaches...</h2>
+                @NpcViewHelper.RenderDescription(Model)
+                @NpcViewHelper.RenderAppearance(Model)
+
+
+
+                <ul class="statblock list-unstyled">
+                    <li class="stat"><span class="stat">Strength</span> @Model.Class.Strength (@Model.Class.AbilityModStringGet(Abilities.Strength))</li>
+                    <li class="stat"><span class="stat">Dexterity</span> @Model.Class.Dexterity (@Model.Class.AbilityModStringGet(Abilities.Dexterity))</li>
+                    <li class="stat"><span class="stat">Constitution</span> @Model.Class.Constitution (@Model.Class.AbilityModStringGet(Abilities.Constitution))</li>
+                    <li class="stat"><span class="stat">Intelligence</span> @Model.Class.Intelligence (@Model.Class.AbilityModStringGet(Abilities.Intelligence))</li>
+                    <li class="stat"><span class="stat">Wisdom</span> @Model.Class.Wisdom (@Model.Class.AbilityModStringGet(Abilities.Wisdom))</li>
+                    <li class="stat"><span class="stat">Charisma</span> @Model.Class.Charisma (@Model.Class.AbilityModStringGet(Abilities.Charisma))</li>
+                </ul>
+
+
+
+
+                @if (Model.ClassSaves.Count > 0)
+                {
+                    @NpcViewHelper.RenderClassSaves(Model)
+                }
+
+                @NpcViewHelper.RenderClassSkills(Model)
+                @NpcViewHelper.RenderAttacks(Model)
+                @NpcViewHelper.RenderClassAbilities(Model)
+                <p>
+                    @Model.Poss(true) Armour Class = @Model.Class.ArmourClassGet() <br />
+                    @Model.Poss(true) Hit Dice = @Model.Class.Level<br />
+                    @Model.Poss(true) Hit Points = @Model.Class.HitPoints<br />
+                    @Model.Poss(true) Passive Perception = @Model.Class.PassivePerceptionGet()
+                </p>
+            </div>
+
+            <div id="portrait" class="col-sm-4">Loading...</div>
+        }
+    </div>

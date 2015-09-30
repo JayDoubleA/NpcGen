@@ -94,8 +94,6 @@
                 @NpcViewHelper.RenderDescription(Model)
                 @NpcViewHelper.RenderAppearance(Model)
 
-
-
                 <ul class="statblock list-unstyled">
                     <li class="stat"><span class="stat">Strength</span> @Model.Class.Strength (@Model.Class.AbilityModStringGet(Abilities.Strength))</li>
                     <li class="stat"><span class="stat">Dexterity</span> @Model.Class.Dexterity (@Model.Class.AbilityModStringGet(Abilities.Dexterity))</li>
@@ -104,9 +102,6 @@
                     <li class="stat"><span class="stat">Wisdom</span> @Model.Class.Wisdom (@Model.Class.AbilityModStringGet(Abilities.Wisdom))</li>
                     <li class="stat"><span class="stat">Charisma</span> @Model.Class.Charisma (@Model.Class.AbilityModStringGet(Abilities.Charisma))</li>
                 </ul>
-
-
-
 
                 @if (Model.ClassSaves.Count > 0)
                 {

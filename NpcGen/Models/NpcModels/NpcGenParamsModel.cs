@@ -26,7 +26,7 @@ namespace NpcGen.Models.NpcModels
         [DisplayName("Deep and insightful")]
         public bool MoreWis { get; set; }
 
-        [DisplayName("Inner fire")]
+        [DisplayName("Burning with inner fire")]
         public bool MoreCha { get; set; }
 
         [DisplayName("Experience Level")]

@@ -1,0 +1,60 @@
+﻿@using NpcGen.Extensions;
+@using NpcGen.Helpers;
+@using NpcGen.Enums;
+
+@model  NpcGen.Models.NpcModels.NpcModel
+@{
+    ViewBag.Title = "Advanced settings";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="menu col-md-6 col-md-offset-3">
+    <h2>Advanced settings</h2>
+    @using (Html.BeginForm("Npc", "Npc", new { ReturnUrl = ViewBag.ReturnUrl },
+            FormMethod.Post, new { @class = "help-form" }))
+    {
+        <p>
+            <label for="clsName">I would like a </label>
+            @Html.DropDownListFor(model => model.Para.ExperienceLevel, Model.Para.ExperienceLevel.ToSelectList(),"")
+            @Html.DropDownList("clsName", new SelectList(ViewBag.Classes), NpcGen.Constants.StringConstants.ClassesDdlDefault,"")
+
+            <strong>Who is</strong>
+            <select class="statChoice1">
+                <option></option>
+                <option data-property-name="MoreInt" value="1">@Html.DisplayNameFor(model => model.Para.MoreInt)</option>
+                <option value="1" data-property-name="MoreDex">@Html.DisplayNameFor(model => model.Para.MoreDex)</option>
+                <option value="1" data-property-name="MoreCha">@Html.DisplayNameFor(model => model.Para.MoreCha)</option>
+                <option value="1" data-property-name="MoreCon">@Html.DisplayNameFor(model => model.Para.MoreCon)</option>
+                <option value="1" data-property-name="MoreStr">@Html.DisplayNameFor(model => model.Para.MoreStr)</option>
+                <option value="1" data-property-name="MoreWis">@Html.DisplayNameFor(model => model.Para.MoreWis)</option>
+            </select>
+            <input type="hidden" class="hidden1" value="true" />
+            <strong> and also </strong>
+            <select class="statChoice2">
+                <option></option>
+                <option data-property-name="MoreInt" value="1">@Html.DisplayNameFor(model => model.Para.MoreInt)</option>
+                <option value="1" data-property-name="MoreDex">@Html.DisplayNameFor(model => model.Para.MoreDex)</option>
+                <option value="1" data-property-name="MoreCha">@Html.DisplayNameFor(model => model.Para.MoreCha)</option>
+                <option value="1" data-property-name="MoreCon">@Html.DisplayNameFor(model => model.Para.MoreCon)</option>
+                <option value="1" data-property-name="MoreStr">@Html.DisplayNameFor(model => model.Para.MoreStr)</option>
+                <option value="1" data-property-name="MoreWis">@Html.DisplayNameFor(model => model.Para.MoreWis)</option>
+            </select>
+            <input type="hidden" class="hidden2" value="true" />
+
+
+
+
+
+
+
+        </p>
+
+        <div>
+            <input class="form-control" type="submit" value="Submit" />
+        </div>
+    }
+
+</div>
+
+@section scripts{
+<script type="text/javascript" src="~/Scripts/InputHelper.js"></script>
+}

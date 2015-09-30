@@ -103,8 +103,7 @@ namespace NpcGen.ControllerHelpers
                 "{0}  \"{1} eyes\" {2} {3} hair",
                 app.FacialFeatures.Replace("{pos}", Npc.Poss()),
                 app.EyeColour,
-                hairCol,
-                hairStyle
+                hairCol.Description
                 );
 
             Npc.Appearance = app;
