@@ -961,6 +961,8 @@
     <Compile Include="Constants\Names.cs" />
     <Compile Include="Constants\ProficiencyDefinitions.cs" />
     <Compile Include="Constants\QuirkDefinitions.cs" />
+    <Compile Include="Constants\RaceAbilityDefinitions.cs" />
+    <Compile Include="Constants\RaceDefinitions.cs" />
     <Compile Include="Constants\StringConstants.cs" />
     <Compile Include="ControllerHelpers\EnumHelper.cs" />
     <Compile Include="ControllerHelpers\ImportHelper.cs" />
@@ -982,6 +984,7 @@
     <Compile Include="Extensions\EnumExtensions.cs" />
     <Compile Include="Extensions\HtmlExtenstions.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />
+    <Compile Include="Extensions\NpcModelExtenstions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Helpers\NpcViewHelper.cs" />
     <Compile Include="Helpers\RandomHelper.cs" />
@@ -992,6 +995,7 @@
     <Compile Include="Models\NpcModels\AppearanceFeatureModel.cs" />
     <Compile Include="Models\NpcModels\AppearanceModel.cs" />
     <Compile Include="Models\NpcModels\AttackModel.cs" />
+    <Compile Include="Models\NpcModels\RaceAbilityModel.cs" />
     <Compile Include="Models\NpcModels\ClassAbilityModel.cs" />
     <Compile Include="Models\NpcModels\ClassModel.cs" />
     <Compile Include="Global.asax.cs">
@@ -1003,6 +1007,7 @@
     <Compile Include="Models\NpcModels\NpcModel.cs" />
     <Compile Include="Models\NpcModels\ProficiencyModel.cs" />
     <Compile Include="Models\NpcModels\QuirkModel.cs" />
+    <Compile Include="Models\NpcModels\RaceModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -113,5 +113,12 @@ namespace NpcGen.Extensions
 
             return sb.ToString();
         }
+
+        public static string DescriptionPronounify(this string str, NpcModel model)
+        {
+            return str.Replace("{pos}", model.Poss())
+                .Replace("{per}", model.Pers())
+                .Replace("{per true}", model.Pers(true));
+        }
     }
 }

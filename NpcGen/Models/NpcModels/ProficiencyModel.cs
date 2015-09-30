@@ -12,6 +12,7 @@ namespace NpcGen.Models.NpcModels
         public ProficiencyTypes Type { get; set; }
         public Abilities Ability { get; set; }
 
-        public  virtual ICollection<ClassModel> Classes { get; set; }
+        public virtual ICollection<ClassModel> Classes { get; set; }
+        public virtual ICollection<RaceModel> Races { get; set; }
     }
 }

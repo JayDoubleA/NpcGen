@@ -62,16 +62,23 @@ namespace NpcGen.Migrations
                 context.Demeanours.AddOrUpdate(r => r.DemeanourId, dem);
             }
 
-            var hairColourList = AppearanceDefinitions.HairColours();
-            foreach (var colour in hairColourList)
+            var appearanceList = AppearanceDefinitions.Features();
+            foreach (var featue in appearanceList)
             {
-                context.AppearanceFeatures.AddOrUpdate(r => r.Name, colour);
+                context.AppearanceFeatures.AddOrUpdate(r => r.Name, featue);
             }
 
-            var hairStyleList = AppearanceDefinitions.Hairstyles();
-            foreach (var style in hairStyleList)
+            var raceAbilityList = RaceAbilityDefinitions.RaceAbilitiesList();
+            foreach (var ab in raceAbilityList)
             {
-                context.AppearanceFeatures.AddOrUpdate(r => r.Name, style);
+                context.RaceAbilities.AddOrUpdate(r => r.Name, ab);
+            }
+
+            var raceDef = new RaceDefinitions{AbilityList = raceAbilityList, ProficiencyList = proflist};
+            var raceList = raceDef.RacesList();
+            foreach (var race in raceList)
+            {
+                context.Races.AddOrUpdate(r => r.Name, race);
             }
         }
     }

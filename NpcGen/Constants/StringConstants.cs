@@ -7,6 +7,7 @@ namespace NpcGen.Constants
 {
     public static class StringConstants
     {
-        public static string ClassesDdlDefault = "Random Standard NPC";
+        public static string DdlDefault = "Random Standard NPC";
+        public static string ExtraProf = "*ExtraProficiency";
     }
 }

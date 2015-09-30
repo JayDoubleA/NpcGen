@@ -13,6 +13,7 @@ namespace NpcGen.Models.NpcModels
         public Gender Gender { get; set; }
         public Age Age { get; set; }
         public Race Race { get; set; }
+        public RaceModel RaceModel { get; set; }
 
         public ClassModel Class { get; set; }
 
@@ -32,6 +33,16 @@ namespace NpcGen.Models.NpcModels
             }
 
             return Gender.Equals(Gender.Female) ? "she" : "he";
+        }
+
+        public string Accusative(bool hasCapital = false)
+        {
+            if (hasCapital)
+            {
+                return Gender.Equals(Gender.Female) ? "Her" : "Him";
+            }
+
+            return Gender.Equals(Gender.Female) ? "her" : "him";
         }
 
         public string Poss(bool hasCapital = false)

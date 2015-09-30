@@ -34,8 +34,12 @@
         @using (Html.BeginForm())
         {
             <p>
-                <label for="clsName">Pick a starting template</label><br />
-                @Html.DropDownList("clsName", new SelectList(ViewBag.Classes), NpcGen.Constants.StringConstants.ClassesDdlDefault)
+                <label for="clsName">Pick a starting template</label><br/>
+                @Html.DropDownList("clsName", new SelectList(ViewBag.Classes), NpcGen.Constants.StringConstants.DdlDefault)
+            </p>
+            <p>
+                <label for="raceName">Pick a race</label><br/>
+                @Html.DropDownList("raceName", new SelectList(ViewBag.Races))
             </p>
             <p>
                 @Html.LabelFor(model => model.Para.ExperienceLevel)<br />
@@ -111,12 +115,12 @@
                
                 @NpcViewHelper.RenderClassSkills(Model)
                 @NpcViewHelper.RenderAttacks(Model)
-                @NpcViewHelper.RenderClassAbilities(Model)
+                @NpcViewHelper.RenderAbilities(Model)
                 <p>
                     @Model.Poss(true) Armour Class = @Model.Class.ArmourClassGet() <br />
                     @Model.Poss(true) Hit Dice = @Model.Class.Level<br />
                     @Model.Poss(true) Hit Points = @Model.Class.HitPoints<br />
-                    @Model.Poss(true) Passive Perception = @Model.Class.PassivePerceptionGet()
+                    @Model.Poss(true) Passive Perception = @Model.PassivePerceptionGet()
                 </p>
             </div>
 

@@ -25,5 +25,11 @@ namespace NpcGen.Extensions
             var at = list.FirstOrDefault(x => x.Name.ToLower().Equals(name.ToLower()));
             return at ?? new AttackModel();
         }
+
+        public static RaceAbilityModel RaceAbilityGet(this List<RaceAbilityModel> list, string name)
+        {
+            var at = list.FirstOrDefault(x => x.Name.ToLower().Equals(name.ToLower()));
+            return at ?? new RaceAbilityModel();
+        }
     }
 }

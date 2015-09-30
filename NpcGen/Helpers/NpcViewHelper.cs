@@ -16,11 +16,13 @@ namespace NpcGen.Helpers
                 var quirkModel = model.Quirks.FirstOrDefault();
                 if (quirkModel != null)
                     paragraph.InnerHtml = string.Format(
-                        "{0} is {1} {2} {3}, distinguished from others because {4} {5}.",
+                        "{0} is {1} {2} {3} {4}, distinguished from others because {5} {6}.",
                         model.Name,
                         firstOrDefault.Description.WithArticle(),
                         EnumExtensions.ToName(model.Age).ToLower(),
-                        model.Class.Name, model.Pers(),
+                        model.RaceModel.Name,
+                        model.Class.Name,
+                        model.Pers(),
                         quirkModel.
                             Description.NotCap().Genderize(model.Gender)
                         );
@@ -33,7 +35,7 @@ namespace NpcGen.Helpers
             var paragraph = new TagBuilder("p")
             {
                 InnerHtml = string.Format(
-                    "{0} face is defined by {1} {2} and {3} eyes. {4}",
+                    "{0} face is defined by {1} {2} and {3}. {4}",
                     model.Poss(true),
                     model.Poss(),
                     model.Appearance.FacialFeatures.Replace("{pos}", model.Poss()).ToLower(),
@@ -134,19 +136,26 @@ namespace NpcGen.Helpers
             return MvcHtmlString.Create(paragraph.ToString());
         }
 
-        public static MvcHtmlString RenderClassAbilities(NpcModel model)
+        public static MvcHtmlString RenderAbilities(NpcModel model)
         {
             var paragraph = new TagBuilder("p");
-            if (model.Class.ClassAbilities.Count > 0)
+            if (model.Class.ClassAbilities.Count > 0 || model.RaceModel.RaceAbilities.Count > 0)
             {
-                paragraph.InnerHtml = string.Format("As a typical {0}, {1} has the following abilities:",
-                    model.Class.Name, model.Name);
+                paragraph.InnerHtml = string.Format("As a typical {0} {1}, {2} has the following abilities:", model.RaceModel.Name, model.Class.Name, model.Name);
                 var list = new TagBuilder("ul");
                 foreach (var ab in model.Class.ClassAbilities)
                 {
                     var listItem = new TagBuilder("li")
                     {
                         InnerHtml = string.Format("<b>{0}</b> <br />{1}", ab.Name, ab.Description)
+                    };
+                    list.InnerHtml += listItem;
+                }
+                foreach (var ab in model.RaceModel.RaceAbilities)
+                {
+                    var listItem = new TagBuilder("li")
+                    {
+                        InnerHtml = string.Format("<b>{0}</b> <br />{1}", ab.Name, ab.Description.DescriptionPronounify(model))
                     };
                     list.InnerHtml += listItem;
                 }

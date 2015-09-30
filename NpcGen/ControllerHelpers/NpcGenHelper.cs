@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web.Mvc;
+using System.Web.Security;
 using NpcGen.Constants;
 using NpcGen.DataAccess;
 using NpcGen.Enums;
@@ -17,9 +17,17 @@ namespace NpcGen.ControllerHelpers
         private readonly NpcContext _context;
         private readonly Random _rnd;
         private readonly RandomHelper _rndHelper;
+        private NpcModel _npc;
 
-        public NpcGenHelper(NpcContext context)
+        public NpcModel Npc
         {
+            get { return _npc; }
+            set { _npc = value; }
+        }
+
+        public NpcGenHelper(NpcContext context, NpcModel npc = null)
+        {
+            _npc = npc;
             _context = context;
             _rnd = new Random();
             _rndHelper = new RandomHelper();
@@ -27,51 +35,52 @@ namespace NpcGen.ControllerHelpers
 
         public NpcModel RandomNpcGet(NpcModel para)
         {
-            var npc = new NpcModel();
-            npc.Para = para.Para ?? new NpcGenParamsModel();
+            Npc = new NpcModel();
+            Npc.Para = para.Para ?? new NpcGenParamsModel();
 
-            GetNpcClass(npc);
-            SplitClassProficiencies(npc);
-            GetAge(npc);
-            GetCustomProficiencies(npc);
-            GetNameAndGender(npc);
-            GetQuirks(npc);
-            GetDemeanour(npc);
-            GetAppearance(npc);
-            NpcParamsProcess(npc);
-            AttackRecalculate(npc);
+            GetNpcClass();
+            SplitClassProficiencies();
+            GetAge();
+            GetCustomProficiencies();
+            GetNameAndGender();
+            GetQuirks();
+            GetDemeanour();
+            GetAppearance();
+            NpcParamsProcess();
+            AttackRecalculate();
 
-            return npc;
+            return Npc;
         }
 
-        public NpcModel NpcGet(string clsName, NpcModel para)
+        public NpcModel NpcGet(string clsName, string raceName, NpcModel para)
         {
-            var npc = new NpcModel();
-            npc.Para = para.Para ?? new NpcGenParamsModel();
+            Npc = new NpcModel();
+            Npc.Para = para.Para ?? new NpcGenParamsModel();
 
-            GetNpcClass(npc, clsName);
-            SplitClassProficiencies(npc);
-            GetAge(npc);
-            GetCustomProficiencies(npc);
-            GetNameAndGender(npc);
-            GetQuirks(npc);
-            GetDemeanour(npc);
-            GetAppearance(npc);
-            NpcParamsProcess(npc);
-            AttackRecalculate(npc);
+            GetNpcClass(clsName);
+            GetNpcRace(raceName);
+            SplitClassProficiencies();
+            GetAge();
+            GetCustomProficiencies();
+            GetNameAndGender();
+            GetQuirks();
+            GetDemeanour();
+            GetAppearance();
+            NpcParamsProcess();
+            AttackRecalculate();
 
-            return npc;
+            return Npc;
         }
 
-        private void GetAppearance(NpcModel npc)
+        private void GetAppearance()
         {
-            var hairCol = AppearanceFeatureGet(npc, AppearanceType.HairColour);
-            var hairStyle = AppearanceFeatureGet(npc, AppearanceType.HairStyle);
-            var hair = hairStyle.Description.Replace("{col}", hairCol.Description).Replace("{pos}", npc.Poss());
+            var hairCol = AppearanceFeatureGet(AppearanceType.HairColour);
+            var hairStyle = AppearanceFeatureGet(AppearanceType.HairStyle);
+            var hair = hairStyle.Description.Replace("{col}", hairCol.Description).Replace("{pos}", Npc.Poss());
 
             var app = new AppearanceModel
             {
-                EyeColour = EnumExtensions.ToName(EnumExtensions.Of<EyeColour>()),
+                EyeColour = AppearanceFeatureGet(AppearanceType.Eyes).Description,
                 Hair = hair
             };
 
@@ -92,78 +101,90 @@ namespace NpcGen.ControllerHelpers
 
             app.AppearanceSearchString = string.Format(
                 "{0}  \"{1} eyes\" {2} {3} hair",
-                app.FacialFeatures.Replace("{pos}", npc.Poss()),
+                app.FacialFeatures.Replace("{pos}", Npc.Poss()),
                 app.EyeColour,
                 hairCol,
                 hairStyle
                 );
 
-            npc.Appearance = app;
+            Npc.Appearance = app;
         }
-        private AppearanceFeatureModel AppearanceFeatureGet(NpcModel npc, AppearanceType type)
+        private AppearanceFeatureModel AppearanceFeatureGet( AppearanceType type)
         {
             var avail = _rndHelper.Availability();
-            var featuresPoss =
-                _context.AppearanceFeatures.Where(x => x.AppearanceType == type && x.Genders.Contains(npc.Gender.ToString())  && x.Availability == avail && x.Races.Contains(npc.Race.ToString())).ToList();
-            var rnd = _rnd.Next(0, featuresPoss.Count());
+            var featuresPoss = _context.AppearanceFeatures.Where(x => x.AppearanceType == type);
+            featuresPoss = featuresPoss.Where(x => x.Genders.Contains(Npc.Gender.ToString()));
+            if (!featuresPoss.Any(x => x.Availability == avail))
+            {
+                avail = Availability.Common;
+            }
+            featuresPoss = featuresPoss.Where(x => x.Availability == avail);
+            var featuresList = featuresPoss.Where(x => x.Races.Contains(Npc.Race.ToString())).ToList();
+            var rnd = _rnd.Next(0, featuresList.Count());
 
-            return featuresPoss[rnd];
+            return featuresList[rnd];
         }
 
-        private void GetDemeanour(NpcModel npc)
+        private void GetDemeanour()
         {
             var demList = _context.Demeanours.ToList();
             var demRnd = _rnd.Next(0, demList.Count());
             var dem = demList[demRnd];
-            npc.Demeanour = new List<DemeanourModel> { dem };
+            Npc.Demeanour = new List<DemeanourModel> { dem };
         }
 
-        private void GetNpcClass(NpcModel npc)
+        private void GetNpcClass()
         {
             var clsRnd = _rnd.Next(0, _context.Classes.Count());
             var cls = _context.Classes.ToList()[clsRnd];
-            npc.Class = cls;
+            Npc.Class = cls;
         }
 
-        private void GetNpcClass(NpcModel npc, string clsName)
+        private void GetNpcClass(string clsName)
         {
-            npc.Class = _context.Classes.ToList().FirstOrDefault(x => x.Name.Equals(clsName));
+            Npc.Class = _context.Classes.ToList().FirstOrDefault(x => x.Name.Equals(clsName));
         }
 
-        private void SplitClassProficiencies(NpcModel npc)
+        private void GetNpcRace(string raceName)
         {
-            npc.ClassSaves = npc.Class.Proficiencies.Where(x => x.Type == ProficiencyTypes.Save).ToList();
-            npc.ClassSkills = npc.Class.Proficiencies.Where(x => x.Type == ProficiencyTypes.Skill).ToList();
-            npc.ClassTools = npc.Class.Proficiencies.Where(x => x.Type == ProficiencyTypes.Tool).ToList();
+            Npc.RaceModel = _context.Races.ToList().FirstOrDefault(x => x.Name.Equals(raceName));
+            Npc.Race = Npc.RaceModel.Race;
         }
 
-        private void GetCustomProficiencies(NpcModel npc)
+        private void SplitClassProficiencies()
         {
-            var profPoss = _context.Proficiencies.ToList().Where(p => !npc.Class.Proficiencies.Contains(p) && p.Type != ProficiencyTypes.Save);
+            Npc.ClassSaves = Npc.Class.Proficiencies.Where(x => x.Type == ProficiencyTypes.Save).ToList();
+            Npc.ClassSkills = Npc.Class.Proficiencies.Where(x => x.Type == ProficiencyTypes.Skill).ToList();
+            Npc.ClassTools = Npc.Class.Proficiencies.Where(x => x.Type == ProficiencyTypes.Tool).ToList();
+        }
+
+        private void GetCustomProficiencies()
+        {
+            var profPoss = _context.Proficiencies.ToList().Where(p => !Npc.Class.Proficiencies.Contains(p) && p.Type != ProficiencyTypes.Save);
             var profRnd = _rnd.Next(0, profPoss.Count());
             var profCustom = profPoss.ToList()[profRnd];
-            npc.CustomProficiencies = new List<ProficiencyModel> { profCustom };
+            Npc.CustomProficiencies = new List<ProficiencyModel> { profCustom };
         }
 
-        private void AddCustomProficiency(NpcModel npc)
+        private void AddCustomProficiency()
         {
-            var profPoss = _context.Proficiencies.ToList().Where(p => !npc.Class.Proficiencies.Contains(p) && !npc.CustomProficiencies.Contains(p) && p.Type != ProficiencyTypes.Save);
+            var profPoss = _context.Proficiencies.ToList().Where(p => !Npc.Class.Proficiencies.Contains(p) && !Npc.CustomProficiencies.Contains(p) && p.Type != ProficiencyTypes.Save);
             var profRnd = _rnd.Next(0, profPoss.Count());
             var profCustom = profPoss.ToList()[profRnd];
-            npc.CustomProficiencies.Add(profCustom);
+            Npc.CustomProficiencies.Add(profCustom);
         }
 
-        private void AddCustomProficiency(NpcModel npc, Abilities abil)
+        private void AddCustomProficiency( Abilities abil)
         {
-            var profPoss = _context.Proficiencies.ToList().Where(p => !npc.Class.Proficiencies.Contains(p) && !npc.CustomProficiencies.Contains(p) && p.Type != ProficiencyTypes.Save && p.Ability.Equals(abil));
+            var profPoss = _context.Proficiencies.ToList().Where(p => !Npc.Class.Proficiencies.Contains(p) && !Npc.CustomProficiencies.Contains(p) && p.Type != ProficiencyTypes.Save && p.Ability.Equals(abil));
             var profRnd = _rnd.Next(0, profPoss.Count());
             var profCustom = profPoss.ToList()[profRnd];
-            npc.CustomProficiencies.Add(profCustom);
+            Npc.CustomProficiencies.Add(profCustom);
         }
 
-        private void AddSpecificProficiency(NpcModel npc, Proficiencies prof)
+        private void AddSpecificProficiency( Proficiencies prof)
         {
-            if (!npc.Class.Proficiencies.Any(p => p.ProficiencyId.Equals(prof)) && !npc.CustomProficiencies.Any(r => r.ProficiencyId.Equals(prof)))
+            if (!Npc.Class.Proficiencies.Any(p => p.ProficiencyId.Equals(prof)) && !Npc.CustomProficiencies.Any(r => r.ProficiencyId.Equals(prof)))
             {
                 // var profMod = _context.Proficiencies.Where(p => p.ProficiencyId.Equals(prof)).ToList().FirstOrDefault(); ;
 
@@ -182,60 +203,60 @@ namespace NpcGen.ControllerHelpers
                 {
                     if (profMod.Type.Equals(ProficiencyTypes.Save))
                     {                        
-                        npc.ClassSaves.Add(profMod);
+                        Npc.ClassSaves.Add(profMod);
                     }
                     else
                     {
-                        npc.CustomProficiencies.Add(profMod);
+                        Npc.CustomProficiencies.Add(profMod);
                     }
                 }
             }
         }
 
-        private void GetQuirks(NpcModel npc)
+        private void GetQuirks()
         {
             var qrkList = _context.Quirks.ToList();
             var qrkRnd = _rnd.Next(0, qrkList.Count());
             var qrk = qrkList[qrkRnd];
-            npc.Quirks = new List<QuirkModel> { qrk };
+            Npc.Quirks = new List<QuirkModel> { qrk };
         }
 
-        private void GetAge(NpcModel npc)
+        private void GetAge()
         {
             var age = _rnd.Next(100);
 
             if (age > 97)
             {
-                npc.Age = Age.Ancient;
+                Npc.Age = Age.Ancient;
             }
             else if (age > 85)
             {
-                npc.Age = Age.Old;
+                Npc.Age = Age.Old;
             }
             else if (age > 60)
             {
-                npc.Age = Age.MiddleAged;
+                Npc.Age = Age.MiddleAged;
             }
             else if (age > 35)
             {
-                npc.Age = Age.Adult;
+                Npc.Age = Age.Adult;
             }
             else if (age > 8)
             {
-                npc.Age = Age.Young;
+                Npc.Age = Age.Young;
             }
             else
             {
-                npc.Age = Age.Child;
+                Npc.Age = Age.Child;
             }
         }
 
-        private void GetNameAndGender(NpcModel npc)
+        private void GetNameAndGender()
         {
-            npc.Gender = _rnd.Next(2) == 1 ? Gender.Male : Gender.Female;
+            Npc.Gender = _rnd.Next(2) == 1 ? Gender.Male : Gender.Female;
 
             List<string> namesPoss;
-            switch (npc.Gender)
+            switch (Npc.Gender)
             {
                 case Gender.Female:
                     namesPoss = Names.FemaleNames();
@@ -245,135 +266,156 @@ namespace NpcGen.ControllerHelpers
                     break;
             }
 
-            npc.Name = namesPoss.Skip(_rnd.Next(0, namesPoss.Count())).Take(1).FirstOrDefault();
+            Npc.Name = namesPoss.Skip(_rnd.Next(0, namesPoss.Count())).Take(1).FirstOrDefault();
         }
 
-        public void NpcParamsProcess(NpcModel npc)
+        public void NpcParamsProcess()
         {
-            ExperienceLevelProcess(npc);
-            StatBuffsProcess(npc);
-            AbilityCeilingEnforce(npc);
-            ParamProcessWrapUp(npc);
+            ExperienceLevelProcess();
+            StatBuffsProcess();
+            if (Npc.RaceModel != null)
+            {
+                RaceProcess();
+            }
+            AbilityCeilingEnforce();
+            ParamProcessWrapUp();
         }
 
-        private void ExperienceLevelProcess(NpcModel npc)
+        private void ExperienceLevelProcess()
         {
-            switch (npc.Para.ExperienceLevel)
+            switch (Npc.Para.ExperienceLevel)
             {
                 case ExperienceLevel.Novice:
-                    LevelTweak(npc, -4);
+                    LevelTweak(-4);
                     break;
                 case ExperienceLevel.Apprentice:
-                    LevelTweak(npc, -2);
+                    LevelTweak(-2);
                     break;
                 case ExperienceLevel.Journeyman: 
                     break;
                 case ExperienceLevel.Expert:
-                    LevelTweak(npc, 2);
+                    LevelTweak(2);
                     break;
                 case ExperienceLevel.Master:
-                    LevelTweak(npc, 4);
-                    RandomAbilityTweak(npc, 2);
+                    LevelTweak(4);
+                    RandomAbilityTweak(2);
                     break;
             }
         }
 
-        private void StatBuffsProcess(NpcModel npc)
+        private void StatBuffsProcess()
         {
-            if (npc.Para.MoreStr)
+            if (Npc.Para.MoreStr)
             {
-                npc.Class.Strength += 4;
-                AddSpecificProficiency(npc, Proficiencies.StrengthSave);
-                AddCustomProficiency(npc, Abilities.Strength);
+                Npc.Class.Strength += 4;
+                AddSpecificProficiency(Proficiencies.StrengthSave);
+                AddCustomProficiency(Abilities.Strength);
             }
-            if (npc.Para.MoreDex)
+            if (Npc.Para.MoreDex)
             {
-                npc.Class.Dexterity += 4;
-                AddSpecificProficiency(npc, Proficiencies.DexteritySave);
-                AddCustomProficiency(npc, Abilities.Dexterity);
+                Npc.Class.Dexterity += 4;
+                AddSpecificProficiency(Proficiencies.DexteritySave);
+                AddCustomProficiency(Abilities.Dexterity);
             }
-            if (npc.Para.MoreCon)
+            if (Npc.Para.MoreCon)
             {
-                npc.Class.Constitution += 4;
-                AddSpecificProficiency(npc, Proficiencies.ConstitutionSave);
-                npc.Class.HitPoints = npc.Class.HitPointsMaxGet();
+                Npc.Class.Constitution += 4;
+                AddSpecificProficiency(Proficiencies.ConstitutionSave);
+                Npc.Class.HitPoints = Npc.Class.HitPointsMaxGet();
             }
-            if (npc.Para.MoreInt)
+            if (Npc.Para.MoreInt)
             {
-                npc.Class.Intelligence += 4;
-                AddSpecificProficiency(npc, Proficiencies.IntelligenceSave);
-                AddCustomProficiency(npc, Abilities.Intelligence);
+                Npc.Class.Intelligence += 4;
+                AddSpecificProficiency(Proficiencies.IntelligenceSave);
+                AddCustomProficiency(Abilities.Intelligence);
             }
-            if (npc.Para.MoreWis)
+            if (Npc.Para.MoreWis)
             {
-                npc.Class.Wisdom += 4;
-                AddSpecificProficiency(npc, Proficiencies.WisdomSave);
-                AddCustomProficiency(npc, Abilities.Wisdom);
+                Npc.Class.Wisdom += 4;
+                AddSpecificProficiency(Proficiencies.WisdomSave);
+                AddCustomProficiency(Abilities.Wisdom);
             }
-            if (npc.Para.MoreCha)
+            if (Npc.Para.MoreCha)
             {
-                npc.Class.Charisma += 4;
-                AddSpecificProficiency(npc, Proficiencies.CharismaSave);
-                AddCustomProficiency(npc, Abilities.Charisma);
+                Npc.Class.Charisma += 4;
+                AddSpecificProficiency(Proficiencies.CharismaSave);
+                AddCustomProficiency(Abilities.Charisma);
             }
         }
 
-        private void LevelTweak(NpcModel npc, int tweak)
+        private void LevelTweak( int tweak)
         {
-            var tweakedLevel = npc.Class.Level + tweak;
+            var tweakedLevel = Npc.Class.Level + tweak;
 
             if (tweakedLevel < 1)
             {
-                npc.Class.Level = 1;
-                RandomAbilityTweak(npc, -2);
+                Npc.Class.Level = 1;
+                RandomAbilityTweak(-2);
             }
             else
             {
-                npc.Class.Level = tweakedLevel;
+                Npc.Class.Level = tweakedLevel;
             }
         }
 
-        private void RandomAbilityTweak(NpcModel npc, int change)
+        private void RandomAbilityTweak( int change)
         {
             var abil = EnumHelper.RandomEnumValue<Abilities>().ToString();
-            var type = npc.Class.GetType();
+            var type = Npc.Class.GetType();
             var properties = type.GetProperties();
 
             var prop = properties.FirstOrDefault(p => p.Name.Equals(abil));
             if (prop != null)
             {
-                var val = (int)prop.GetValue(npc.Class, null);
-                prop.SetValue(npc.Class, val + change);
+                var val = (int)prop.GetValue(Npc.Class, null);
+                prop.SetValue(Npc.Class, val + change);
             }
         }
 
-        private void AbilityCeilingEnforce(NpcModel npc)
+        private void RaceProcess()
         {
-            npc.Class.Strength = npc.Class.Strength > 20 ? 20 : npc.Class.Strength;
-            npc.Class.Dexterity = npc.Class.Dexterity > 20 ? 20 : npc.Class.Dexterity;
-            npc.Class.Constitution = npc.Class.Constitution > 20 ? 20 : npc.Class.Constitution;
-            npc.Class.Intelligence = npc.Class.Intelligence > 20 ? 20 : npc.Class.Intelligence;
-            npc.Class.Wisdom = npc.Class.Wisdom > 20 ? 20 : npc.Class.Wisdom;
-            npc.Class.Charisma = npc.Class.Charisma > 20 ? 20 : npc.Class.Charisma;
+            Npc.Class.Strength += Npc.RaceModel.StrengthMod;
+            Npc.Class.Dexterity += Npc.RaceModel.DexterityMod;
+            Npc.Class.Constitution += Npc.RaceModel.ConstitutionMod;
+            Npc.Class.Intelligence += Npc.RaceModel.IntelligenceMod;
+            Npc.Class.Wisdom += Npc.RaceModel.WisdomMod;
+            Npc.Class.Charisma += Npc.RaceModel.CharismaMod;
+
+            if (Npc.RaceModel.RaceAbilities.Any(x => x.Name.Equals(StringConstants.ExtraProf)))
+            {
+                var extraProf = Npc.RaceModel.RaceAbilities.FirstOrDefault(x => x.Name.Equals(StringConstants.ExtraProf));
+                Npc.RaceModel.RaceAbilities.Remove(extraProf);
+                AddCustomProficiency();
+            }
         }
 
-        private void ParamProcessWrapUp(NpcModel npc)
+        private void AbilityCeilingEnforce()
         {
-            if (npc.Para.MoreCon)
+            Npc.Class.Strength = Npc.Class.Strength > 20 ? 20 : Npc.Class.Strength;
+            Npc.Class.Dexterity = Npc.Class.Dexterity > 20 ? 20 : Npc.Class.Dexterity;
+            Npc.Class.Constitution = Npc.Class.Constitution > 20 ? 20 : Npc.Class.Constitution;
+            Npc.Class.Intelligence = Npc.Class.Intelligence > 20 ? 20 : Npc.Class.Intelligence;
+            Npc.Class.Wisdom = Npc.Class.Wisdom > 20 ? 20 : Npc.Class.Wisdom;
+            Npc.Class.Charisma = Npc.Class.Charisma > 20 ? 20 : Npc.Class.Charisma;
+        }
+
+        private void ParamProcessWrapUp()
+        {
+            if (Npc.Para.MoreCon)
             {
-                npc.Class.HitPoints = npc.Class.HitPointsMaxGet();
+                Npc.Class.HitPoints = Npc.Class.HitPointsMaxGet();
             }
             else
             {
-                npc.Class.HitPoints = npc.Class.HitPointsAverageGet();
+                Npc.Class.HitPoints = Npc.Class.HitPointsAverageGet();
             }
         }
 
-        public void AttackRecalculate(NpcModel npc)
+        public void AttackRecalculate()
         {
-            foreach (var at in npc.Class.Attacks)
+            foreach (var at in Npc.Class.Attacks)
             {
-                at.ToHit = LevelConstants.ProficiencyBonus(npc.Class.Level) + npc.Class.AbilityModifierGet(at.Ability);                
+                at.ToHit = LevelConstants.ProficiencyBonus(Npc.Class.Level) + Npc.Class.AbilityModifierGet(at.Ability);                
             }
         }
     }

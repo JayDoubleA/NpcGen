@@ -1,9 +1,11 @@
 ﻿using System;
-using System.Linq;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
-using NpcGen.Interfaces;
+using System.Linq;
 using System.Web.Mvc;
+using NpcGen.Enums;
+using NpcGen.Interfaces;
 
 namespace NpcGen.Extensions
 {
@@ -11,7 +13,6 @@ namespace NpcGen.Extensions
     {
         public static T Of<T>()
         {
-
             if (!typeof (T).IsEnum)
             {
                 throw new InvalidOperationException("Must use Enum type");
@@ -68,6 +69,16 @@ namespace NpcGen.Extensions
             }
 
             return attributeValue;
+        }
+
+        public static List<Race> AllRacesExcept(IEnumerable<Race> excluded)
+        {
+            return Enum.GetValues(typeof(Race)).Cast<Race>().Where(x => !excluded.Contains(x)).ToList();
+        }
+
+        public static List<Race> AllRacesExcept(Race race)
+        {
+            return AllRacesExcept(new List<Race> {race});
         }
     }
 }

@@ -55,14 +55,6 @@ namespace NpcGen.Extensions
             return StringHelpers.ModStringGet(cls.ProficientSkillScoreGet(prof));
         }
 
-        public static int PassivePerceptionGet(this ClassModel cls)
-        {
-            var isProf = cls.Proficiencies.Any(x => x.Name.Equals(Proficiencies.Perception.ToString()));
-            var abilityMod = cls.AbilityModifierGet(Abilities.Wisdom) ;
-
-            return isProf ? 10 + abilityMod + cls.ProficencyBonus : 10 + abilityMod;
-        }
-
         public static int ArmourClassGet(this ClassModel cls)
         {
             return 10 + cls.BaseArmourClass + AbilityModifierGet(cls, Abilities.Dexterity);

@@ -27,22 +27,28 @@ namespace NpcGen.Controllers
 
             var model = new NpcModel { Para = new NpcGenParamsModel { ExperienceLevel = ExperienceLevel.Journeyman } };
 
-            ViewBag.Classes = _context.Classes.Select(x => x.Name);
+            ViewBagger();
             ViewBag.HasNpc = false;
 
             return View(model);
         }
 
         [HttpPost]
-        public ActionResult Index(NpcModel model, string clsName)
+        public ActionResult Index(NpcModel model, string clsName, string raceName)
         {
-            var helper = new NpcGenHelper(_context);
-            model = clsName.NotNullOrEmpty() ? helper.NpcGet(clsName, model) : helper.RandomNpcGet(model);
+            var helper = new NpcGenHelper(_context, model);
+            model = clsName.NotNullOrEmpty() ? helper.NpcGet(clsName, raceName, model) : helper.RandomNpcGet(model);
 
-            ViewBag.Classes = _context.Classes.Select(x => x.Name);
+            ViewBagger();
             ViewBag.HasNpc = true;
 
             return View(model);
+        }
+
+        public void ViewBagger()
+        {
+            ViewBag.Classes = _context.Classes.Select(x => x.Name);
+            ViewBag.Races = _context.Races.Select(x => x.Name);
         }
 
         protected override void Dispose(bool disposing)

@@ -15,6 +15,8 @@ namespace NpcGen.DataAccess
         public DbSet<ProficiencyModel> Proficiencies { get; set; }
         public DbSet<ClassAbilityModel> ClassAbilities { get; set; }
         public DbSet<AppearanceFeatureModel> AppearanceFeatures { get; set; }
+        public DbSet<RaceModel> Races { get; set; }
+        public DbSet<RaceAbilityModel> RaceAbilities { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -50,6 +52,28 @@ namespace NpcGen.DataAccess
                         m.MapLeftKey("ClassId");
                         m.MapRightKey("Name");
                         m.ToTable("ClassesAbilities");
+                    });
+
+            modelBuilder.Entity<RaceModel>().
+               HasMany(r => r.RaceAbilities).
+               WithMany(a => a.Races).
+               Map(
+                   m =>
+                   {
+                       m.MapLeftKey("RaceId");
+                       m.MapRightKey("RaceAbilityId");
+                       m.ToTable("RacesAbilities");
+                   });
+
+            modelBuilder.Entity<RaceModel>().
+                HasMany(r => r.Proficiencies).
+                WithMany(p => p.Races).
+                Map(
+                    m =>
+                    {
+                        m.MapLeftKey("RaceId");
+                        m.MapRightKey("ProficiencyId");
+                        m.ToTable("RacesProficiencies");
                     });
         }
     }
