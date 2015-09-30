@@ -8,33 +8,11 @@ using NpcGen.Enums;
 
 namespace NpcGen.Controllers
 {
-    public class HomeController : Controller
+    public class NpcController : Controller
     {
         private readonly NpcContext _context = new NpcContext();
 
-        [HttpGet]
-        public ActionResult Index()
-        {
-            var qs = Request.QueryString;
-            if (qs["seed"] != null)
-            {
-                var config = new Migrations.Configuration();
-                config.SeedDebug(_context);
-            }
-
-            var helper = new NpcGenHelper(_context);
-            //var model = helper.RandomNpcGet();
-
-            var model = new NpcModel { Para = new NpcGenParamsModel { ExperienceLevel = ExperienceLevel.Journeyman } };
-
-            ViewBagger();
-            ViewBag.HasNpc = false;
-
-            return View(model);
-        }
-
-        [HttpPost]
-        public ActionResult Index(NpcModel model, string clsName, string raceName)
+        public ActionResult Npc(NpcModel model, string clsName, string raceName)
         {
             var helper = new NpcGenHelper(_context, model);
             model = clsName.NotNullOrEmpty() ? helper.NpcGet(clsName, raceName, model) : helper.RandomNpcGet(model);
