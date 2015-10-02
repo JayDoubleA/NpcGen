@@ -5,7 +5,7 @@ namespace NpcGen.Models.NpcModels
     public class DemeanourModel
     {
         [Key]
-        public int DemeanourId { get; set; }
+        public int Id { get; set; }
 
         public string Description { get; set; }
     }

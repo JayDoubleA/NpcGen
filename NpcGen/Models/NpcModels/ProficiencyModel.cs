@@ -8,11 +8,12 @@ namespace NpcGen.Models.NpcModels
     {
         public string Name { get; set; }
         [Key]
-        public Proficiencies ProficiencyId { get; set; }
+        public Proficiencies Id { get; set; }
         public ProficiencyTypes Type { get; set; }
         public Abilities Ability { get; set; }
 
         public virtual ICollection<ClassModel> Classes { get; set; }
         public virtual ICollection<RaceModel> Races { get; set; }
+        public virtual ICollection<LocationModel> Locations { get; set; }
     }
 }

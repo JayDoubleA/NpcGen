@@ -999,6 +999,7 @@
     <Compile Include="Models\NpcModels\AppearanceFeatureModel.cs" />
     <Compile Include="Models\NpcModels\AppearanceModel.cs" />
     <Compile Include="Models\NpcModels\AttackModel.cs" />
+    <Compile Include="Models\NpcModels\LocationModel.cs" />
     <Compile Include="Models\NpcModels\RaceAbilityModel.cs" />
     <Compile Include="Models\NpcModels\ClassAbilityModel.cs" />
     <Compile Include="Models\NpcModels\ClassModel.cs" />

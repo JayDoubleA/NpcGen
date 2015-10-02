@@ -15,6 +15,7 @@ namespace NpcGen.Models.NpcModels
         public string Races { get; set; }
         public Availability Availability { get; set; }
         public string Genders { get; set; }
+        public virtual ICollection<LocationModel> Locations { get; set; }
 
         public AppearanceFeatureModel() { }
 

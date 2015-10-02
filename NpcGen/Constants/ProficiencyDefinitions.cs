@@ -15,7 +15,7 @@ namespace NpcGen.Constants
             list.AddRange(Skills());
             list.AddRange(Tools());
 
-            var returnList = list.OrderBy(x => x.ProficiencyId);
+            var returnList = list.OrderBy(x => x.Id);
 
             return list;
         }
@@ -73,7 +73,7 @@ namespace NpcGen.Constants
 
         public static ProficiencyModel ProficiencyGet(Proficiencies id, string name, Abilities stat, ProficiencyTypes type)
         {
-            return new ProficiencyModel { ProficiencyId = id, Name = name, Ability = stat, Type = type };
+            return new ProficiencyModel { Id = id, Name = name, Ability = stat, Type = type };
         }
     }
 }

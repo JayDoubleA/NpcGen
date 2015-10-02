@@ -34,7 +34,7 @@ namespace NpcGen.Migrations
             var proflist = ProficiencyDefinitions.List();
             foreach (var prof in proflist)
             {
-                context.Proficiencies.AddOrUpdate(r => r.ProficiencyId, prof);
+                context.Proficiencies.AddOrUpdate(r => r.Id, prof);
             }
 
             var abs = ClassAbilityDefinitions.List();
@@ -59,7 +59,7 @@ namespace NpcGen.Migrations
             var demeanourlist = DemeanourDefinitions.List();
             foreach (var dem in demeanourlist)
             {
-                context.Demeanours.AddOrUpdate(r => r.DemeanourId, dem);
+                context.Demeanours.AddOrUpdate(r => r.Id, dem);
             }
 
             var appearanceList = AppearanceDefinitions.Features();

@@ -185,7 +185,7 @@ namespace NpcGen.ControllerHelpers
 
         private void AddSpecificProficiency( Proficiencies prof)
         {
-            if (!Npc.Class.Proficiencies.Any(p => p.ProficiencyId.Equals(prof)) && !Npc.CustomProficiencies.Any(r => r.ProficiencyId.Equals(prof)))
+            if (!Npc.Class.Proficiencies.Any(p => p.Id.Equals(prof)) && !Npc.CustomProficiencies.Any(r => r.Id.Equals(prof)))
             {
                 // var profMod = _context.Proficiencies.Where(p => p.ProficiencyId.Equals(prof)).ToList().FirstOrDefault(); ;
 
@@ -193,7 +193,7 @@ namespace NpcGen.ControllerHelpers
 
                 foreach (var pr in _context.Proficiencies)
                 {
-                    if (pr.ProficiencyId.ToString().Equals(prof.ToString()))
+                    if (pr.Id.ToString().Equals(prof.ToString()))
                     {
                         profMod = pr;
                         break;

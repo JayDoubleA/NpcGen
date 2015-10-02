@@ -8,7 +8,7 @@ namespace NpcGen.Models.NpcModels
     public class RaceModel
     {
         [Key]
-        public int RaceId { get; set; }
+        public int Id { get; set; }
         public Race Race { get; set; }
         public string Name { get; set; }
         public int StrengthMod { get; set; }
@@ -19,6 +19,11 @@ namespace NpcGen.Models.NpcModels
         public int CharismaMod { get; set; }
         public virtual ICollection<RaceAbilityModel> RaceAbilities { get; set; }
         public virtual ICollection<ProficiencyModel> Proficiencies { get; set; }
+        public string NamesMale { get; set; }
+        public string NamesFemale { get; set; }
+        public string NamesFamily { get; set; }
+        public virtual ICollection<LocationModel> LocationsMajor { get; set; }
+        public virtual ICollection<LocationModel> LocationsAbsent { get; set; }
 
         public RaceModel()
         {

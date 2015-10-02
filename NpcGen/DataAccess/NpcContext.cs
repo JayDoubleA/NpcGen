@@ -17,6 +17,7 @@ namespace NpcGen.DataAccess
         public DbSet<AppearanceFeatureModel> AppearanceFeatures { get; set; }
         public DbSet<RaceModel> Races { get; set; }
         public DbSet<RaceAbilityModel> RaceAbilities { get; set; }
+        public DbSet<LocationModel> Locations { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -28,8 +29,8 @@ namespace NpcGen.DataAccess
                 Map(
                     m =>
                     {
-                        m.MapLeftKey("ClassId");
-                        m.MapRightKey("ProficiencyId");
+                        m.MapLeftKey("Class");
+                        m.MapRightKey("Proficieny");
                         m.ToTable("ClassesProficiencies");
                     });
 
@@ -38,8 +39,8 @@ namespace NpcGen.DataAccess
                 WithMany(a => a.Classes).
                 Map(m =>
                 {
-                    m.MapLeftKey("ClassId");
-                    m.MapRightKey("AttackId");
+                    m.MapLeftKey("Class");
+                    m.MapRightKey("Attack");
                     m.ToTable("ClassesAttacks");
                 });
 
@@ -49,8 +50,8 @@ namespace NpcGen.DataAccess
                 Map(
                     m =>
                     {
-                        m.MapLeftKey("ClassId");
-                        m.MapRightKey("Name");
+                        m.MapLeftKey("Class");
+                        m.MapRightKey("Ability");
                         m.ToTable("ClassesAbilities");
                     });
 
@@ -60,8 +61,8 @@ namespace NpcGen.DataAccess
                Map(
                    m =>
                    {
-                       m.MapLeftKey("RaceId");
-                       m.MapRightKey("RaceAbilityId");
+                       m.MapLeftKey("Race");
+                       m.MapRightKey("Ability");
                        m.ToTable("RacesAbilities");
                    });
 
@@ -71,10 +72,87 @@ namespace NpcGen.DataAccess
                 Map(
                     m =>
                     {
-                        m.MapLeftKey("RaceId");
-                        m.MapRightKey("ProficiencyId");
+                        m.MapLeftKey("Race");
+                        m.MapRightKey("Proficieny");
                         m.ToTable("RacesProficiencies");
                     });
+
+            modelBuilder.Entity<LocationModel>().
+               HasMany(l => l.CulturalProficiencies).
+               WithMany(p => p.Locations).
+               Map(
+                   m =>
+                   {
+                       m.MapLeftKey("Location");
+                       m.MapRightKey("Proficieny");
+                       m.ToTable("LocationsProficiencies");
+                   });
+
+            modelBuilder.Entity<LocationModel>().
+               HasMany(l => l.AppearanceFeatureModel).
+               WithMany(p => p.Locations).
+               Map(
+                   m =>
+                   {
+                       m.MapLeftKey("Locations");
+                       m.MapRightKey("Appearance");
+                       m.ToTable("LocationsAppearances");
+                   });
+
+            modelBuilder.Entity<LocationModel>().
+               HasMany(l => l.MajorRaces).
+               WithMany(r => r.LocationsMajor).
+               Map(
+                   m =>
+                   {
+                       m.MapLeftKey("Location");
+                       m.MapRightKey("Race");
+                       m.ToTable("LocationsRacesMajor");
+                   });
+
+            modelBuilder.Entity<LocationModel>().
+               HasMany(l => l.AbsentRaces).
+               WithMany(r => r.LocationsAbsent).
+               Map(
+                   m =>
+                   {
+                       m.MapLeftKey("Location");
+                       m.MapRightKey("Race");
+                       m.ToTable("LocationsRacesAbsent");
+                   });
+
+            modelBuilder.Entity<LocationModel>().
+               HasMany(l => l.LocationCloseTies).
+               WithMany().
+               Map(
+                   m =>
+                   {
+                       m.MapLeftKey("Locations");
+                       m.MapRightKey("Locations2");
+                       m.ToTable("LocationsLocationsClose");
+                   });
+
+            modelBuilder.Entity<LocationModel>().
+              HasMany(l => l.LocationDistantTies).
+              WithMany().
+              Map(
+                  m =>
+                  {
+                      m.MapLeftKey("Locations");
+                      m.MapRightKey("Locations2");
+                      m.ToTable("LocationsLocationsDistant");
+                  });
+
+            modelBuilder.Entity<LocationModel>().
+             HasMany(l => l.CulturalWeapons).
+             WithMany(a => a.Locations).
+             Map(
+                 m =>
+                 {
+                     m.MapLeftKey("Locations");
+                     m.MapRightKey("Attack");
+                     m.ToTable("LocationsAttacks");
+                 });
         }
     }
 }

@@ -8,7 +8,7 @@ namespace NpcGen.Models.NpcModels
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int ClassId { get; set; }
+        public int Id { get; set; }
 
         public string Name { get; set; }
         public int HitDieType { get; set; }

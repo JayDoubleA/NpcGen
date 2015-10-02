@@ -7,7 +7,7 @@ namespace NpcGen.Models.NpcModels
     public class AttackModel
     {
         [Key]
-        public int AttackId { get; set; }
+        public int Id { get; set; }
 
         public string Name { get; set; }
         public int ToHit { get; set; }
@@ -16,6 +16,7 @@ namespace NpcGen.Models.NpcModels
         public DamageType DamageType { get; set; }
         public string Special { get; set; }
         public virtual ICollection<ClassModel> Classes { get; set; }
+        public virtual ICollection<LocationModel> Locations { get; set; }
 
         public AttackModel()
         {

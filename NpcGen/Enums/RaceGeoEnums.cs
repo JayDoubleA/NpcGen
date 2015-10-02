@@ -14,4 +14,12 @@ namespace NpcGen.Enums
         [Description("Half Elf")]
         HalfElf
     }
+
+    public enum Integration
+    {
+        OneRace,
+        SomeIntegration,
+        Cosmopolitan,
+        MultiCultural
+    }
 }
