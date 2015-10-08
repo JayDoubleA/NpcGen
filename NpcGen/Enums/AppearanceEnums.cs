@@ -9,6 +9,7 @@ namespace NpcGen.Enums
         Eyes,
         Node,
         Ears,
+        SkinTone,
         FaceGood,
         FaceBad,
         BodyGood,

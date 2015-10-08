@@ -59,6 +59,8 @@ namespace NpcGen.Constants
                 ProficiencyGet(Proficiencies.SleightOfHand, "Sleight of Hand", Abilities.Dexterity, ProficiencyTypes.Skill),
                 ProficiencyGet(Proficiencies.Stealth, "Stealth", Abilities.Dexterity, ProficiencyTypes.Skill),
                 ProficiencyGet(Proficiencies.Survival, "Survival", Abilities.Wisdom, ProficiencyTypes.Skill),
+
+                
             };
 
             return list;
@@ -66,7 +68,15 @@ namespace NpcGen.Constants
 
         public static List<ProficiencyModel> Tools()
         {
-            var list = new List<ProficiencyModel> { };
+            var list = new List<ProficiencyModel>
+            {
+                ProficiencyGet(Proficiencies.ArtisanTools, "Tool Set", Abilities.Intelligence, ProficiencyTypes.Tool),
+                ProficiencyGet(Proficiencies.GamingSet, "Gaming Set", Abilities.Intelligence, ProficiencyTypes.Tool),
+                ProficiencyGet(Proficiencies.Poison, "Poison User", Abilities.Intelligence, ProficiencyTypes.Tool),
+                ProficiencyGet(Proficiencies.Instrument, "Musical Instrument", Abilities.Dexterity, ProficiencyTypes.Tool),
+                ProficiencyGet(Proficiencies.ThievesTools, "Thieves Tools", Abilities.Dexterity, ProficiencyTypes.Tool),
+                ProficiencyGet(Proficiencies.Vehicle, "Vehicle", Abilities.Wisdom, ProficiencyTypes.Tool),
+            };
 
             return list;
         }

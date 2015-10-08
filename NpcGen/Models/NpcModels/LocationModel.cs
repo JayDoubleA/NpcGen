@@ -11,7 +11,7 @@ namespace NpcGen.Models.NpcModels
         public string Name { get; set; }
         public string DescriptionShort { get; set; }
         public string DescriptionLong { get; set; }
-        public virtual ICollection<AppearanceFeatureModel> AppearanceFeatureModel { get; set; }
+        public virtual ICollection<AppearanceFeatureModel> AppearanceFeatureModels { get; set; }
         public virtual ICollection<RaceModel> MajorRaces { get; set; }
         public virtual ICollection<RaceModel> AbsentRaces { get; set; }
         public virtual ICollection<LocationModel> LocationCloseTies { get; set; }

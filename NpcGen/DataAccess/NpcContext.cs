@@ -89,7 +89,7 @@ namespace NpcGen.DataAccess
                    });
 
             modelBuilder.Entity<LocationModel>().
-               HasMany(l => l.AppearanceFeatureModel).
+               HasMany(l => l.AppearanceFeatureModels).
                WithMany(p => p.Locations).
                Map(
                    m =>

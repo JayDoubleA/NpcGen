@@ -80,6 +80,20 @@ namespace NpcGen.Migrations
             {
                 context.Races.AddOrUpdate(r => r.Name, race);
             }
+
+            var locationsDef = new LocationDefinitions
+            {
+                AppearancesList = appearanceList,
+                Attacks = attacklist,
+                ProficienciesList = proflist,
+                Races = raceList
+            };
+            locationsDef.LocationsPreinit();
+            var locsList = locationsDef.LocationsList();
+            foreach (var loc in locsList)
+            {
+                context.Locations.AddOrUpdate(l => l.Name, loc);
+            }
         }
     }
 }

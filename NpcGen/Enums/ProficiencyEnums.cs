@@ -32,6 +32,12 @@
         Religion,
         SleightOfHand,
         Stealth,
-        Survival
+        Survival,
+        ArtisanTools,
+        GamingSet,
+        Poison,
+        Instrument,
+        ThievesTools,
+        Vehicle
     }
 }

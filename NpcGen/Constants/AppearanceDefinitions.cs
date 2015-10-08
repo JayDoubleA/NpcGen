@@ -9,6 +9,8 @@ namespace NpcGen.Constants
     //comment to force git 
     public static class AppearanceDefinitions
     {
+        static readonly List<Race> NoElves = EnumExtensions.AllRacesExcept(new List<Race> { Race.Elf, Race.HalfElf });
+
         public static List<AppearanceFeatureModel> Features()
         {
             var list = new List<AppearanceFeatureModel>();
@@ -16,6 +18,7 @@ namespace NpcGen.Constants
             list.AddRange((HairColours()));
             list.AddRange(Hairstyles());
             list.AddRange(Eyes());
+            list.AddRange(SkinTones());
 
             return list;
         }
@@ -48,7 +51,7 @@ namespace NpcGen.Constants
                 new AppearanceFeatureModel("Dark", AppearanceType.HairColour, null),
                 new AppearanceFeatureModel("Fair", AppearanceType.HairColour, null, Availability.Uncommon,
                     new List<Race> {Race.Human, Race.Elf, Race.HalfElf}),
-                new AppearanceFeatureModel("Sunkisseded", AppearanceType.HairColour, null, Availability.Uncommon),
+                new AppearanceFeatureModel("Sunkissed", AppearanceType.HairColour, null, Availability.Uncommon),
                 new AppearanceFeatureModel("BrightTiefling", AppearanceType.HairColour, UnnaturalColour(), Availability.Common, new List<Race>{Race.Tiefling})
             };
             
@@ -59,6 +62,9 @@ namespace NpcGen.Constants
         {
             var list = new List<AppearanceFeatureModel>
             {
+                new AppearanceFeatureModel("Fro", AppearanceType.HairStyle,
+                    "{pos} {col} hair short and curly.", Availability.Uncommon,
+                    new List<Race> {Race.Human, Race.Halfling}),
                 new AppearanceFeatureModel("Braided", AppearanceType.HairStyle,
                     "{pos} {col} hair is worn in long braids.", Availability.Rare,
                     new List<Race> {Race.Human, Race.Tiefling, Race.HalfElf, Race.Gnome}),
@@ -107,20 +113,34 @@ namespace NpcGen.Constants
 
         public static List<AppearanceFeatureModel> Eyes()
         {
-            var noElves = EnumExtensions.AllRacesExcept(new List<Race> {Race.Elf, Race.HalfElf});
-
             var list = new List<AppearanceFeatureModel>
             {
-                new AppearanceFeatureModel("EyesBlue", AppearanceType.Eyes, "blue eyes", Availability.Common, noElves),
+                new AppearanceFeatureModel("EyesBlue", AppearanceType.Eyes, "blue eyes", Availability.Common, NoElves),
                 new AppearanceFeatureModel("EyesBrown", AppearanceType.Eyes, "brown eyes", Availability.Common, new List<Race> {Race.Human, Race.Halfling}),
-                new AppearanceFeatureModel("EyesGreen", AppearanceType.Eyes, "green eyes", Availability.Rare,noElves),
+                new AppearanceFeatureModel("EyesGreen", AppearanceType.Eyes, "green eyes", Availability.Rare,NoElves),
                 new AppearanceFeatureModel("EyesHazel", AppearanceType.Eyes, "hazel eyes", Availability.Rare, new List<Race> {Race.Human}),
-                new AppearanceFeatureModel("EyesGrey", AppearanceType.Eyes, "blue eyes", Availability.Rare,noElves),
+                new AppearanceFeatureModel("EyesGrey", AppearanceType.Eyes, "blue eyes", Availability.Rare,NoElves),
                 new AppearanceFeatureModel("EyesGreenElf", AppearanceType.Eyes, "green, almond-shaped eyes", Availability.Rare,new List<Race> {Race.Elf, Race.HalfElf}),
                 new AppearanceFeatureModel("EyesGreyElf", AppearanceType.Eyes, "grey, almond-shaped eyes", Availability.Rare,new List<Race> {Race.Elf, Race.HalfElf}),
-                new AppearanceFeatureModel("EyesBlueElf", AppearanceType.Eyes, "blue, almond-shaped eyes", Availability.Rare,noElves),
+                new AppearanceFeatureModel("EyesBlueElf", AppearanceType.Eyes, "blue, almond-shaped eyes", Availability.Rare,NoElves),
                 new AppearanceFeatureModel("EyesLargeDark", AppearanceType.Eyes, "large, dark eyes", Availability.Rare),
                 new AppearanceFeatureModel("EyesBright", AppearanceType.Eyes, "bright eyes")
+            };
+
+            return list;
+        }
+
+        public static List<AppearanceFeatureModel> SkinTones()
+        {
+            var list = new List<AppearanceFeatureModel>
+            {
+                new AppearanceFeatureModel("SkinPale", AppearanceType.SkinTone, "{per} skin is pale, almost white", Availability.Rare, new List<Race>{Race.Human, Race.Elf, Race.Aasimar, Race.HalfElf, Race.Tiefling}),
+                new AppearanceFeatureModel("SkinPaleElf", AppearanceType.SkinTone, "{per} skin is pale, with a slight golden sheen", Availability.Common, new List<Race>{Race.Elf, Race.Aasimar, Race.HalfElf}),
+                new AppearanceFeatureModel("SkinFair", AppearanceType.SkinTone, "{per} skin is fair, with faint freckles", Availability.Common, NoElves),
+                new AppearanceFeatureModel("SkinTanned", AppearanceType.SkinTone, "{per} skin is tanned", Availability.Rare, new List<Race>{Race.Human, Race.Elf, Race.Aasimar, Race.HalfElf, Race.Tiefling}),
+                new AppearanceFeatureModel("SkinMed", AppearanceType.SkinTone, "{per} skin is a natural dark tan colour", Availability.Uncommon, NoElves),
+                new AppearanceFeatureModel("SkinDark", AppearanceType.SkinTone, "{per} skin is deep brown", Availability.Rare, new List<Race>{Race.Human}),
+                new AppearanceFeatureModel("SkinOriental", AppearanceType.SkinTone, "{per} skin is golden brown", Availability.Rare, new List<Race>{Race.Human}),
             };
 
             return list;

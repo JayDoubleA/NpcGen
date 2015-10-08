@@ -961,6 +961,7 @@
     <Compile Include="Constants\DemeanourDefinitions.cs" />
     <Compile Include="Constants\FeatureDefinitions.cs" />
     <Compile Include="Constants\LevelConstants.cs" />
+    <Compile Include="Constants\LocationDefinitions.cs" />
     <Compile Include="Constants\Names.cs" />
     <Compile Include="Constants\ProficiencyDefinitions.cs" />
     <Compile Include="Constants\QuirkDefinitions.cs" />
