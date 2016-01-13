@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web.Security;
 using NpcGen.Constants;
 using NpcGen.DataAccess;
 using NpcGen.Enums;
@@ -33,34 +32,12 @@ namespace NpcGen.ControllerHelpers
             _rndHelper = new RandomHelper();
         }
 
-        public NpcModel RandomNpcGet(NpcModel para)
+        public NpcModel NpcGet(NpcModel para)
         {
-            Npc = new NpcModel();
-            Npc.Para = para.Para ?? new NpcGenParamsModel();
+            Npc = new NpcModel {Para = para.Para ?? new NpcGenParamsModel()};
 
-            GetNpcClass();
-            GetNpcRace("Human");
-            SplitClassProficiencies();
-            GetAge();
-            GetCustomProficiencies();
-            GetNameAndGender();
-            GetQuirks();
-            GetDemeanour();
-            GetAppearance();
-            NpcParamsProcess();
-            AttackRecalculate();
-
-            return Npc;
-        }
-
-        public NpcModel NpcGet(string clsName, string raceName, NpcModel para)
-        {
-            Npc = new NpcModel();
-            Npc.Para = para.Para ?? new NpcGenParamsModel();
-            raceName = raceName ?? "Human";
-
-            GetNpcClass(clsName);
-            GetNpcRace(raceName);
+            GetNpcClass(Npc.Para.ClassName);
+            GetNpcRace(Npc.Para.RaceName);
             SplitClassProficiencies();
             GetAge();
             GetCustomProficiencies();
@@ -143,13 +120,42 @@ namespace NpcGen.ControllerHelpers
 
         private void GetNpcClass(string clsName)
         {
-            Npc.Class = _context.Classes.ToList().FirstOrDefault(x => x.Name.Equals(clsName));
+            if (clsName.IsNullOrEmpty())
+            {
+                GetNpcClass();
+            }
+            else
+            {
+                Npc.Class = _context.Classes.ToList().FirstOrDefault(x => x.Name.Equals(clsName));
+            }
         }
 
         private void GetNpcRace(string raceName)
         {
-            Npc.RaceModel = _context.Races.ToList().FirstOrDefault(x => x.Name.Equals(raceName));
-            Npc.Race = Npc.RaceModel.Race;
+            if (raceName.IsNullOrEmpty())
+            {
+                // first, seed it to be 50% human
+                var random = new Random();
+                var test = random.Next(1, 2);
+                if (test == 1)
+                {
+                    raceName = "Human";
+                    Npc.RaceModel = _context.Races.ToList().FirstOrDefault(x => x.Name.Equals(raceName));
+                    Npc.Race = Npc.RaceModel.Race;
+                }
+                else
+                {
+                    var races = _context.Races.ToList();
+                    test = random.Next(races.Count());
+                    Npc.RaceModel = races[test];
+                    Npc.Race = Npc.RaceModel.Race;
+                }
+            }
+            else
+            {
+                Npc.RaceModel = _context.Races.ToList().FirstOrDefault(x => x.Name.Equals(raceName));
+                Npc.Race = Npc.RaceModel.Race;
+            }
         }
 
         private void SplitClassProficiencies()

@@ -14,10 +14,9 @@ namespace NpcGen.Models.NpcModels
         public Age Age { get; set; }
         public Race Race { get; set; }
         public RaceModel RaceModel { get; set; }
-
         public ClassModel Class { get; set; }
-
         public AppearanceModel Appearance { get; set; }
+
         public virtual ICollection<ProficiencyModel> ClassSkills { get; set; }
         public virtual ICollection<ProficiencyModel> ClassSaves { get; set; }
         public virtual ICollection<ProficiencyModel> ClassTools { get; set; }

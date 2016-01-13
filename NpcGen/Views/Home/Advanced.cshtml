@@ -1,5 +1,6 @@
 ﻿@using NpcGen.Constants
 @using NpcGen.Extensions
+@using NpcGen.Helpers
 @model  NpcGen.Models.NpcModels.NpcModel
 @{
     ViewBag.Title = "Advanced settings";
@@ -7,25 +8,38 @@
 }
 
 <h2>Advanced settings</h2>
-@using (Html.BeginForm("Npc","Npc"))
+@using (Html.BeginForm("Npc", "Npc"))
 {
-    <p>
-        <label for="clsName">Pick a starting template</label><br/>
-        @Html.DropDownList("clsName", new SelectList(ViewBag.Classes), StringConstants.DdlDefault)
-    </p>
-    <p>
-        <label for="raceName">Pick a race</label><br />
-        @Html.DropDownList("raceName", new SelectList(ViewBag.Races))
-    </p>
-    <p>
-        <label for="locationName">Pick a location</label><br />
-        @Html.DropDownList("locationName", new SelectList(ViewBag.Locations))
-    </p>
-    <p>
-        @Html.LabelFor(model => model.Para.ExperienceLevel)<br />
-        @Html.DropDownListFor(model => model.Para.ExperienceLevel, Model.Para.ExperienceLevel.ToSelectList())
-    </p>
-    
+    <div class="normal-left">
+        <p>
+            @Html.LabelFor(model => model.Para.ClassName)
+            <br />
+            @Html.DropDownListFor(model => model.Para.ClassName, new SelectList(SelectListHelper.ClassesList()).Default(StringConstants.ClassesDefault, ""))
+        </p>
+        <p>
+            @Html.LabelFor(model => model.Para.RaceName)
+            <br />
+            @Html.DropDownListFor(model => model.Para.RaceName, new SelectList(SelectListHelper.RacesList()).Default(StringConstants.RaceDefault, ""))
+        </p>
+        <p>
+            @Html.LabelFor(model => model.Para.LocationName)
+            <br />
+            @Html.DropDownListFor(model => model.Para.LocationName, new SelectList(SelectListHelper.LocationsList()).Default(StringConstants.LocationsDefault, ""))
+        </p>
+        <p>
+            @Html.LabelFor(model => model.Para.ExperienceLevel)<br/>
+            @Html.DropDownListFor(model => model.Para.ExperienceLevel, Model.Para.ExperienceLevel.ToSelectList())
+        </p>
+    </div>
+
+    <div class="normal-right">
+        <div>
+            <p>
+                <input type="button" id="resetRaceLocation" value="Reset race & location" disabled="true" />
+            </p>
+        </div>
+    </div>
+
     <p>
         <strong>Select a stat buff</strong>
         <ul class="list-unstyled checkbox-list">

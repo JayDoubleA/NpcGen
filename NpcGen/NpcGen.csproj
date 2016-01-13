@@ -992,9 +992,11 @@
     <Compile Include="Extensions\HtmlExtenstions.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="Extensions\NpcModelExtenstions.cs" />
+    <Compile Include="Extensions\SelectListExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Helpers\NpcViewHelper.cs" />
     <Compile Include="Helpers\RandomHelper.cs" />
+    <Compile Include="Helpers\SelectListHelper.cs" />
     <Compile Include="Helpers\StringHelpers.cs" />
     <Compile Include="Interfaces\IAttribute.cs" />
     <Compile Include="Migrations\Configuration.cs" />

@@ -31,5 +31,16 @@ namespace NpcGen.Models.NpcModels
 
         [DisplayName("Experience Level")]
         public ExperienceLevel ExperienceLevel { get; set; }
+
+        // General
+
+        [DisplayName("Pick a race")]
+        public string RaceName { get; set; }
+
+        [DisplayName("Pick a location of origin")]
+        public string LocationName { get; set; }
+
+        [DisplayName("Pick a starting template")]
+        public string ClassName { get; set; }
     }
 }

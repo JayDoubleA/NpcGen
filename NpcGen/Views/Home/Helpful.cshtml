@@ -1,5 +1,6 @@
 ﻿@using NpcGen.Constants
 @using NpcGen.Extensions
+@using NpcGen.Helpers
 @model  NpcGen.Models.NpcModels.NpcModel
 @{
     ViewBag.Title = "Advanced settings";
@@ -13,8 +14,8 @@
         <p>
             <label>I would like a </label>
             @Html.DropDownListFor(model => model.Para.ExperienceLevel, Model.Para.ExperienceLevel.ToSelectList(),"")&nbsp;
-            @Html.DropDownList("clsName", new SelectList(ViewBag.Classes), StringConstants.DdlDefault, "")&nbsp;
-            @Html.DropDownList("raceName", new SelectList(ViewBag.Classes), StringConstants.DdlDefault, "")&nbsp;
+            @Html.DropDownListFor(model => model.Para.ClassName, new SelectList(SelectListHelper.ClassesList()).Default(StringConstants.ClassesDefault, ""))
+            @Html.DropDownListFor(model => model.Para.RaceName, new SelectList(SelectListHelper.RacesList()).Default(StringConstants.RaceDefault, ""))
 
             <strong>Who is</strong>
             <select class="statChoice1">
@@ -38,13 +39,6 @@
                 <option value="1" data-property-name="MoreWis">@Html.DisplayNameFor(model => model.Para.MoreWis)</option>
             </select>
             <input type="hidden" class="hidden2" value="true" />
-
-
-
-
-
-
-
         </p>
 
         <div>

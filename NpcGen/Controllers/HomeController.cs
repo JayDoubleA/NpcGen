@@ -14,7 +14,6 @@ namespace NpcGen.Controllers
         // GET: Home
         public ActionResult Index()
         {
-            ViewBagger();
             return View();
         }
 
@@ -28,8 +27,7 @@ namespace NpcGen.Controllers
             }
 
             var model = new NpcModel { Para = new NpcGenParamsModel { ExperienceLevel = ExperienceLevel.Journeyman } };
-
-            ViewBagger();
+         
             ViewBag.HasNpc = false;
 
             return View(model);
@@ -45,18 +43,10 @@ namespace NpcGen.Controllers
             }
             
             var model = new NpcModel { Para = new NpcGenParamsModel { ExperienceLevel = ExperienceLevel.Journeyman } };
-
-            ViewBagger();
+         
             ViewBag.HasNpc = false;
 
             return View(model);
-        }
-
-        public void ViewBagger()
-        {
-            ViewBag.Classes = _context.Classes.Select(x => x.Name);
-            ViewBag.Races = _context.Races.Select(x => x.Name);
-            ViewBag.Locations = _context.Locations.Select(x => x.Name);    
         }
     }
 }
