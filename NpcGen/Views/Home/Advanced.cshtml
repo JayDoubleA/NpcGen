@@ -1,7 +1,5 @@
-﻿@using NpcGen.Extensions;
-@using NpcGen.Helpers;
-@using NpcGen.Enums;
-
+﻿@using NpcGen.Constants
+@using NpcGen.Extensions
 @model  NpcGen.Models.NpcModels.NpcModel
 @{
     ViewBag.Title = "Advanced settings";
@@ -13,17 +11,21 @@
 {
     <p>
         <label for="clsName">Pick a starting template</label><br/>
-        @Html.DropDownList("clsName", new SelectList(ViewBag.Classes), NpcGen.Constants.StringConstants.DdlDefault)
+        @Html.DropDownList("clsName", new SelectList(ViewBag.Classes), StringConstants.DdlDefault)
     </p>
-
     <p>
         <label for="raceName">Pick a race</label><br />
         @Html.DropDownList("raceName", new SelectList(ViewBag.Races))
     </p>
     <p>
+        <label for="locationName">Pick a location</label><br />
+        @Html.DropDownList("locationName", new SelectList(ViewBag.Locations))
+    </p>
+    <p>
         @Html.LabelFor(model => model.Para.ExperienceLevel)<br />
         @Html.DropDownListFor(model => model.Para.ExperienceLevel, Model.Para.ExperienceLevel.ToSelectList())
     </p>
+    
     <p>
         <strong>Select a stat buff</strong>
         <ul class="list-unstyled checkbox-list">

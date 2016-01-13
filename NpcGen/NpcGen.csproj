@@ -119,6 +119,7 @@
     <Content Include="Content\ui-bootstrap-csp.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
+    <Content Include="Scripts\Npc.js" />
     <Content Include="Scripts\InputHelper.js" />
     <Content Include="Scripts\PortraitCreator.js" />
     <Content Include="Scripts\Vendor\angular-animate.js" />
@@ -971,6 +972,7 @@
     <Compile Include="ControllerHelpers\EnumHelper.cs" />
     <Compile Include="ControllerHelpers\ImportHelper.cs" />
     <Compile Include="ControllerHelpers\NpcGenHelper.cs" />
+    <Compile Include="Controllers\AjaxController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\NpcController.cs" />
     <Compile Include="Controllers\ImportController.cs" />

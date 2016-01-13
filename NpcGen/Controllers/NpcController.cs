@@ -27,6 +27,7 @@ namespace NpcGen.Controllers
         {
             ViewBag.Classes = _context.Classes.Select(x => x.Name);
             ViewBag.Races = _context.Races.Select(x => x.Name);
+            ViewBag.Locations = _context.Locations.Select(x => x.Name);            
         }
 
         protected override void Dispose(bool disposing)
