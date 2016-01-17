@@ -103,10 +103,10 @@ namespace NpcGen.Constants
 
         private static string UnnaturalColour()
         {
-            var rnd = new Random();
+            var rnd = new Random(Environment.TickCount);
             var list = new List<string> { "Crimson", "Violet", "Scarlet", "Flame orange", "Sky blue", "Emerald" };
 
-            var chs = rnd.Next(0, list.Count-1);
+            var chs = rnd.Next(0, list.Count);
 
             return list[chs];
         }

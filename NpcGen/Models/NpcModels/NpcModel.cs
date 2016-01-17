@@ -14,6 +14,7 @@ namespace NpcGen.Models.NpcModels
         public Age Age { get; set; }
         public Race Race { get; set; }
         public RaceModel RaceModel { get; set; }
+        public LocationModel Location { get; set; }
         public ClassModel Class { get; set; }
         public AppearanceModel Appearance { get; set; }
 

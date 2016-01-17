@@ -16,12 +16,13 @@ namespace NpcGen.Helpers
                 var quirkModel = model.Quirks.FirstOrDefault();
                 if (quirkModel != null)
                     paragraph.InnerHtml = string.Format(
-                        "{0} is {1} {2} {3} {4}, distinguished from others because {5} {6}.",
+                        "{0} is {1} {2} {3} {4}, hailing from {5}, distinguished from others because {6} {7}.",
                         model.Name,
                         firstOrDefault.Description.WithArticle(),
                         EnumExtensions.ToName(model.Age).ToLower(),
                         model.RaceModel.Name,
                         model.Class.Name,
+                        model.Location.Name,
                         model.Pers(),
                         quirkModel.
                             Description.NotCap().Genderize(model.Gender)

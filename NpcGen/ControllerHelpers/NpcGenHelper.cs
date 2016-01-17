@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using NpcGen.Constants;
 using NpcGen.DataAccess;
@@ -28,16 +29,17 @@ namespace NpcGen.ControllerHelpers
         {
             _npc = npc;
             _context = context;
-            _rnd = new Random();
-            _rndHelper = new RandomHelper();
+            _rnd = new Random(Environment.TickCount);
+            _rndHelper = new RandomHelper(_context);
         }
 
         public NpcModel NpcGet(NpcModel para)
         {
             Npc = new NpcModel {Para = para.Para ?? new NpcGenParamsModel()};
 
-            GetNpcClass(Npc.Para.ClassName);
-            GetNpcRace(Npc.Para.RaceName);
+            GetNpcClass();
+            GetNpcRace();
+            GetNpcLocation();
             SplitClassProficiencies();
             GetAge();
             GetCustomProficiencies();
@@ -49,6 +51,18 @@ namespace NpcGen.ControllerHelpers
             AttackRecalculate();
 
             return Npc;
+        }
+
+        private void GetNpcLocation()
+        {
+            if (Npc.Para.LocationName.IsNullOrEmpty())
+            {
+                Npc.Location = _rndHelper.Location(Npc.Para.RaceName);
+            }
+            else
+            {
+                Npc.Location = _context.Locations.FirstOrDefault(x => x.Name.Equals(Npc.Para.LocationName));
+            }
         }
 
         private void GetAppearance()
@@ -87,8 +101,25 @@ namespace NpcGen.ControllerHelpers
 
             Npc.Appearance = app;
         }
-        private AppearanceFeatureModel AppearanceFeatureGet( AppearanceType type)
+
+        private AppearanceFeatureModel AppearanceFeatureGet(AppearanceType type)
         {
+            // first off, are going to use features typical to the location?
+            // 1/3 chance of typical features
+
+            var rndLoc = _rnd.Next(0, 3);
+            if (rndLoc.Equals(2))
+            {
+                var locSelect = Npc.Location.AppearanceFeatureModels.Where(x => x.AppearanceType.Equals(type) && x.Genders.Contains(Npc.Gender.ToString())).ToList();
+                if (locSelect.Any())
+                {
+                    var rndLocSelect = _rnd.Next(0, locSelect.Count());
+                    return locSelect[rndLocSelect];
+                }
+            }
+
+            // if we are here, then no regional feature was found, so we grab a radnom one...
+
             var avail = _rndHelper.Availability();
             var featuresPoss = _context.AppearanceFeatures.Where(x => x.AppearanceType == type);
             featuresPoss = featuresPoss.Where(x => x.Genders.Contains(Npc.Gender.ToString()));
@@ -99,7 +130,6 @@ namespace NpcGen.ControllerHelpers
             featuresPoss = featuresPoss.Where(x => x.Availability == avail);
             var featuresList = featuresPoss.Where(x => x.Races.Contains(Npc.Race.ToString())).ToList();
             var rnd = _rnd.Next(0, featuresList.Count());
-
             return featuresList[rnd];
         }
 
@@ -111,36 +141,37 @@ namespace NpcGen.ControllerHelpers
             Npc.Demeanour = new List<DemeanourModel> { dem };
         }
 
-        private void GetNpcClass()
+        private void GetNpcRndClass()
         {
             var clsRnd = _rnd.Next(0, _context.Classes.Count());
             var cls = _context.Classes.ToList()[clsRnd];
             Npc.Class = cls;
         }
 
-        private void GetNpcClass(string clsName)
+        private void GetNpcClass()
         {
-            if (clsName.IsNullOrEmpty())
+            if (Npc.Para.ClassName.IsNullOrEmpty())
             {
-                GetNpcClass();
+                GetNpcRndClass();
             }
             else
             {
-                Npc.Class = _context.Classes.ToList().FirstOrDefault(x => x.Name.Equals(clsName));
+                Npc.Class = _context.Classes.ToList().FirstOrDefault(x => x.Name.Equals(Npc.Para.ClassName));
             }
         }
 
-        private void GetNpcRace(string raceName)
+        private void GetNpcRace()
         {
-            if (raceName.IsNullOrEmpty())
+            if (Npc.Para.RaceName.IsNullOrEmpty())
             {
                 // first, seed it to be 50% human
-                var random = new Random();
+                var random = new Random(Environment.TickCount);
                 var test = random.Next(1, 2);
                 if (test == 1)
                 {
-                    raceName = "Human";
-                    Npc.RaceModel = _context.Races.ToList().FirstOrDefault(x => x.Name.Equals(raceName));
+                    Npc.Para.RaceName = "Human";
+                    Npc.RaceModel = _context.Races.ToList().FirstOrDefault(x => x.Name.Equals(Npc.Para.RaceName));
+                    Debug.Assert(Npc.RaceModel != null, "Npc.RaceModel != null");
                     Npc.Race = Npc.RaceModel.Race;
                 }
                 else
@@ -153,7 +184,8 @@ namespace NpcGen.ControllerHelpers
             }
             else
             {
-                Npc.RaceModel = _context.Races.ToList().FirstOrDefault(x => x.Name.Equals(raceName));
+                Npc.RaceModel = _context.Races.ToList().FirstOrDefault(x => x.Name.Equals(Npc.Para.RaceName));
+                Debug.Assert(Npc.RaceModel != null, "Npc.RaceModel != null");
                 Npc.Race = Npc.RaceModel.Race;
             }
         }
@@ -167,15 +199,27 @@ namespace NpcGen.ControllerHelpers
 
         private void GetCustomProficiencies()
         {
-            var profPoss = _context.Proficiencies.ToList().Where(p => !Npc.Class.Proficiencies.Contains(p) && p.Type != ProficiencyTypes.Save);
-            var profRnd = _rnd.Next(0, profPoss.Count());
-            var profCustom = profPoss.ToList()[profRnd];
-            Npc.CustomProficiencies = new List<ProficiencyModel> { profCustom };
+            // so here, we will randomly decide whether to limit proficiencies to location.race, ro go full random
+            // 50/50 split
+
+            var rnd = _rnd.Next(0, 2);
+
+            if (rnd.Equals(1))
+            {
+                Npc.CustomProficiencies = Npc.Location.CulturalProficiencies;
+            }
+            else
+            {
+                var profPoss = _context.Proficiencies.ToList().Where(p => !Npc.Class.Proficiencies.Contains(p) && p.Type != ProficiencyTypes.Save).ToList();
+                var profRnd = _rnd.Next(0, profPoss.Count());
+                var profCustom = profPoss.ToList()[profRnd];
+                Npc.CustomProficiencies = new List<ProficiencyModel> {profCustom};
+            }
         }
 
         private void AddCustomProficiency()
         {
-            var profPoss = _context.Proficiencies.ToList().Where(p => !Npc.Class.Proficiencies.Contains(p) && !Npc.CustomProficiencies.Contains(p) && p.Type != ProficiencyTypes.Save);
+            var profPoss = _context.Proficiencies.ToList().Where(p => !Npc.Class.Proficiencies.Contains(p) && !Npc.CustomProficiencies.Contains(p) && p.Type != ProficiencyTypes.Save).ToList();
             var profRnd = _rnd.Next(0, profPoss.Count());
             var profCustom = profPoss.ToList()[profRnd];
             Npc.CustomProficiencies.Add(profCustom);
@@ -183,7 +227,7 @@ namespace NpcGen.ControllerHelpers
 
         private void AddCustomProficiency( Abilities abil)
         {
-            var profPoss = _context.Proficiencies.ToList().Where(p => !Npc.Class.Proficiencies.Contains(p) && !Npc.CustomProficiencies.Contains(p) && p.Type != ProficiencyTypes.Save && p.Ability.Equals(abil));
+            var profPoss = _context.Proficiencies.ToList().Where(p => !Npc.Class.Proficiencies.Contains(p) && !Npc.CustomProficiencies.Contains(p) && p.Type != ProficiencyTypes.Save && p.Ability.Equals(abil)).ToList();
             var profRnd = _rnd.Next(0, profPoss.Count());
             var profCustom = profPoss.ToList()[profRnd];
             Npc.CustomProficiencies.Add(profCustom);
