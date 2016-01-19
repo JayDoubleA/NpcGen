@@ -48,6 +48,7 @@ namespace NpcGen.ControllerHelpers
             GetDemeanour();
             GetAppearance();
             NpcParamsProcess();
+            AddCulturalWeaponProficiency();
             AttackRecalculate();
 
             return Npc;
@@ -199,7 +200,7 @@ namespace NpcGen.ControllerHelpers
 
         private void GetCustomProficiencies()
         {
-            // so here, we will randomly decide whether to limit proficiencies to location.race, ro go full random
+            // so here, we will randomly decide whether to limit proficiencies to location/race, ro go full random
             // 50/50 split
 
             var rnd = _rnd.Next(0, 2);
@@ -225,7 +226,7 @@ namespace NpcGen.ControllerHelpers
             Npc.CustomProficiencies.Add(profCustom);
         }
 
-        private void AddCustomProficiency( Abilities abil)
+        private void AddCustomProficiency(Abilities abil)
         {
             var profPoss = _context.Proficiencies.ToList().Where(p => !Npc.Class.Proficiencies.Contains(p) && !Npc.CustomProficiencies.Contains(p) && p.Type != ProficiencyTypes.Save && p.Ability.Equals(abil)).ToList();
             var profRnd = _rnd.Next(0, profPoss.Count());
@@ -261,6 +262,22 @@ namespace NpcGen.ControllerHelpers
                         Npc.CustomProficiencies.Add(profMod);
                     }
                 }
+            }
+        }
+
+        private void AddCulturalWeaponProficiency()
+        {
+            // we're going to give everyone a 1/3 chance at one of their cultural weapons, because why not...
+            var rnd = _rnd.Next(0, 3);
+
+            if (rnd > 1)
+            {
+                var classAttackNames = Npc.Class.Attacks.Select(y => y.Name).ToList();
+                var attacks = Npc.Location.CulturalWeapons.Where(x => !classAttackNames.Contains(x.Name)).ToList();
+
+                var select = _rnd.Next(0, attacks.Count());
+
+                Npc.Class.Attacks.Add(attacks[select]);
             }
         }
 
