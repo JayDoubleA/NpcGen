@@ -994,7 +994,7 @@
     <Compile Include="Extensions\NpcModelExtenstions.cs" />
     <Compile Include="Extensions\SelectListExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
-    <Compile Include="Helpers\NpcViewHelper.cs" />
+    <Compile Include="ViewHelpers\NpcViewHelper.cs" />
     <Compile Include="Helpers\RandomHelper.cs" />
     <Compile Include="Helpers\SelectListHelper.cs" />
     <Compile Include="Helpers\StringHelpers.cs" />

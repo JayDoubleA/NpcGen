@@ -22,6 +22,7 @@ namespace NpcGen.Models.NpcModels
         public virtual ICollection<ProficiencyModel> ClassSaves { get; set; }
         public virtual ICollection<ProficiencyModel> ClassTools { get; set; }
         public virtual ICollection<ProficiencyModel> CustomProficiencies { get; set; }
+        public virtual ICollection<ClassAbilityModel> ClassAbilities { get; set; } 
         public virtual ICollection<QuirkModel> Quirks { get; set; }
         public virtual ICollection<DemeanourModel> Demeanour { get; set; }
 

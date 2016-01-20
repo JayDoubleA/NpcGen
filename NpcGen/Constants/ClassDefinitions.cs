@@ -181,6 +181,7 @@ namespace NpcGen.Constants
                 },
                 ClassAbilities = new List<ClassAbilityModel>
                 {
+                    
                 },
                 Attacks = new List<AttackModel>
                 {
@@ -190,9 +191,6 @@ namespace NpcGen.Constants
                 BaseArmourClass = 2,
                 Movement = 30
             };
-            //var banditScimitar = AttacksList.FirstOrDefault(x => x.Name.ToLower().Equals("scimitar"));
-            //var banditCrossbow = AttacksList.FirstOrDefault(x => x.Name.ToLower().Equals("light crossbow"));
-            //bandit.Attacks = new List<AttackModel>{banditScimitar, banditCrossbow};            
             bandit.HitPoints = bandit.HitPointsAverageGet();
             bandit.ProficencyBonus = LevelConstants.ProficiencyBonus(bandit.Level);
 
@@ -218,6 +216,7 @@ namespace NpcGen.Constants
                 },
                 ClassAbilities = new List<ClassAbilityModel>
                 {
+                    AbilityList.AbilityGet("sneak attack")
                 },
                 Attacks = new List<AttackModel>
                 {
@@ -226,8 +225,6 @@ namespace NpcGen.Constants
                 },
                 Movement = 30                
             };
-            //var banditLeaderLongsword = AttacksList.FirstOrDefault(x => x.Name.ToLower().Equals("longsword"));
-            //banditLeader.Attacks = new List<AttackModel> { banditLeaderLongsword, banditCrossbow };            
             banditLeader.HitPoints = banditLeader.HitPointsAverageGet();
             banditLeader.ProficencyBonus = LevelConstants.ProficiencyBonus(banditLeader.Level);
 

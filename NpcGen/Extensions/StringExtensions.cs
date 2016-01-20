@@ -120,5 +120,22 @@ namespace NpcGen.Extensions
                 .Replace("{per}", model.Pers())
                 .Replace("{per true}", model.Pers(true));
         }
+
+        /// <summary>
+        /// Used for things like sneak attack dice, that increase every odd level
+        /// </summary>
+        /// <param name="description">String potentially containing the {oddLevel} token</param>
+        /// <param name="level">The NPC's level</param>
+        /// <returns>Any oddLevel tokens replaced (or just removed if the value is one</returns>
+        public static string LevelBasedReplace(this string description, int level)
+        {
+            if (!description.Contains("{oddLevel}"))
+            {
+                return description;
+            }
+
+            var levelBase = level%2 == 0 ? (level/2) : ((level + 1)/2);
+            return description.Replace("{oddLevel}", levelBase.Equals(1) ? string.Empty : levelBase.ToString());
+        }
     }
 }

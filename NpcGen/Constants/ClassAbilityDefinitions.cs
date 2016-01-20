@@ -12,6 +12,7 @@ namespace NpcGen.Constants
             var list = new List<ClassAbilityModel>();
 
             list.AddRange(UselessAbilities());
+            list.AddRange(CombatAbilities());
 
             return list;
         }
@@ -33,13 +34,25 @@ namespace NpcGen.Constants
               new ClassAbilityModel
               {
                   Name = "Glare at Livestock",
-                  Description = "Livstock must make a DC10 Wisdom(Perception) check to notice being glared at)."
+                  Description = "Livestock must make a DC10 Wisdom(Perception) check to notice being glared at."
               },
               new ClassAbilityModel
               {
                   Name = "Fall over",
                   Description = "Ouch."
               },
+            };
+
+            return list;
+        }
+
+        public static List<ClassAbilityModel> CombatAbilities()
+        {
+            var list = new List<ClassAbilityModel>
+            {
+                new ClassAbilityModel("Sneak Attack", "Extra {oddLevel}d6 damage on one attack per round, if it has advantage"),
+                new ClassAbilityModel("Brtual Attack", "Add an extra damage dice to any Strength based attacks"),
+                new ClassAbilityModel("Riposte", "May use a reaction to attack an opponent who attacked them and missed")
             };
 
             return list;

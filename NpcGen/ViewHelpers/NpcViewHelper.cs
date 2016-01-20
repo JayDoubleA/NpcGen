@@ -3,7 +3,7 @@ using System.Web.Mvc;
 using NpcGen.Extensions;
 using NpcGen.Models.NpcModels;
 
-namespace NpcGen.Helpers
+namespace NpcGen.ViewHelpers
 {
     public static class NpcViewHelper
     {
@@ -81,7 +81,7 @@ namespace NpcGen.Helpers
 
             if (model.CustomProficiencies != null && model.CustomProficiencies.Any())
             {
-                paragraph.InnerHtml += model.ClassSkills.Any() ? "and curiously enough, also in " : string.Empty;
+                paragraph.InnerHtml += model.ClassSkills.Any() ? " and curiously enough, also in " : string.Empty;
 
                 foreach (var prof in model.CustomProficiencies)
                 {
@@ -136,7 +136,7 @@ namespace NpcGen.Helpers
         public static MvcHtmlString RenderAbilities(NpcModel model)
         {
             var paragraph = new TagBuilder("p");
-            if (model.Class.ClassAbilities.Count > 0 || model.RaceModel.RaceAbilities.Count > 0)
+            if (model.ClassAbilities.Count > 0 || model.RaceModel.RaceAbilities.Count > 0)
             {
                 paragraph.InnerHtml = string.Format("As a typical {0} {1}, {2} has the following abilities:", model.RaceModel.Name, model.Class.Name, model.Name);
                 var list = new TagBuilder("ul");

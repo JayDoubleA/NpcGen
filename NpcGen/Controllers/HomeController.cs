@@ -14,18 +14,18 @@ namespace NpcGen.Controllers
         // GET: Home
         public ActionResult Index()
         {
-            return View();
-        }
-
-        public ActionResult Advanced()
-        {
             var qs = Request.QueryString;
             if (qs["seed"] != null)
             {
                 var config = new Configuration();
                 config.SeedDebug(_context);
             }
+            
+            return View();
+        }
 
+        public ActionResult Advanced()
+        {
             var model = new NpcModel { Para = new NpcGenParamsModel { ExperienceLevel = ExperienceLevel.Journeyman } };
          
             ViewBag.HasNpc = false;
@@ -35,13 +35,6 @@ namespace NpcGen.Controllers
 
         public ActionResult Helpful()
         {
-            var qs = Request.QueryString;
-            if (qs["seed"] != null)
-            {
-                var config = new Configuration();
-                config.SeedDebug(_context);
-            }
-            
             var model = new NpcModel { Para = new NpcGenParamsModel { ExperienceLevel = ExperienceLevel.Journeyman } };
          
             ViewBag.HasNpc = false;

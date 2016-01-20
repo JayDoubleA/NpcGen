@@ -50,6 +50,7 @@ namespace NpcGen.ControllerHelpers
             NpcParamsProcess();
             AddCulturalWeaponProficiency();
             AttackRecalculate();
+            GetClassAbilities();
 
             return Npc;
         }
@@ -278,6 +279,17 @@ namespace NpcGen.ControllerHelpers
                 var select = _rnd.Next(0, attacks.Count());
 
                 Npc.Class.Attacks.Add(attacks[select]);
+            }
+        }
+
+        private void GetClassAbilities()
+        {
+            Npc.ClassAbilities = new List<ClassAbilityModel>();
+
+            foreach (var abi in Npc.Class.ClassAbilities)
+            {
+                abi.Description = abi.Description.LevelBasedReplace(Npc.Class.Level);
+                Npc.ClassAbilities.Add(abi);
             }
         }
 
