@@ -915,6 +915,16 @@
     <Content Include="Views\Npc\npc.cshtml" />
     <Content Include="Views\Home\Advanced.cshtml" />
     <Content Include="Views\Home\Helpful.cshtml" />
+    <Content Include="Views\ClassAbilityModels\Create.cshtml" />
+    <Content Include="Views\ClassAbilityModels\Delete.cshtml" />
+    <Content Include="Views\ClassAbilityModels\Details.cshtml" />
+    <Content Include="Views\ClassAbilityModels\Edit.cshtml" />
+    <Content Include="Views\ClassAbilityModels\Index.cshtml" />
+    <Content Include="Views\ClassModels\Create.cshtml" />
+    <Content Include="Views\ClassModels\Delete.cshtml" />
+    <Content Include="Views\ClassModels\Details.cshtml" />
+    <Content Include="Views\ClassModels\Edit.cshtml" />
+    <Content Include="Views\ClassModels\Index.cshtml" />
     <None Include="_bin_deployableAssemblies\x86\sqlcese40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceqp40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceme40.dll" />
@@ -973,6 +983,8 @@
     <Compile Include="ControllerHelpers\ImportHelper.cs" />
     <Compile Include="ControllerHelpers\NpcGenHelper.cs" />
     <Compile Include="Controllers\AjaxController.cs" />
+    <Compile Include="Controllers\ClassAbilityModelsController.cs" />
+    <Compile Include="Controllers\ClassModelsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\NpcController.cs" />
     <Compile Include="Controllers\ImportController.cs" />
@@ -1039,6 +1051,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Input\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

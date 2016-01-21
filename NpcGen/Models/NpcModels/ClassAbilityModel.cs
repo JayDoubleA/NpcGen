@@ -11,11 +11,15 @@ namespace NpcGen.Models.NpcModels
         public int Id { get; set; }
 
         public string Name { get; set; }
+        
+        [DataType(DataType.MultilineText)]
         public string Description { get; set; }
-        public virtual ICollection<ClassModel> Classes { get; set; }
+
         public int Level { get; set; }
 
-        public ClassAbilityModel() { }
+        public virtual ICollection<ClassModel> Classes { get; set; }
+
+        public ClassAbilityModel() {}
 
         public ClassAbilityModel(string name, string description)
         {
