@@ -7,7 +7,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 
     // retrieve the list of ClassAbilityModel
-    List<ClassAbilityModel> classAbilities = ViewBag.ClassAbilities;
+    List<ClassAbilityModel> classAbilities = ViewBag.ClassAbilities ?? new List<ClassAbilityModel>();
 }
 
 <h2>Create</h2>

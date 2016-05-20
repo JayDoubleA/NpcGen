@@ -927,6 +927,11 @@
     <Content Include="Views\ClassModels\Details.cshtml" />
     <Content Include="Views\ClassModels\Edit.cshtml" />
     <Content Include="Views\ClassModels\Index.cshtml" />
+    <Content Include="Views\AttackModels\Create.cshtml" />
+    <Content Include="Views\AttackModels\Delete.cshtml" />
+    <Content Include="Views\AttackModels\Details.cshtml" />
+    <Content Include="Views\AttackModels\Edit.cshtml" />
+    <Content Include="Views\AttackModels\Index.cshtml" />
     <None Include="_bin_deployableAssemblies\x86\sqlcese40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceqp40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceme40.dll" />
@@ -968,6 +973,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Attributes\AbilityAttribute.cs" />
     <Compile Include="Constants\AppearanceDefinitions.cs" />
+    <Compile Include="Constants\AtackPropertyDefinitions.cs" />
     <Compile Include="Constants\AttackDefinitions.cs" />
     <Compile Include="Constants\ClassAbilityDefinitions.cs" />
     <Compile Include="Constants\ClassDefinitions.cs" />
@@ -985,6 +991,7 @@
     <Compile Include="ControllerHelpers\ImportHelper.cs" />
     <Compile Include="ControllerHelpers\NpcGenHelper.cs" />
     <Compile Include="Controllers\AjaxController.cs" />
+    <Compile Include="Controllers\AttackModelsController.cs" />
     <Compile Include="Controllers\ClassAbilityModelsController.cs" />
     <Compile Include="Controllers\ClassModelsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />

@@ -1,0 +1,58 @@
+﻿@model NpcGen.Models.NpcModels.AttackModel
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>AttackModel</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ToHit)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ToHit)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Damage)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Damage)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Ability)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Ability)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DamageType)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DamageType)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

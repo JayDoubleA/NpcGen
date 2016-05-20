@@ -25,7 +25,13 @@ namespace NpcGen.Migrations
             var magicNone = new MagicModel { MagicName = "None" };
             context.Magics.AddOrUpdate(r => r.MagicName, magicNone);
 
-            var attacklist = AttackDefinitions.List();
+            var attackProps = AtackPropertyDefinitions.List();
+            foreach (var prop in attackProps)
+            {
+                context.AttackProperties.AddOrUpdate(r => r.Name, prop);
+            }
+
+            var attacklist = AttackDefinitions.List(attackProps);
             foreach (var attack in attacklist)
             {
                 context.Attacks.AddOrUpdate(r => r.Name, attack);

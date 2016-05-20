@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
@@ -10,7 +9,7 @@ namespace NpcGen.Controllers
 {
     public class ClassModelsController : Controller
     {
-        private NpcContext _context = new NpcContext();
+        private readonly NpcContext _context = new NpcContext();
 
         private List<ClassAbilityModel> ClassAbilities { get; set; }
         private List<int> ClassAbilitiesSelectedId { get; set; }
