@@ -64,18 +64,18 @@
         <div class="form-group">
             <label class="control-label col-md-2">Attack properties</label>
             <div class="col-md-10">
-                @foreach (var c in classAbilities)
+                @foreach (var c in props)
                 {
-                    if (classAbilitiesSelected.Contains(c.Id))
+                    if (propIds.Contains(c.Id))
                     {
                         <label class="checkbox">
-                            <input type="checkbox" checked name="classAbilities" value="@c.Id"> @c.Name
+                            <input type="checkbox" checked name="attackProperties" value="@c.Id"> @c.Name
                         </label>
                     }
                     else
                     {
                         <label class="checkbox">
-                            <input type="checkbox" name="classAbilities" value="@c.Id"> @c.Name
+                            <input type="checkbox" name="attackProperties" value="@c.Id"> @c.Name
                         </label>
                     }
                 }

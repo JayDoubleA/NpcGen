@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
+﻿using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using NpcGen.DataAccess;
 using NpcGen.Models.NpcModels;
@@ -87,6 +84,10 @@ namespace NpcGen.Controllers
             {
                 return HttpNotFound();
             }
+
+            GetAttackProperties();
+            GetAttackPropertiesSelectedId(attackModel);
+            ViewBagSet();
             return View(attackModel);
         }
 
@@ -95,11 +96,27 @@ namespace NpcGen.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,ToHit,Damage,Ability,DamageType")] AttackModel attackModel)
+        public ActionResult Edit([Bind(Include = "Id,Name,ToHit,Damage,Ability,DamageType")] AttackModel attackModel, List<string> attackProperties)
         {
+            GetAttackProperties();
+
             if (ModelState.IsValid)
             {
-                _context.Entry(attackModel).State = EntityState.Modified;
+                var attackPropsSelected =
+                    AttackProperties.Where(x => attackProperties.Contains(x.Id.ToString())).ToList();
+
+                attackModel.AttackProperties = attackPropsSelected;
+
+                foreach (var prop in attackPropsSelected)
+                {
+                    prop.Attacks.Add(attackModel);
+                }
+
+                _context.SaveChanges();
+
+                var dbModel = _context.Attacks.SingleOrDefault(x => x.Name.Equals(attackModel.Name) && !x.Id.Equals(attackModel.Id));
+                _context.Attacks.Remove(dbModel);
+
                 _context.SaveChanges();
                 return RedirectToAction("Index");
             }
