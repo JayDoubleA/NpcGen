@@ -9,6 +9,7 @@ namespace NpcGen.DataAccess
     {
         public DbSet<ClassModel> Classes { get; set; }
         public DbSet<AttackModel> Attacks { get; set; }
+        public DbSet<AttackPropertyModel> AttackProperties { get; set; }
         public DbSet<MagicModel> Magics { get; set; }
         public DbSet<QuirkModel> Quirks { get; set; }
         public DbSet<DemeanourModel> Demeanours { get; set; }
@@ -152,6 +153,17 @@ namespace NpcGen.DataAccess
                      m.MapLeftKey("Locations");
                      m.MapRightKey("Attack");
                      m.ToTable("LocationsAttacks");
+                 });
+
+            modelBuilder.Entity<AttackModel>().
+             HasMany(a => a.AttackProperties).
+             WithMany(p => p.Attacks).
+             Map(
+                 m =>
+                 {
+                     m.MapLeftKey("Attack");
+                     m.MapRightKey("AttackProperties");
+                     m.ToTable("AttackAttackProperties");
                  });
         }
     }

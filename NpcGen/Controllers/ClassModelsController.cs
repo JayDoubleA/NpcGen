@@ -12,6 +12,9 @@ namespace NpcGen.Controllers
     {
         private NpcContext _context = new NpcContext();
 
+        private List<ClassAbilityModel> ClassAbilities { get; set; }
+        private List<int> ClassAbilitiesSelectedId { get; set; }
+
         // GET: ClassModels
         public ActionResult Index()
         {
@@ -37,6 +40,7 @@ namespace NpcGen.Controllers
         public ActionResult Create()
         {
             GetClassAbilities();
+            ViewBagSet();
            
             return View();
         }
@@ -46,18 +50,27 @@ namespace NpcGen.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,HitDieType,Level,ProficencyBonus,Strength,Dexterity,Constitution,Intelligence,Wisdom,Charisma,HitPoints,Movement,BaseArmourClass,Possessions,Xp")] ClassModel classModel)
+        public ActionResult Create([Bind(Include = "Id,Name,HitDieType,Level,ProficencyBonus,Strength,Dexterity,Constitution,Intelligence,Wisdom,Charisma,HitPoints,Movement,BaseArmourClass,Possessions,Xp")] ClassModel classModel, List<string> classAbilities)
         {
+            GetClassAbilities();
+
             if (ModelState.IsValid)
             {
                 _context.Classes.Add(classModel);
+
+                var classAbilityModels = ClassAbilities.Where(x => classAbilities.Contains(x.Id.ToString())).ToList();
+
+                foreach (var abi in classAbilityModels)
+                {
+                    abi.Classes.Add(classModel);
+                }
+
                 _context.SaveChanges();
+
                 return RedirectToAction("Index");
             }
 
-            GetClassAbilities();
-            GetClassAbilitiesSelected(classModel);
-
+            ViewBagSet();
             return View(classModel);
         }
 
@@ -77,6 +90,7 @@ namespace NpcGen.Controllers
             GetClassAbilities();
             GetClassAbilitiesSelected(classModel);
 
+            ViewBagSet();
             return View(classModel);
         }
 
@@ -95,9 +109,7 @@ namespace NpcGen.Controllers
 
             if (ModelState.IsValid)
             {
-                var classAbilityModels =
-                    ((List<ClassAbilityModel>) ViewBag.ClassAbilities).Where(
-                        x => classAbilities.Contains(x.Id.ToString())).ToList();
+                var classAbilityModels = ClassAbilities.Where(x => classAbilities.Contains(x.Id.ToString())).ToList();
 
                 foreach (var abi in classAbilityModels)
                 {
@@ -115,6 +127,7 @@ namespace NpcGen.Controllers
 
             GetClassAbilitiesSelected(classModel);
 
+            ViewBagSet();
             return View(classModel);
         }
 
@@ -155,12 +168,18 @@ namespace NpcGen.Controllers
 
         private void GetClassAbilities()
         {
-            ViewBag.ClassAbilities = _context.ClassAbilities.OrderBy(x => x.Name).ToList();
+            ClassAbilities = _context.ClassAbilities.OrderBy(x => x.Name).ToList();
         }
 
         private void GetClassAbilitiesSelected(ClassModel classModel)
         {
-            ViewBag.ClassAbilitiesSelectedId = classModel.ClassAbilities.Select(x => x.Id).ToList();
+            ClassAbilitiesSelectedId = classModel.ClassAbilities.Select(x => x.Id).ToList();
+        }
+
+        private void ViewBagSet()
+        {
+            ViewBag.ClassAbilities = ClassAbilities;
+            ViewBag.ClassAbilitiesSelectedId = ClassAbilitiesSelectedId;
         }
 
         public ClassModel GetClassById(int id)

@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
+using Microsoft.VisualBasic.CompilerServices;
 using NpcGen.Models.NpcModels;
 using NpcGen.Enums;
 
@@ -30,6 +32,11 @@ namespace NpcGen.Extensions
         {
             var at = list.FirstOrDefault(x => x.Name.ToLower().Equals(name.ToLower()));
             return at ?? new RaceAbilityModel();
+        }
+
+        public static bool HasMembers(this IEnumerable<object> list)
+        {
+            return list != null && list.Any();
         }
     }
 }

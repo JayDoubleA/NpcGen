@@ -113,9 +113,9 @@ namespace NpcGen.ViewHelpers
                 var toHit = at.ToHit >= 0 ? string.Format("+{0}", at.ToHit) : at.ToHit.ToString();
 
                 var special = string.Empty;
-                if (at.Special.NotNullOrEmpty())
+                if (at.AttackProperties.HasMembers())
                 {
-                    special = string.Format("&nbsp;<i>{0}</i>", at.Special);
+                    special = string.Format("&nbsp;<i>{0}</i>", string.Join(", ", at.AttackProperties));
                 }
 
                 var listItem = new TagBuilder("li")

@@ -131,6 +131,22 @@
             @Html.DisplayFor(model => model.Xp)
         </dd>
 
+        @if (Model.ClassAbilities != null && Model.ClassAbilities.Any())
+        {
+            <dt>@Html.DisplayNameFor(model => model.ClassAbilities)</dt>
+
+            <dd>
+                <ul>
+                    @foreach (var abi in Model.ClassAbilities)
+                    {
+                        <li>
+                            @abi.Name
+                        </li>
+                    }
+                </ul>
+            </dd>
+        }
+
     </dl>
 </div>
 <p>

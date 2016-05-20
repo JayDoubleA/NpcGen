@@ -14,7 +14,7 @@ namespace NpcGen.Models.NpcModels
         public string Damage { get; set; }
         public Abilities Ability { get; set; }
         public DamageType DamageType { get; set; }
-        public string Special { get; set; }
+        public virtual ICollection<AttackPropertyModel> AttackProperties { get; set; }
         public virtual ICollection<ClassModel> Classes { get; set; }
         public virtual ICollection<LocationModel> Locations { get; set; }
 
@@ -28,13 +28,13 @@ namespace NpcGen.Models.NpcModels
             Name = name;
         }
 
-        public AttackModel(string name, Abilities ability, string damageDice, DamageType damageType, string special = "", int range = 5, int rangeLong = 5)
+        public AttackModel(string name, Abilities ability, string damageDice, DamageType damageType, ICollection<AttackPropertyModel> props = null, int range = 5, int rangeLong = 5)
         {
             Name = name;
-            Special = special;
+            AttackProperties = props ?? new List<AttackPropertyModel>();
             Ability = ability;
             DamageType = damageType;
             Damage = damageDice;            
         }
-    }    
+    }
 }
